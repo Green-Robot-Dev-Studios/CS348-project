@@ -1,0 +1,14 @@
+{
+  "host": "waterfood.aaronolsen.ca",
+  "origins": [
+    "https://waterfood.aaronolsen.ca"
+  ],
+  "port": 80,
+  "authentication": {
+    "oauth": {
+      "defaults": {
+        "origin": "https://waterfood.aaronolsen.ca"
+      }
+    }
+  }
+}
