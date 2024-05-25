@@ -27,8 +27,10 @@ app.configure(configuration(configurationValidator))
 app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
-// Host the public folder
+
+// Host the public folder as an SPA
 app.use('/', serveStatic(app.get('public')))
+app.use('*', serveStatic(app.get('public')))
 
 // Configure services and real-time functionality
 app.configure(rest())
