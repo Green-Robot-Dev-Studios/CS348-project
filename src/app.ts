@@ -46,7 +46,6 @@ app.configure(services)
 app.configure(channels)
 
 // Configure a middleware for 404s and the error handler
-app.use(notFound())
 app.use(errorHandler({ logger }))
 
 // Register hooks that run on all service methods
