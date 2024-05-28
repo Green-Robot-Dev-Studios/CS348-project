@@ -1,22 +1,15 @@
+import AppMenu from '@/components/app-menu'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import reactLogo from '../assets/react.svg'
-import './App.css'
-
 
 export const Route = createLazyFileRoute('/')({
-  component: Index,
+  component: Dashboard
 })
 
-function Index() {
+export function Dashboard() {
   return (
-    <>
-      <div>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Waterfood</h1>
-      <p className="read-the-docs">Choose your restaurant</p>
-    </>
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <AppMenu />
+      <h1 className="text-8xl font-semibold font-display text-center">Waterfood</h1>
+    </div>
   )
 }

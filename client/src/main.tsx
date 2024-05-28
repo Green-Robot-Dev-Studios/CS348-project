@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import '../app/globals.css'
+import '@fontsource-variable/playfair-display';
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 
