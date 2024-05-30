@@ -35,7 +35,7 @@
   ],
   "main": "lib/client",
   "scripts": {
-    "dev": "nodemon -x ts-node src/index.ts",
+    "dev": "concurrently \"ssh -N -L 3306:127.0.0.1:3306 waterfood-dev@216.128.179.36\" \"nodemon -x ts-node src/index.ts\"",
     "compile": "shx rm -rf lib/ && tsc",
     "start": "node lib/",
     "prettier": "npx prettier \"**/*.ts\" --write",
@@ -59,6 +59,7 @@
     "@feathersjs/transport-commons": "^5.0.25",
     "@feathersjs/typebox": "^5.0.25",
     "compression": "^1.7.4",
+    "concurrently": "^8.2.2",
     "knex": "^3.1.0",
     "mysql": "^2.18.1",
     "winston": "^3.13.0"
