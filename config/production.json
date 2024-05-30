@@ -10,5 +10,9 @@
         "origin": "https://waterfood.aaronolsen.ca"
       }
     }
+  },
+  "mysql": {
+    "client": "mysql",
+    "connection": "mysql://srv-captain--waterfood-db:3306/waterfood_dev"
   }
 }

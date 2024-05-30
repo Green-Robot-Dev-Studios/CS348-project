@@ -12,6 +12,30 @@
   },
   "mysql": {
     "client": "mysql",
-    "connection": "mysql://root:@localhost:3306/waterfood"
+    "connection": "mysql://waterfood:cs348-dev@localhost:3306/waterfood_dev"
+  },
+  "authentication": {
+    "entity": "user",
+    "service": "users",
+    "secret": "Ka1wLaCvlRBH03ewRAYniBQNxwnc/kcP",
+    "authStrategies": [
+      "jwt",
+      "local"
+    ],
+    "jwtOptions": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://waterfood.aaronolsen.ca",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "oauth": {
+      "github": {
+        "key": "Ov23ctZS8FiZXzOkrgqy",
+        "secret": "5c8354d24e064b7f0168c843150b9245dda313ed",
+        "scope": ["read:user"]
+      }
+    }
   }
 }

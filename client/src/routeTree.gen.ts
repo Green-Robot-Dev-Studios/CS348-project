@@ -17,6 +17,7 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
+const OauthProviderLazyImport = createFileRoute('/oauth/$provider')()
 
 // Create/Update Routes
 
@@ -24,6 +25,13 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const OauthProviderLazyRoute = OauthProviderLazyImport.update({
+  path: '/oauth/$provider',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/oauth.$provider.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -36,12 +44,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/oauth/$provider': {
+      id: '/oauth/$provider'
+      path: '/oauth/$provider'
+      fullPath: '/oauth/$provider'
+      preLoaderRoute: typeof OauthProviderLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexLazyRoute })
+export const routeTree = rootRoute.addChildren({
+  IndexLazyRoute,
+  OauthProviderLazyRoute,
+})
 
 /* prettier-ignore-end */
 
@@ -51,11 +69,15 @@ export const routeTree = rootRoute.addChildren({ IndexLazyRoute })
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/oauth/$provider"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/oauth/$provider": {
+      "filePath": "oauth.$provider.lazy.tsx"
     }
   }
 }
