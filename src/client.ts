@@ -1,5 +1,6 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/client.html
 import { feathers } from '@feathersjs/feathers'
+import rest from '@feathersjs/rest-client'
 import type { TransportConnection, Application } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
@@ -41,10 +42,12 @@ export type ClientApplication = Application<ServiceTypes, Configuration>
  * @returns The Feathers client application
  */
 export const createClient = <Configuration = any,>(
-  connection: TransportConnection<ServiceTypes>,
   authenticationOptions: Partial<AuthenticationClientOptions> = {}
 ) => {
   const client: ClientApplication = feathers()
+
+  const transport = process.env.NODE_ENV === 'production' ? rest() : rest('http://localhost:3030')
+  const connection = transport.fetch(window.fetch.bind(window))
 
   client.configure(connection)
   client.configure(authenticationClient(authenticationOptions))
