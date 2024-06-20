@@ -4,6 +4,23 @@ import type { TransportConnection, Application } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
 
+import { votesClient } from './services/votes/votes.shared'
+export type { Votes, VotesData, VotesQuery, VotesPatch } from './services/votes/votes.shared'
+
+import { connectionsClient } from './services/connections/connections.shared'
+export type {
+  Connections,
+  ConnectionsData,
+  ConnectionsQuery,
+  ConnectionsPatch
+} from './services/connections/connections.shared'
+
+import { roomsClient } from './services/rooms/rooms.shared'
+export type { Rooms, RoomsData, RoomsQuery, RoomsPatch } from './services/rooms/rooms.shared'
+
+import { foodClient } from './services/food/food.shared'
+export type { Food, FoodData, FoodQuery, FoodPatch } from './services/food/food.shared'
+
 import { userClient } from './services/users/users.shared'
 export type { User, UserData, UserQuery, UserPatch } from './services/users/users.shared'
 
@@ -34,5 +51,9 @@ export const createClient = <Configuration = any,>(
   client.set('connection', connection)
 
   client.configure(userClient)
+  client.configure(foodClient)
+  client.configure(roomsClient)
+  client.configure(connectionsClient)
+  client.configure(votesClient)
   return client
 }

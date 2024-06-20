@@ -11,10 +11,14 @@ import type { UserService } from './users.class'
 // Main data model schema
 export const userSchema = Type.Object(
   {
-    id: Type.Number(),
-    email: Type.String(),
+    id: Type.String({ format: 'uuid' }),
     admin: Type.Number(),
-    githubId: Type.Optional(Type.String())
+    email: Type.Optional(Type.String()),
+    passwordHash: Type.Optional(Type.String()),
+    name: Type.String(),
+    avatar: Type.Optional(Type.String({ format: 'uri' })),
+    googleId: Type.Optional(Type.String()),
+    githubId: Type.Optional(Type.Integer())
   },
   { $id: 'User', additionalProperties: false }
 )
@@ -25,7 +29,7 @@ export const userResolver = resolve<User, HookContext<UserService>>({})
 export const userExternalResolver = resolve<User, HookContext<UserService>>({})
 
 // Schema for creating new entries
-export const userDataSchema = Type.Pick(userSchema, ['email', 'githubId'], {
+export const userDataSchema = Type.Pick(userSchema, ['email', 'name', 'avatar', 'googleId', 'githubId'], {
   $id: 'UserData'
 })
 export type UserData = Static<typeof userDataSchema>
@@ -41,7 +45,7 @@ export const userPatchValidator = getValidator(userPatchSchema, dataValidator)
 export const userPatchResolver = resolve<User, HookContext<UserService>>({})
 
 // Schema for allowed query properties
-export const userQueryProperties = Type.Pick(userSchema, ['id', 'email', 'githubId', 'admin'])
+export const userQueryProperties = Type.Pick(userSchema, ['id', 'email', 'googleId', 'githubId', 'admin'])
 export const userQuerySchema = Type.Intersect(
   [
     querySyntax(userQueryProperties),

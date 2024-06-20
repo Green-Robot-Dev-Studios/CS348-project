@@ -2,20 +2,15 @@
 import type { Knex } from 'knex'
 
 export async function up(knex: Knex): Promise<void> {
-  await knex.schema.createTable('users', (table) => {
+  await knex.schema.createTable('connections', (table) => {
     table.uuid('id').primary().defaultTo(knex.raw('(uuid())'))
-    table.integer('admin').defaultTo(4)
 
-    table.string('email').unique()
-    table.string('passwordHash')
-    table.text('name')
-    table.text('avatar')
-
-    table.string('googleId')
-    table.integer('githubId')
+    table.uuid('userId').notNullable().references('id').inTable('users')
+    table.uuid('roomId').notNullable().references('id').inTable('rooms')
+    table.boolean('ready').notNullable().defaultTo(false)
   })
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTable('users')
+  await knex.schema.dropTable('connections')
 }
