@@ -15,7 +15,8 @@ export const roomsSchema = Type.Object(
     picked: Type.Optional(Type.String({format: 'uuid'})),
     longitude: Type.Number(),
     latitude: Type.Number(),
-    searchNumber: Type.Number()
+    searchNumber: Type.Number(),
+    maxDistance: Type.Number(),
   },
   { $id: 'Rooms', additionalProperties: false }
 )

@@ -3,11 +3,13 @@ import type { Knex } from 'knex'
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('connections', (table) => {
-    table.uuid('id').primary().defaultTo(knex.raw('(uuid())'))
+    table.uuid('id').defaultTo(knex.raw('(uuid())')).notNullable()
 
-    table.uuid('userId').notNullable().references('id').inTable('users')
-    table.uuid('roomId').notNullable().references('id').inTable('rooms')
+    table.uuid('userId').references('id').inTable('users')
+    table.uuid('roomId').references('id').inTable('rooms')
     table.boolean('ready').notNullable().defaultTo(false)
+
+    table.primary(['userId', 'roomId'])
   })
 }
 

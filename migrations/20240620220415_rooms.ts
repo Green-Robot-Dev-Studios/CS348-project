@@ -9,6 +9,7 @@ export async function up(knex: Knex): Promise<void> {
     table.double('longitude').notNullable()
     table.double('latitude').notNullable()
     table.integer('searchNumber').notNullable()
+    table.double('maxDistance').notNullable()
   })
 }
 
