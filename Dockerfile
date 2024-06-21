@@ -10,7 +10,7 @@ RUN npm install
 
 WORKDIR /app
 COPY . .
-RUN npm run migrate
+# RUN npm run migrate
 RUN npm run compile
 
 WORKDIR /app/client
