@@ -8,7 +8,9 @@ export const Route = createLazyFileRoute("/")({
 });
 
 export function Dashboard() {
-  const { data: food } = useFind("food", { allPages: true });
+  const { data: food } = useFind("food");
+
+  console.log(food)
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
