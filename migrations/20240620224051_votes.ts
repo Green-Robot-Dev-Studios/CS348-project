@@ -5,11 +5,13 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('votes', (table) => {
     table.uuid('id').primary().defaultTo(knex.raw('(uuid())'))
 
-    table.uuid('userId').notNullable().references('id').inTable('users')
-    table.uuid('roomId').notNullable().references('id').inTable('rooms')
+    table.uuid('userId').notNullable()
+    table.uuid('roomId').notNullable()
     table.uuid('foodId').notNullable().references('id').inTable('food')
     table.timestamp('timestamp').notNullable().defaultTo(knex.fn.now())
     table.boolean('approved').notNullable()
+
+    table.foreign(['userId', 'roomId']).references(['userId', 'roomId']).inTable('connections')
   })
 }
 

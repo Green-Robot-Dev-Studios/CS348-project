@@ -9,9 +9,7 @@ create table votes
     approved  tinyint(1)                          not null,
     constraint votes_foodid_foreign
         foreign key (foodId) references food (id),
-    constraint votes_roomid_foreign
-        foreign key (roomId) references rooms (id),
-    constraint votes_userid_foreign
-        foreign key (userId) references users (id)
+    constraint votes_userid_roomid_foreign
+        foreign key (userId, roomId) references connections (userId, roomId)
 );
 
