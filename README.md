@@ -1,5 +1,6 @@
 # Waterfood
 
+
 **We fetched our data from Google Places API:**
 https://developers.google.com/maps/documentation/places/web-service/overview
 
@@ -17,3 +18,4 @@ Our sample database has already been populated. To do so yourself, you can follo
 
 **Currently supported features:**
 1. We have a sample query demonstrating proof-of-concept. The results can be viewed when the client is first launched. 
+2. Our sample queries and tests can be found under the folder CS348-project/sql, including joinRoom, updateRoomWinner, findCloseFood, and fastestUser
