@@ -55,7 +55,7 @@ declare module "figbird" {
     allPages?: boolean;
     additionalFilters?: string[];
     additionalOperators?: string[];
-    query: any;
+    query?: any;
     matcher?: (query: any) => (item: any) => boolean;
   }
 
