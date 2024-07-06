@@ -2,6 +2,7 @@ import AppMenu from "@/components/app-menu";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import Spinner from "@/components/ui/spinner";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Link, createLazyFileRoute, useRouter } from "@tanstack/react-router";
 import { useFeathers, useMutation } from "figbird";
@@ -20,7 +21,7 @@ export function Login() {
   const feathers = useFeathers();
   const router = useRouter();
 
-  const { create, error } = useMutation("users");
+  const { create, error, status } = useMutation("users");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -85,14 +86,14 @@ export function Login() {
               </div>
               <div className="grid gap-2">
                 <Label>Password</Label>
-                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
-              <Button type="submit" className="w-full">
-                Create an account
+              <Button type="submit" className="w-full" disabled={status === "loading"}>
+                Create an account {status === "loading" && <Spinner />}
               </Button>
-              <Button variant="outline" className="w-full">
+              {/* <Button variant="outline" className="w-full" disabled={status === "loading"}>
                 Sign up with GitHub
-              </Button>
+              </Button> */}
             </form>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}

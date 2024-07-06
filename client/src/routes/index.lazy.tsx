@@ -1,16 +1,16 @@
 import AppMenu from "@/components/app-menu";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { createLazyFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
-import { useFeathers } from "figbird";
+import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
+import { Link, createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/")({
   component: Dashboard,
 });
 
 export function Dashboard() {
-  const feathers = useFeathers();
+  const user = getUserOrRedirectLogin();
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <AppMenu />
@@ -21,7 +21,7 @@ export function Dashboard() {
           <Card className="mt-6 sm:col-span-2" x-chunk="dashboard-05-chunk-0">
             <CardHeader className="pb-3">
               <CardDescription className="max-w-sm text-balance leading-relaxed">
-                Welcome, 
+                Welcome, {user?.name}
                 </CardDescription>
               <CardTitle>Create a new room</CardTitle>
               <CardDescription className="max-w-lg text-balance leading-relaxed">

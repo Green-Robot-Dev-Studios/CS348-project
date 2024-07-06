@@ -6,7 +6,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { Provider as JotaiProvider } from "jotai";
 import { Provider as FigbirdProvider } from "figbird";
 import { ThemeProvider } from "./components/theme-provider";
-import { createClient } from "waterfood";
+import { User, createClient } from "waterfood";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -23,6 +23,9 @@ declare module "@tanstack/react-router" {
 }
 
 export const client = createClient();
+export let user: User | null = null;
+
+client.reAuthenticate().catch(() => {});
 
 // Render the app
 const rootElement = document.getElementById("root")!;
