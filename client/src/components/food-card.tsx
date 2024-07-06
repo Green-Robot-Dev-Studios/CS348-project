@@ -5,7 +5,7 @@ interface IFoodCardProps {
   food: Food;
 }
 
-const FoodCard: React.FC<IFoodCardProps> = ({food}) => {
+const FoodCard: React.FC<IFoodCardProps> = ({ food }) => {
   return (
     <Card>
       <CardHeader>
