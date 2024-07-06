@@ -85,7 +85,7 @@ export function Login() {
               </div>
               <div className="grid gap-2">
                 <Label>Password</Label>
-                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
               </div>
               <Button type="submit" className="w-full">
                 Create an account
@@ -97,7 +97,7 @@ export function Login() {
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
               <Link to="/login" className="underline">
-                Sign in
+                Log in
               </Link>
             </div>
           </CardContent>
