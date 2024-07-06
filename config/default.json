@@ -36,6 +36,10 @@
         "secret": "5c8354d24e064b7f0168c843150b9245dda313ed",
         "scope": ["read:user"]
       }
+    },
+    "local": {
+      "usernameField": "email",
+      "passwordField": "passwordHash"
     }
   }
 }

@@ -26,15 +26,19 @@ export type User = Static<typeof userSchema>
 export const userValidator = getValidator(userSchema, dataValidator)
 export const userResolver = resolve<User, HookContext<UserService>>({})
 
-export const userExternalResolver = resolve<User, HookContext<UserService>>({})
+export const userExternalResolver = resolve<User, HookContext<UserService>>({
+  passwordHash: async () => undefined
+})
 
 // Schema for creating new entries
-export const userDataSchema = Type.Pick(userSchema, ['email', 'name', 'avatar', 'googleId', 'githubId'], {
+export const userDataSchema = Type.Pick(userSchema, ['email', 'name', 'avatar', 'googleId', 'githubId', 'passwordHash'], {
   $id: 'UserData'
 })
 export type UserData = Static<typeof userDataSchema>
 export const userDataValidator = getValidator(userDataSchema, dataValidator)
-export const userDataResolver = resolve<User, HookContext<UserService>>({})
+export const userDataResolver = resolve<User, HookContext<UserService>>({
+  passwordHash: passwordHash({strategy: 'local'})
+})
 
 // Schema for updating existing entries
 export const userPatchSchema = Type.Partial(userSchema, {
@@ -42,7 +46,9 @@ export const userPatchSchema = Type.Partial(userSchema, {
 })
 export type UserPatch = Static<typeof userPatchSchema>
 export const userPatchValidator = getValidator(userPatchSchema, dataValidator)
-export const userPatchResolver = resolve<User, HookContext<UserService>>({})
+export const userPatchResolver = resolve<User, HookContext<UserService>>({
+  passwordHash: passwordHash({ strategy: 'local' })
+})
 
 // Schema for allowed query properties
 export const userQueryProperties = Type.Pick(userSchema, ['id', 'email', 'googleId', 'githubId', 'admin'])

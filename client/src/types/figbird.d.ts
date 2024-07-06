@@ -77,5 +77,5 @@ declare module "figbird" {
     error: null | any;
   }
 
-  export const useMutation: <T = any>(serviceName: string) => UseMutationResult<T>;
+  export const useMutation: <T = any>(serviceName: keyof ServiceTypes) => UseMutationResult<T>;
 }
