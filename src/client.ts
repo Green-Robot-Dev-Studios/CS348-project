@@ -5,6 +5,14 @@ import type { TransportConnection, Application } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
 
+import { closeFoodClient } from './services/close-food/close-food.shared'
+export type {
+  CloseFood,
+  CloseFoodData,
+  CloseFoodQuery,
+  CloseFoodPatch
+} from './services/close-food/close-food.shared'
+
 import { votesClient } from './services/votes/votes.shared'
 export type { Votes, VotesData, VotesQuery, VotesPatch } from './services/votes/votes.shared'
 
@@ -58,5 +66,6 @@ export const createClient = <Configuration = any,>(
   client.configure(roomsClient)
   client.configure(connectionsClient)
   client.configure(votesClient)
+  client.configure(closeFoodClient)
   return client
 }
