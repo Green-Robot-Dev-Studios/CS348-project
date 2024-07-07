@@ -2,11 +2,12 @@
 import { resolve } from '@feathersjs/schema'
 import { Type, getValidator, querySyntax } from '@feathersjs/typebox'
 import type { Static } from '@feathersjs/typebox'
-import { passwordHash } from '@feathersjs/authentication-local'
+import { passwordHash as hash } from '@feathersjs/authentication-local'
 
 import type { HookContext } from '../../declarations'
 import { dataValidator, queryValidator } from '../../validators'
 import type { UserService } from './users.class'
+import { randomUUID } from 'crypto'
 
 // Main data model schema
 export const userSchema = Type.Object(
@@ -27,17 +28,20 @@ export const userValidator = getValidator(userSchema, dataValidator)
 export const userResolver = resolve<User, HookContext<UserService>>({})
 
 export const userExternalResolver = resolve<User, HookContext<UserService>>({
-  passwordHash: async () => undefined
+  ['passwordHash']: async () => undefined
 })
 
 // Schema for creating new entries
-export const userDataSchema = Type.Pick(userSchema, ['email', 'name', 'avatar', 'googleId', 'githubId', 'passwordHash'], {
-  $id: 'UserData'
-})
+export const userDataSchema = Type.Pick(
+  userSchema,
+  ['email', 'name', 'avatar', 'googleId', 'githubId', 'passwordHash'],
+  { $id: 'UserData' }
+)
 export type UserData = Static<typeof userDataSchema>
 export const userDataValidator = getValidator(userDataSchema, dataValidator)
 export const userDataResolver = resolve<User, HookContext<UserService>>({
-  passwordHash: passwordHash({strategy: 'local'})
+  id: async () => randomUUID(),
+  ['passwordHash']: hash({ strategy: 'local' })
 })
 
 // Schema for updating existing entries
@@ -47,7 +51,7 @@ export const userPatchSchema = Type.Partial(userSchema, {
 export type UserPatch = Static<typeof userPatchSchema>
 export const userPatchValidator = getValidator(userPatchSchema, dataValidator)
 export const userPatchResolver = resolve<User, HookContext<UserService>>({
-  passwordHash: passwordHash({ strategy: 'local' })
+  ['passwordHash']: hash({ strategy: 'local' })
 })
 
 // Schema for allowed query properties

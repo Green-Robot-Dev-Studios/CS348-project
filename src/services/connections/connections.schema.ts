@@ -8,6 +8,7 @@ import { dataValidator, queryValidator } from '../../validators'
 import type { ConnectionsService } from './connections.class'
 import { userSchema } from '../users/users.schema'
 import { roomsSchema } from '../rooms/rooms.schema'
+import { randomUUID } from 'crypto'
 
 // Main data model schema
 export const connectionsSchema = Type.Object(
@@ -31,7 +32,10 @@ export const connectionsDataSchema = Type.Pick(connectionsSchema, ['userId', 'ro
 })
 export type ConnectionsData = Static<typeof connectionsDataSchema>
 export const connectionsDataValidator = getValidator(connectionsDataSchema, dataValidator)
-export const connectionsDataResolver = resolve<Connections, HookContext<ConnectionsService>>({})
+export const connectionsDataResolver = resolve<Connections, HookContext<ConnectionsService>>({
+  id: async () => randomUUID(),
+  ready: async () => false
+})
 
 // Schema for updating existing entries
 export const connectionsPatchSchema = Type.Partial(connectionsSchema, {

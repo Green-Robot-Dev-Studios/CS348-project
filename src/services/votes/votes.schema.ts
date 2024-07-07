@@ -6,6 +6,7 @@ import type { Static } from '@feathersjs/typebox'
 import type { HookContext } from '../../declarations'
 import { dataValidator, queryValidator } from '../../validators'
 import type { VotesService } from './votes.class'
+import { randomUUID } from 'crypto'
 
 // Main data model schema
 export const votesSchema = Type.Object(
@@ -31,7 +32,9 @@ export const votesDataSchema = Type.Pick(votesSchema, ['userId', 'roomId', 'food
 })
 export type VotesData = Static<typeof votesDataSchema>
 export const votesDataValidator = getValidator(votesDataSchema, dataValidator)
-export const votesDataResolver = resolve<Votes, HookContext<VotesService>>({})
+export const votesDataResolver = resolve<Votes, HookContext<VotesService>>({
+  id: async () => randomUUID(),
+})
 
 // Schema for updating existing entries
 export const votesPatchSchema = Type.Partial(votesSchema, {
