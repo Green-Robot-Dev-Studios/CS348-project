@@ -1,9 +1,10 @@
-import { DropletIcon, Home, PanelLeft, Search } from "lucide-react";
+import { DropletIcon, Home, LogOut, PanelLeft, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useFeathers } from "figbird";
 
 interface IAppMenuProps {}
 
@@ -13,6 +14,14 @@ const AppMenu: React.FC<IAppMenuProps> = () => {
 
   const higlightedMenuClasses = "flex items-center gap-4 px-2.5 text-foreground";
   const normalMenuClasses = "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground";
+  
+  const feathers = useFeathers();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await feathers.logout();
+    navigate({ to: "/login" });
+  };
 
   return (
     <>
@@ -49,6 +58,21 @@ const AppMenu: React.FC<IAppMenuProps> = () => {
             </TooltipTrigger>
             <TooltipContent side="right">Browse</TooltipContent>
           </Tooltip>
+          {feathers.authentication.authenticated && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={handleLogout}
+                  variant="ghost"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg p-0 text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span className="sr-only">Logout</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Logout</TooltipContent>
+            </Tooltip>
+          )}
         </nav>
       </aside>
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">

@@ -17,6 +17,8 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const SignupLazyImport = createFileRoute('/signup')()
+const ScoresheetLazyImport = createFileRoute('/scoresheet')()
+const PreferencesLazyImport = createFileRoute('/preferences')()
 const LoginLazyImport = createFileRoute('/login')()
 const JoinLazyImport = createFileRoute('/join')()
 const BrowseLazyImport = createFileRoute('/browse')()
@@ -30,6 +32,16 @@ const SignupLazyRoute = SignupLazyImport.update({
   path: '/signup',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/signup.lazy').then((d) => d.Route))
+
+const ScoresheetLazyRoute = ScoresheetLazyImport.update({
+  path: '/scoresheet',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/scoresheet.lazy').then((d) => d.Route))
+
+const PreferencesLazyRoute = PreferencesLazyImport.update({
+  path: '/preferences',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/preferences.lazy').then((d) => d.Route))
 
 const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
@@ -95,6 +107,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
     }
+    '/preferences': {
+      id: '/preferences'
+      path: '/preferences'
+      fullPath: '/preferences'
+      preLoaderRoute: typeof PreferencesLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/scoresheet': {
+      id: '/scoresheet'
+      path: '/scoresheet'
+      fullPath: '/scoresheet'
+      preLoaderRoute: typeof ScoresheetLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -126,6 +152,8 @@ export const routeTree = rootRoute.addChildren({
   BrowseLazyRoute,
   JoinLazyRoute,
   LoginLazyRoute,
+  PreferencesLazyRoute,
+  ScoresheetLazyRoute,
   SignupLazyRoute,
   OauthProviderLazyRoute,
   RoomRoomidLazyRoute,
@@ -143,6 +171,8 @@ export const routeTree = rootRoute.addChildren({
         "/browse",
         "/join",
         "/login",
+        "/preferences",
+        "/scoresheet",
         "/signup",
         "/oauth/$provider",
         "/room/$roomid"
@@ -159,6 +189,12 @@ export const routeTree = rootRoute.addChildren({
     },
     "/login": {
       "filePath": "login.lazy.tsx"
+    },
+    "/preferences": {
+      "filePath": "preferences.lazy.tsx"
+    },
+    "/scoresheet": {
+      "filePath": "scoresheet.lazy.tsx"
     },
     "/signup": {
       "filePath": "signup.lazy.tsx"

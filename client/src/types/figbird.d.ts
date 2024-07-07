@@ -79,3 +79,12 @@ declare module "figbird" {
 
   export const useMutation: <T = any>(serviceName: keyof ServiceTypes) => UseMutationResult<T>;
 }
+
+export type CardData = {
+  id: number;
+  displayName: string;
+  photoLink: string;
+  formattedAddress: string;
+  editorialSummary: string;
+  websiteURL: string;
+};
