@@ -4,7 +4,7 @@ import { CardData } from '@/types/figbird';
 import { Button } from "@/components/ui/button";
 
 import { useState } from 'react';
-import { easeIn, motion, PanInfo, useMotionValue, useTransform } from 'framer-motion';
+import { motion, PanInfo, useMotionValue, useTransform } from 'framer-motion';
 
 type CardProps = {
     data: CardData;

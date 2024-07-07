@@ -24,13 +24,13 @@ export default function SwipeButton({
       <div className="flex items-center space-x-8 absolute top-0">
         <Button 
             onClick={() => handleSwipe('left')}
-            className="px-3 py-2 bg-teal-800 text-textGrey font-semibold rounded-md"
+            className="px-3 py-2 rounded-md hover:bg-red-400"
         >
             Left
         </Button>
         <Button 
             onClick={() => handleSwipe('right')}
-            className="px-3 py-2 bg-teal-800 text-textGrey font-semibold rounded-md"
+            className="px-3 py-2 rounded-md hover:bg-green-300"
         >
             Right
         </Button>
