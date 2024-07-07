@@ -19,7 +19,6 @@ import { Route as rootRoute } from './routes/__root'
 const SignupLazyImport = createFileRoute('/signup')()
 const LoginLazyImport = createFileRoute('/login')()
 const JoinLazyImport = createFileRoute('/join')()
-const CreateLazyImport = createFileRoute('/create')()
 const BrowseLazyImport = createFileRoute('/browse')()
 const IndexLazyImport = createFileRoute('/')()
 const OauthProviderLazyImport = createFileRoute('/oauth/$provider')()
@@ -40,11 +39,6 @@ const JoinLazyRoute = JoinLazyImport.update({
   path: '/join',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/join.lazy').then((d) => d.Route))
-
-const CreateLazyRoute = CreateLazyImport.update({
-  path: '/create',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/create.lazy').then((d) => d.Route))
 
 const BrowseLazyRoute = BrowseLazyImport.update({
   path: '/browse',
@@ -79,13 +73,6 @@ declare module '@tanstack/react-router' {
       path: '/browse'
       fullPath: '/browse'
       preLoaderRoute: typeof BrowseLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/create': {
-      id: '/create'
-      path: '/create'
-      fullPath: '/create'
-      preLoaderRoute: typeof CreateLazyImport
       parentRoute: typeof rootRoute
     }
     '/join': {
@@ -124,7 +111,6 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   BrowseLazyRoute,
-  CreateLazyRoute,
   JoinLazyRoute,
   LoginLazyRoute,
   SignupLazyRoute,
@@ -141,7 +127,6 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/browse",
-        "/create",
         "/join",
         "/login",
         "/signup",
@@ -153,9 +138,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/browse": {
       "filePath": "browse.lazy.tsx"
-    },
-    "/create": {
-      "filePath": "create.lazy.tsx"
     },
     "/join": {
       "filePath": "join.lazy.tsx"
