@@ -1,6 +1,5 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import SwipeButton from "@/components/ui/swipe-buttons"
-import { CardData } from '@/types/figbird';
 import { Button } from "@/components/ui/button";
 
 import { useState } from 'react';
@@ -10,6 +9,15 @@ type CardProps = {
     data: CardData;
     active: boolean;
     removeCard: (id: number, action: 'right' | 'left') => void;
+};
+
+type CardData = {
+  id: number;
+  displayName: string;
+  photoLink: string;
+  formattedAddress: string;
+  editorialSummary: string;
+  websiteURL: string;
 };
 
 const SwipeCard = ({ data, active, removeCard }: CardProps) => {

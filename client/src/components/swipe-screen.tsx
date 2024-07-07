@@ -1,7 +1,15 @@
-import { CardData } from '@/types/figbird';
 import { AnimatePresence } from 'framer-motion';
 import SwipeCard from '@/components/ui/swipe-card';
 import { useState } from 'react';
+
+type CardData = {
+  id: number;
+  displayName: string;
+  photoLink: string;
+  formattedAddress: string;
+  editorialSummary: string;
+  websiteURL: string;
+};
 
 const foodData = [
     {
