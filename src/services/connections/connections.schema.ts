@@ -34,7 +34,14 @@ export type ConnectionsData = Static<typeof connectionsDataSchema>
 export const connectionsDataValidator = getValidator(connectionsDataSchema, dataValidator)
 export const connectionsDataResolver = resolve<Connections, HookContext<ConnectionsService>>({
   id: async () => randomUUID(),
-  ready: async () => false
+  ready: async () => false,
+  userId: async (value, user, context) => {
+    if (context.params.user) {
+      return context.params.user.id
+    }
+
+    return value
+  }
 })
 
 // Schema for updating existing entries

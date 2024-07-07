@@ -1,4 +1,4 @@
-import AppMenu from "@/components/app-menu";
+import { Content } from "@/components/content";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useFind } from "figbird";
 
@@ -11,11 +11,8 @@ export function Join() {
   const { data, error } = useFind("rooms", { allPages: true });
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <AppMenu />
-      <div className="pl-14">
-        {JSON.stringify(data)} {JSON.stringify(error)}
-      </div>
-    </div>
+    <Content>
+      {JSON.stringify(data)} {JSON.stringify(error)}
+    </Content>
   );
 }

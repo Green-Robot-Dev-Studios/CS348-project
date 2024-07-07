@@ -1,4 +1,4 @@
-import AppMenu from "@/components/app-menu";
+import { Content } from "@/components/content";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -52,58 +52,55 @@ export function Login() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <AppMenu />
-      <div className="pl-14">
-        <Card className="mx-auto max-w-sm">
-          <CardHeader>
-            <CardTitle className="text-xl">Sign Up</CardTitle>
-            <CardDescription>Enter your information to create an account</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form className="grid gap-4" onSubmit={handleSubmit}>
-              <div className="grid gap-2">
-                <Label>How should we call you</Label>
-                <Input
-                  id="name"
-                  placeholder={nameExample}
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder={emailExample}
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                {error && <div className="text-red-500">That email is already taken</div>}
-              </div>
-              <div className="grid gap-2">
-                <Label>Password</Label>
-                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              </div>
-              <Button type="submit" className="w-full" disabled={status === "loading"}>
-                Create an account {status === "loading" && <Spinner />}
-              </Button>
-              {/* <Button variant="outline" className="w-full" disabled={status === "loading"}>
+    <Content>
+      <Card className="mx-auto max-w-sm">
+        <CardHeader>
+          <CardTitle className="text-xl">Sign Up</CardTitle>
+          <CardDescription>Enter your information to create an account</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form className="grid gap-4" onSubmit={handleSubmit}>
+            <div className="grid gap-2">
+              <Label>How should we call you</Label>
+              <Input
+                id="name"
+                placeholder={nameExample}
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder={emailExample}
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {error && <div className="text-red-500">That email is already taken</div>}
+            </div>
+            <div className="grid gap-2">
+              <Label>Password</Label>
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </div>
+            <Button type="submit" className="w-full" disabled={status === "loading"}>
+              Create an account {status === "loading" && <Spinner />}
+            </Button>
+            {/* <Button variant="outline" className="w-full" disabled={status === "loading"}>
                 Sign up with GitHub
               </Button> */}
-            </form>
-            <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link to="/login" className="underline">
-                Log in
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+          </form>
+          <div className="mt-4 text-center text-sm">
+            Already have an account?{" "}
+            <Link to="/login" className="underline">
+              Log in
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </Content>
   );
 }
