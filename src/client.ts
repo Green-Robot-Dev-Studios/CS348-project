@@ -5,6 +5,14 @@ import type { TransportConnection, Application } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
 
+import { scoresheetClient } from './services/scoresheet/scoresheet.shared'
+export type {
+  Scoresheet,
+  ScoresheetData,
+  ScoresheetQuery,
+  ScoresheetPatch
+} from './services/scoresheet/scoresheet.shared'
+
 import { closeFoodClient } from './services/close-food/close-food.shared'
 export type {
   CloseFood,
@@ -67,5 +75,6 @@ export const createClient = <Configuration = any,>(
   client.configure(connectionsClient)
   client.configure(votesClient)
   client.configure(closeFoodClient)
+  client.configure(scoresheetClient)
   return client
 }
