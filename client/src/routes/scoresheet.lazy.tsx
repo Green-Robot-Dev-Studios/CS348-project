@@ -7,8 +7,24 @@ export const Route = createLazyFileRoute("/scoresheet")({
 });
 
 const testObj = {
-  quickDraw: "",
+  quickDraw: "12345",
 };
+
+type ScoreCardProps = {
+  title: string;
+  value: string;
+};
+
+function ScoreCard(props: ScoreCardProps) {
+  return (
+    <Card className="m-1">
+      <CardHeader>
+        <CardTitle>{props.title}</CardTitle>
+        <CardDescription>{props.value}</CardDescription>
+      </CardHeader>
+    </Card>
+  );
+}
 
 export function ScoreSheet() {
   // const { provider } = Route.useParams();
@@ -16,10 +32,11 @@ export function ScoreSheet() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <AppMenu />
-      <div className="pl-14">
-        <Card className="mx-auto max-w-sm">
-          <CardTitle>New Title</CardTitle>
-        </Card>
+      <div className="m-5 grid grid-cols-2">
+        <ScoreCard title="Quick Draw" value={testObj.quickDraw} />
+        <ScoreCard title="Least Decisive" value="test" />
+        <ScoreCard title="Most Picky" value="test" />
+        <ScoreCard title="Most Easygoing" value="test" />
       </div>
     </div>
   );
