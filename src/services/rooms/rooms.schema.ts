@@ -7,16 +7,17 @@ import type { HookContext } from '../../declarations'
 import { dataValidator, queryValidator } from '../../validators'
 import type { RoomsService } from './rooms.class'
 import { foodSchema } from '../food/food.schema'
+import { randomUUID } from 'crypto'
 
 // Main data model schema
 export const roomsSchema = Type.Object(
   {
     id: Type.String({ format: 'uuid' }),
-    picked: Type.Optional(Type.String({format: 'uuid'})),
+    picked: Type.Optional(Type.String({ format: 'uuid' })),
     longitude: Type.Number(),
     latitude: Type.Number(),
     searchNumber: Type.Number(),
-    maxDistance: Type.Number(),
+    maxDistance: Type.Number()
   },
   { $id: 'Rooms', additionalProperties: false }
 )
@@ -27,12 +28,18 @@ export const roomsResolver = resolve<Rooms, HookContext<RoomsService>>({})
 export const roomsExternalResolver = resolve<Rooms, HookContext<RoomsService>>({})
 
 // Schema for creating new entries
-export const roomsDataSchema = Type.Pick(roomsSchema, ['longitude', 'latitude', 'searchNumber'], {
-  $id: 'RoomsData'
-})
+export const roomsDataSchema = Type.Pick(
+  roomsSchema,
+  ['longitude', 'latitude', 'searchNumber', 'maxDistance'],
+  {
+    $id: 'RoomsData'
+  }
+)
 export type RoomsData = Static<typeof roomsDataSchema>
 export const roomsDataValidator = getValidator(roomsDataSchema, dataValidator)
-export const roomsDataResolver = resolve<Rooms, HookContext<RoomsService>>({})
+export const roomsDataResolver = resolve<Rooms, HookContext<RoomsService>>({
+  id: async () => randomUUID(),
+})
 
 // Schema for updating existing entries
 export const roomsPatchSchema = Type.Partial(roomsSchema, {
@@ -43,7 +50,14 @@ export const roomsPatchValidator = getValidator(roomsPatchSchema, dataValidator)
 export const roomsPatchResolver = resolve<Rooms, HookContext<RoomsService>>({})
 
 // Schema for allowed query properties
-export const roomsQueryProperties = Type.Pick(roomsSchema, ['id', 'picked', 'longitude', 'latitude', 'searchNumber'])
+export const roomsQueryProperties = Type.Pick(roomsSchema, [
+  'id',
+  'picked',
+  'longitude',
+  'latitude',
+  'searchNumber',
+  'maxDistance'
+])
 export const roomsQuerySchema = Type.Intersect(
   [
     querySyntax(roomsQueryProperties),
