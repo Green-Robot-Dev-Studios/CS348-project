@@ -4,16 +4,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
 import { Label } from "@radix-ui/react-label";
-import { Link, createLazyFileRoute, useNavigate } from "@tanstack/react-router";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation } from "figbird";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const Route = createLazyFileRoute("/")({
   component: Dashboard,
 });
 
 export function Dashboard() {
-  const user = getUserOrRedirectLogin();
+  getUserOrRedirectLogin();
   const navigate = useNavigate();
 
   const { create } = useMutation("rooms");
@@ -26,7 +26,12 @@ export function Dashboard() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await create({ latitude, longitude, maxDistance, searchNumber });
+      const response = await create({ 
+        latitude: Number(latitude), 
+        longitude: Number(longitude), 
+        maxDistance: Number(maxDistance), 
+        searchNumber: Number(searchNumber) 
+      });
       console.log(response);
 
       await navigate({ to: `/room/${response.id}`});
