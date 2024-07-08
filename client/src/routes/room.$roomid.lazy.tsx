@@ -14,7 +14,7 @@ export const Route = createLazyFileRoute("/room/$roomId")({
 
 export function Room() {
   const { roomId } = Route.useParams();
-  const { data } = useFind("connections", { query: { roomId: roomId } });
+  const { data } = useFind("connections", { query: { roomId } });
 
   const user = getUserOrRedirectLogin();
   const ready = data?.some((connection) => connection.userId === user?.id && connection.ready);

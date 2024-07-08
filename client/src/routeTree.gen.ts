@@ -22,9 +22,9 @@ const JoinLazyImport = createFileRoute('/join')()
 const BrowseLazyImport = createFileRoute('/browse')()
 const IndexLazyImport = createFileRoute('/')()
 const SwipeRoomIdLazyImport = createFileRoute('/swipe/$roomId')()
-const ResultsRoomIdLazyImport = createFileRoute('/results/$roomId')()
 const ScoresheetRoomIdLazyImport = createFileRoute('/scoresheet/$roomId')()
 const RoomRoomIdLazyImport = createFileRoute('/room/$roomId')()
+const ResultsRoomIdLazyImport = createFileRoute('/results/$roomId')()
 const PreferencesRoomIdLazyImport = createFileRoute('/preferences/$roomId')()
 const OauthProviderLazyImport = createFileRoute('/oauth/$provider')()
 
@@ -67,15 +67,17 @@ const ScoresheetRoomIdLazyRoute = ScoresheetRoomIdLazyImport.update({
   import('./routes/scoresheet.$roomId.lazy').then((d) => d.Route),
 )
 
-const ResultsRoomIdLazyRoute = ResultsRoomIdLazyImport.update({
-  path: '/results/$roomId',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/results.$roomId.lazy').then((d) => d.Route))
-
 const RoomRoomIdLazyRoute = RoomRoomIdLazyImport.update({
   path: '/room/$roomId',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/room.$roomId.lazy').then((d) => d.Route))
+
+const ResultsRoomIdLazyRoute = ResultsRoomIdLazyImport.update({
+  path: '/results/$roomId',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/results.$roomId.lazy').then((d) => d.Route),
+)
 
 const PreferencesRoomIdLazyRoute = PreferencesRoomIdLazyImport.update({
   path: '/preferences/$roomId',
@@ -144,6 +146,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PreferencesRoomIdLazyImport
       parentRoute: typeof rootRoute
     }
+    '/results/$roomId': {
+      id: '/results/$roomId'
+      path: '/results/$roomId'
+      fullPath: '/results/$roomId'
+      preLoaderRoute: typeof ResultsRoomIdLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/room/$roomId': {
       id: '/room/$roomId'
       path: '/room/$roomId'
@@ -165,13 +174,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SwipeRoomIdLazyImport
       parentRoute: typeof rootRoute
     }
-    '/results/$roomId': {
-      id: '/results/$roomId'
-      path: '/results/$roomId'
-      fullPath: '/results/$roomId'
-      preLoaderRoute: typeof ResultsRoomIdLazyImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -185,10 +187,10 @@ export const routeTree = rootRoute.addChildren({
   SignupLazyRoute,
   OauthProviderLazyRoute,
   PreferencesRoomIdLazyRoute,
+  ResultsRoomIdLazyRoute,
   RoomRoomIdLazyRoute,
   ScoresheetRoomIdLazyRoute,
   SwipeRoomIdLazyRoute,
-  ResultsRoomIdLazyRoute,
 })
 
 /* prettier-ignore-end */
@@ -206,6 +208,7 @@ export const routeTree = rootRoute.addChildren({
         "/signup",
         "/oauth/$provider",
         "/preferences/$roomId",
+        "/results/$roomId",
         "/room/$roomId",
         "/scoresheet/$roomId",
         "/swipe/$roomId"
@@ -231,6 +234,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/preferences/$roomId": {
       "filePath": "preferences.$roomId.lazy.tsx"
+    },
+    "/results/$roomId": {
+      "filePath": "results.$roomId.lazy.tsx"
     },
     "/room/$roomId": {
       "filePath": "room.$roomId.lazy.tsx"
