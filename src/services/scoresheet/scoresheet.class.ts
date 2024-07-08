@@ -9,24 +9,26 @@ import { randomUUID } from 'crypto'
 export type { Scoresheet, ScoresheetData, ScoresheetPatch, ScoresheetQuery }
 
 export interface ScoresheetServiceOptions {
-  app: Application,
+  app: Application
   db: any
 }
 
-export interface ScoresheetParams extends Params<ScoresheetQuery> { }
+export interface ScoresheetParams extends Params<ScoresheetQuery> {}
 
 // This is a skeleton for a custom service class. Remove or add the methods you need here
 export class ScoresheetService<ServiceParams extends ScoresheetParams = ScoresheetParams>
-  implements ServiceInterface<Scoresheet, ScoresheetData, ServiceParams, ScoresheetPatch> {
-  constructor(public options: ScoresheetServiceOptions) { }
+  implements ServiceInterface<Scoresheet, ScoresheetData, ServiceParams, ScoresheetPatch>
+{
+  constructor(public options: ScoresheetServiceOptions) {}
 
   async get(roomId: string, _params?: ServiceParams): Promise<Scoresheet> {
     const connection = knex(this.options.db)
 
     const [quickDrawResult, leastDecisiveResult, mostPickyResult, mostEasygoingResult] = await Promise.all([
-      connection.raw(`
+      connection.raw(
+        `
         WITH userVoteTime AS (
-          SELECT v.userId, (MAX(v.timestamp) - MIN(v.timestamp)) AS voteTime
+          SELECT v.userId, TIMEDIFF(MAX(v.timestamp), MIN(v.timestamp)) AS voteTime
           FROM votes v
           WHERE v.roomId = ?
           GROUP BY v.userId
@@ -35,11 +37,14 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           FROM userVoteTime uv
         )
         SELECT uv.userId, m.fastest as FastestTime
-        FROM userVoteTime uv JOIN MinVoteTime m ON uv.voteTime = m.fastest;`, [roomId]),
+        FROM userVoteTime uv JOIN MinVoteTime m ON uv.voteTime = m.fastest;`,
+        [roomId]
+      ),
 
-      connection.raw(`
+      connection.raw(
+        `
         WITH userVoteTime AS (
-          SELECT v.userId, (MAX(v.timestamp) - MIN(v.timestamp)) AS voteTime
+          SELECT v.userId, TIMEDIFF(MAX(v.timestamp), MIN(v.timestamp)) AS voteTime
           FROM votes v
           WHERE v.roomId = ?
           GROUP BY v.userId
@@ -48,9 +53,12 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           FROM userVoteTime uv
         )
         SELECT uv.userId, m.slowest as SlowestTime
-        FROM userVoteTime uv JOIN MaxVoteTime m ON uv.voteTime = m.slowest;`, [roomId]),
+        FROM userVoteTime uv JOIN MaxVoteTime m ON uv.voteTime = m.slowest;`,
+        [roomId]
+      ),
 
-      connection.raw(`
+      connection.raw(
+        `
         WITH userVoteCount AS (
           SELECT v.userId, SUM(v.approved) AS voteCount
           FROM votes v
@@ -61,9 +69,12 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           FROM userVoteCount uv
         )
         SELECT uv.userId, m.mostPicky as voteCount
-        FROM userVoteCount uv JOIN MinVoteCount m ON uv.voteCount = m.mostPicky;`, [roomId]),
+        FROM userVoteCount uv JOIN MinVoteCount m ON uv.voteCount = m.mostPicky;`,
+        [roomId]
+      ),
 
-      connection.raw(`
+      connection.raw(
+        `
         WITH userVoteCount AS (
           SELECT v.userId, SUM(v.approved) AS voteCount
           FROM votes v
@@ -74,7 +85,9 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           FROM userVoteCount uv
         )
         SELECT uv.userId, m.mostEasygoing as voteCount
-        FROM userVoteCount uv JOIN MaxVoteCount m ON uv.voteCount = m.mostEasygoing;`, [roomId])
+        FROM userVoteCount uv JOIN MaxVoteCount m ON uv.voteCount = m.mostEasygoing;`,
+        [roomId]
+      )
     ])
 
     const quickDraw = {
