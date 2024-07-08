@@ -1,6 +1,6 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/client.html
 import { feathers } from '@feathersjs/feathers'
-import rest from '@feathersjs/rest-client'
+import socketio from '@feathersjs/socketio-client'
 import type { TransportConnection, Application } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
@@ -39,6 +39,7 @@ import { foodClient } from './services/food/food.shared'
 export type { Food, FoodData, FoodQuery, FoodPatch } from './services/food/food.shared'
 
 import { userClient } from './services/users/users.shared'
+import { io } from 'socket.io-client'
 export type { User, UserData, UserQuery, UserPatch } from './services/users/users.shared'
 
 export interface Configuration {
@@ -62,8 +63,8 @@ export const createClient = <Configuration = any,>(
 ) => {
   const client: ClientApplication = feathers()
 
-  const transport = process.env.NODE_ENV === 'production' ? rest() : rest('http://localhost:3030')
-  const connection = transport.fetch(window.fetch.bind(window))
+  const transport = process.env.NODE_ENV === 'production' ? io() : io('http://localhost:3030')
+  const connection = socketio(transport)
 
   client.configure(connection)
   client.configure(authenticationClient(authenticationOptions))
