@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
-import { createLazyFileRoute, Navigate, useParams } from "@tanstack/react-router";
+import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
 import { useFind, useMutation } from "figbird";
 import { useCallback, useEffect } from "react";
 import QRCode from "react-qr-code";
@@ -13,8 +13,9 @@ export const Route = createLazyFileRoute("/room/$roomId")({
 });
 
 export function Room() {
-  const { roomId } = Route.useParams();
-  const params = useParams({strict: false});
+  const params = Route.useParams();
+  //@ts-ignore
+  const roomId = params.roomid;
   const user = getUserOrRedirectLogin();
 
   const { data } = useFind("connections", { query: { roomId } });
