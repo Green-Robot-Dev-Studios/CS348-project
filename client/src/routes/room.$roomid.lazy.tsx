@@ -58,7 +58,7 @@ export function Room() {
         <TableBody>
           {data?.map((connection) => (
             <TableRow key={connection.id}>
-              <TableCell>{connection.userName}</TableCell>
+              <TableCell>{connection.user.name}</TableCell>
               <TableCell>{connection.ready ? "✅" : "❌"}</TableCell>
             </TableRow>
           ))}

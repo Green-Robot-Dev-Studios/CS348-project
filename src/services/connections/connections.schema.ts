@@ -1,24 +1,22 @@
 // // For more information about this file see https://dove.feathersjs.com/guides/cli/service.schemas.html
 import { resolve } from '@feathersjs/schema'
-import { Type, getValidator, querySyntax } from '@feathersjs/typebox'
 import type { Static } from '@feathersjs/typebox'
+import { getValidator, querySyntax, Type } from '@feathersjs/typebox'
 
+import { randomUUID } from 'crypto'
 import type { HookContext } from '../../declarations'
 import { dataValidator, queryValidator } from '../../validators'
-import { type ConnectionsService } from './connections.class'
 import { userSchema } from '../users/users.schema'
-import { roomsSchema } from '../rooms/rooms.schema'
-import { randomUUID } from 'crypto'
-import { getOptions, UserService } from '../users/users.class'
+import { type ConnectionsService } from './connections.class'
 
 // Main data model schema
 export const connectionsSchema = Type.Object(
   {
     id: Type.String({ format: 'uuid' }),
     userId: Type.String({ format: 'uuid' }),
+    user: Type.Ref(userSchema),
     roomId: Type.String({ format: 'uuid' }),
     ready: Type.Boolean(),
-    userName: Type.String(),
   },
   { $id: 'Connections', additionalProperties: false }
 )
@@ -27,16 +25,7 @@ export const connectionsValidator = getValidator(connectionsSchema, dataValidato
 export const connectionsResolver = resolve<Connections, HookContext<ConnectionsService>>({})
 
 export const connectionsExternalResolver = resolve<Connections, HookContext<ConnectionsService>>({
-  userName: async (user, value, context) => {
-    // TODO: do this properly
-    try {
-      const userService = new UserService(getOptions(context.app));
-      const foundUser = await userService.find({ query: { id: value.userId } });
-      return foundUser.data[0].name;
-    } catch (e) {
-      return String(e);
-    }
-  }
+  user: (user, value, context) => context.app.service('users').get(value.userId)
 })
 
 // Schema for creating new entries
