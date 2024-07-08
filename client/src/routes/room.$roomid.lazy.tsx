@@ -17,9 +17,8 @@ export function Room() {
   const { roomId } = Route.useParams();
 
   const { data } = useFind("connections", { query: { roomId } });
+  const userConnection = data?.find((connection) => connection.userId === user?.id);
   const { create, patch } = useMutation("connections");
-  const { data: userConnectionsData } = useFind("connections", { query: { roomId, userId: user?.id! } });
-  const userConnection = userConnectionsData?.[0];
 
   const userReady = userConnection?.ready;
   const allReady = data && data.length > 0 && data.every((connection) => connection.ready);
