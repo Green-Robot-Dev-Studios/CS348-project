@@ -1,10 +1,10 @@
 import { Content } from "@/components/content";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
 import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
-import { useFeathers, useFind, useMutation } from "figbird";
+import { useFind, useMutation } from "figbird";
 import { useCallback, useEffect } from "react";
 import QRCode from "react-qr-code";
 
@@ -53,7 +53,7 @@ export function Room() {
         <TableBody>
           {data?.map((connection) => (
             <TableRow key={connection.id}>
-              <TableCell>{connection.user.name}</TableCell>
+              <TableCell>{connection.user.name}{connection.id === userConnection?.id && " (Me)"}</TableCell>
               <TableCell>{connection.ready ? "✅" : "❌"}</TableCell>
             </TableRow>
           ))}
