@@ -58,7 +58,7 @@ export function Room() {
           ))}
         </TableBody>
       </Table>
-      <Button className={"mx-auto block" + (userReady ? "bg-green-400" : "")} onClick={handleReady}>
+      <Button className={"mx-auto block " + (userReady ? "bg-green-400" : "")} onClick={handleReady}>
         {userReady ? "Unready" : "Ready Up"}
       </Button>
     </Content>
