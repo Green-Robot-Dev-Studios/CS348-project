@@ -17,13 +17,14 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const SignupLazyImport = createFileRoute('/signup')()
-const ScoresheetLazyImport = createFileRoute('/scoresheet')()
-const PreferencesLazyImport = createFileRoute('/preferences')()
 const LoginLazyImport = createFileRoute('/login')()
 const JoinLazyImport = createFileRoute('/join')()
 const BrowseLazyImport = createFileRoute('/browse')()
 const IndexLazyImport = createFileRoute('/')()
-const RoomRoomidLazyImport = createFileRoute('/room/$roomid')()
+const SwipeRoomIdLazyImport = createFileRoute('/swipe/$roomId')()
+const ScoresheetRoomIdLazyImport = createFileRoute('/scoresheet/$roomId')()
+const RoomRoomIdLazyImport = createFileRoute('/room/$roomId')()
+const PreferencesRoomIdLazyImport = createFileRoute('/preferences/$roomId')()
 const OauthProviderLazyImport = createFileRoute('/oauth/$provider')()
 
 // Create/Update Routes
@@ -32,16 +33,6 @@ const SignupLazyRoute = SignupLazyImport.update({
   path: '/signup',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/signup.lazy').then((d) => d.Route))
-
-const ScoresheetLazyRoute = ScoresheetLazyImport.update({
-  path: '/scoresheet',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/scoresheet.lazy').then((d) => d.Route))
-
-const PreferencesLazyRoute = PreferencesLazyImport.update({
-  path: '/preferences',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/preferences.lazy').then((d) => d.Route))
 
 const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
@@ -63,10 +54,29 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const RoomRoomidLazyRoute = RoomRoomidLazyImport.update({
-  path: '/room/$roomid',
+const SwipeRoomIdLazyRoute = SwipeRoomIdLazyImport.update({
+  path: '/swipe/$roomId',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/room.$roomid.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/swipe.$roomId.lazy').then((d) => d.Route))
+
+const ScoresheetRoomIdLazyRoute = ScoresheetRoomIdLazyImport.update({
+  path: '/scoresheet/$roomId',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/scoresheet.$roomId.lazy').then((d) => d.Route),
+)
+
+const RoomRoomIdLazyRoute = RoomRoomIdLazyImport.update({
+  path: '/room/$roomId',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/room.$roomId.lazy').then((d) => d.Route))
+
+const PreferencesRoomIdLazyRoute = PreferencesRoomIdLazyImport.update({
+  path: '/preferences/$roomId',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/preferences.$roomId.lazy').then((d) => d.Route),
+)
 
 const OauthProviderLazyRoute = OauthProviderLazyImport.update({
   path: '/oauth/$provider',
@@ -107,20 +117,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
     }
-    '/preferences': {
-      id: '/preferences'
-      path: '/preferences'
-      fullPath: '/preferences'
-      preLoaderRoute: typeof PreferencesLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/scoresheet': {
-      id: '/scoresheet'
-      path: '/scoresheet'
-      fullPath: '/scoresheet'
-      preLoaderRoute: typeof ScoresheetLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -135,11 +131,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OauthProviderLazyImport
       parentRoute: typeof rootRoute
     }
-    '/room/$roomid': {
-      id: '/room/$roomid'
-      path: '/room/$roomid'
-      fullPath: '/room/$roomid'
-      preLoaderRoute: typeof RoomRoomidLazyImport
+    '/preferences/$roomId': {
+      id: '/preferences/$roomId'
+      path: '/preferences/$roomId'
+      fullPath: '/preferences/$roomId'
+      preLoaderRoute: typeof PreferencesRoomIdLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/room/$roomId': {
+      id: '/room/$roomId'
+      path: '/room/$roomId'
+      fullPath: '/room/$roomId'
+      preLoaderRoute: typeof RoomRoomIdLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/scoresheet/$roomId': {
+      id: '/scoresheet/$roomId'
+      path: '/scoresheet/$roomId'
+      fullPath: '/scoresheet/$roomId'
+      preLoaderRoute: typeof ScoresheetRoomIdLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/swipe/$roomId': {
+      id: '/swipe/$roomId'
+      path: '/swipe/$roomId'
+      fullPath: '/swipe/$roomId'
+      preLoaderRoute: typeof SwipeRoomIdLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -152,11 +169,12 @@ export const routeTree = rootRoute.addChildren({
   BrowseLazyRoute,
   JoinLazyRoute,
   LoginLazyRoute,
-  PreferencesLazyRoute,
-  ScoresheetLazyRoute,
   SignupLazyRoute,
   OauthProviderLazyRoute,
-  RoomRoomidLazyRoute,
+  PreferencesRoomIdLazyRoute,
+  RoomRoomIdLazyRoute,
+  ScoresheetRoomIdLazyRoute,
+  SwipeRoomIdLazyRoute,
 })
 
 /* prettier-ignore-end */
@@ -171,11 +189,12 @@ export const routeTree = rootRoute.addChildren({
         "/browse",
         "/join",
         "/login",
-        "/preferences",
-        "/scoresheet",
         "/signup",
         "/oauth/$provider",
-        "/room/$roomid"
+        "/preferences/$roomId",
+        "/room/$roomId",
+        "/scoresheet/$roomId",
+        "/swipe/$roomId"
       ]
     },
     "/": {
@@ -190,20 +209,23 @@ export const routeTree = rootRoute.addChildren({
     "/login": {
       "filePath": "login.lazy.tsx"
     },
-    "/preferences": {
-      "filePath": "preferences.lazy.tsx"
-    },
-    "/scoresheet": {
-      "filePath": "scoresheet.lazy.tsx"
-    },
     "/signup": {
       "filePath": "signup.lazy.tsx"
     },
     "/oauth/$provider": {
       "filePath": "oauth.$provider.lazy.tsx"
     },
-    "/room/$roomid": {
-      "filePath": "room.$roomid.lazy.tsx"
+    "/preferences/$roomId": {
+      "filePath": "preferences.$roomId.lazy.tsx"
+    },
+    "/room/$roomId": {
+      "filePath": "room.$roomId.lazy.tsx"
+    },
+    "/scoresheet/$roomId": {
+      "filePath": "scoresheet.$roomId.lazy.tsx"
+    },
+    "/swipe/$roomId": {
+      "filePath": "swipe.$roomId.lazy.tsx"
     }
   }
 }

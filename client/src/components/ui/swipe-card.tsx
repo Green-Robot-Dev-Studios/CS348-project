@@ -8,11 +8,11 @@ import { motion, PanInfo, useMotionValue, useTransform } from 'framer-motion';
 type CardProps = {
     data: CardData;
     active: boolean;
-    removeCard: (id: number, action: 'right' | 'left') => void;
+    removeCard: (id: string, action: 'right' | 'left') => void;
 };
 
 type CardData = {
-  id: number;
+  id: string;
   displayName: string;
   photoLink: string;
   formattedAddress: string;
@@ -28,7 +28,7 @@ const SwipeCard = ({ data, active, removeCard }: CardProps) => {
     const opacity = useTransform(x, [-200, -125, 0, 125, 200], [0, 1, 1, 1, 0]);
   
     const dragEnd = (
-      e: MouseEvent | TouchEvent | PointerEvent,
+      _: MouseEvent | TouchEvent | PointerEvent,
       info: PanInfo
     ) => {
       if (info.offset.x > 100) {
@@ -64,7 +64,7 @@ const SwipeCard = ({ data, active, removeCard }: CardProps) => {
                 <CardDescription>{data.editorialSummary}</CardDescription>
             </CardHeader>
             <CardContent className="flex justify-center">
-                <img loading="lazy" src={data.photoLink} className="w-96 h-auto"></img>
+                <img loading="lazy" src={data.photoLink} className="w-96 h-auto select-none pointer-events-none"></img>
             </CardContent>
             <CardFooter className="flex flex-col">
                 <p>{data.formattedAddress}</p>

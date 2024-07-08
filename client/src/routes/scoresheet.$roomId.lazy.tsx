@@ -1,8 +1,8 @@
-import AppMenu from "@/components/app-menu";
+import { Content } from "@/components/content";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
-export const Route = createLazyFileRoute("/scoresheet")({
+export const Route = createLazyFileRoute("/scoresheet/$roomId")({
   component: ScoreSheet,
 });
 
@@ -27,17 +27,17 @@ function ScoreCard(props: ScoreCardProps) {
 }
 
 export function ScoreSheet() {
-  // const { provider } = Route.useParams();
+  const { roomId } = Route.useParams();
+  console.log(roomId) // TODO: use this to fetch the actual data...
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <AppMenu />
+    <Content>
       <div className="m-5 grid grid-cols-2">
         <ScoreCard title="Quick Draw" value={testObj.quickDraw} />
         <ScoreCard title="Least Decisive" value="test" />
         <ScoreCard title="Most Picky" value="test" />
         <ScoreCard title="Most Easygoing" value="test" />
       </div>
-    </div>
+    </Content>
   );
 }

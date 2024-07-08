@@ -43,7 +43,7 @@ export function Login() {
     if (feathers.authentication.authenticated) {
       router.history.back();
     }
-  }, []);
+  }, [feathers.authentication.authenticated, router.history]);
 
   return (
     <Content>

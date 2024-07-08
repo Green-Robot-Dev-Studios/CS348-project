@@ -20,7 +20,7 @@ export function Dashboard() {
 
   const [latitude, setLatitude] = useState<number | string>(43.4723);
   const [longitude, setLongitude] = useState<number | string>(-80.5449);
-  const [maxDistance, setMaxDistance] = useState<number | string>(5);
+  const [maxDistance, setMaxDistance] = useState<number | string>(5000);
   const [searchNumber, setSearchNumber] = useState<number | string>(6);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -51,7 +51,6 @@ export function Dashboard() {
     <Content>
       <h1 className="text-center font-display text-8xl font-semibold">Waterfood</h1>
       <div className="px-4 pt-6">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Let's get started.</h1>
         <form className="grid gap-4 p-4" onSubmit={handleSubmit}>
           <Card className="mt-6 sm:col-span-2" x-chunk="dashboard-05-chunk-0">
             <CardHeader className="pb-3">

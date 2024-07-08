@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 
 type SwipeButtonProps = {
     exit: (value: SetStateAction<number>) => void;
-    removeCard: (id: number, action: 'right' | 'left') => void;
-    id: number;
+    removeCard: (id: string, action: 'right' | 'left') => void;
+    id: string;
 };
 
 export default function SwipeButton({
