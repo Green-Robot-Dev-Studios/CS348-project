@@ -17,6 +17,7 @@ import {
 import type { Application } from '../../declarations'
 import { ConnectionsService, getOptions } from './connections.class'
 import { connectionsPath, connectionsMethods } from './connections.shared'
+import { ensureOneConnection } from '../../hooks/ensure-one-connection'
 
 export * from './connections.class'
 export * from './connections.schema'
@@ -47,6 +48,7 @@ export const connections = (app: Application) => {
       find: [],
       get: [],
       create: [
+        ensureOneConnection,
         schemaHooks.validateData(connectionsDataValidator),
         schemaHooks.resolveData(connectionsDataResolver)
       ],
