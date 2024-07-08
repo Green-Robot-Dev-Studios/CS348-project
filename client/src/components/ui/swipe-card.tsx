@@ -59,19 +59,19 @@ const SwipeCard = ({ data, active, removeCard }: CardProps) => {
             className="top-0 absolute"
           >
             <Card>
-            <CardHeader>
-                <CardTitle>{data.displayName}</CardTitle>
-                <CardDescription>{data.editorialSummary}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-center">
-                <img loading="lazy" src={data.photoLink} className="w-96 h-auto select-none pointer-events-none"></img>
-            </CardContent>
-            <CardFooter className="flex flex-col">
-                <p>{data.formattedAddress}</p>
-                <Button className="mt-2">
-                    <a href={data.websiteURL} target="_blank" rel="noopener noreferrer">Visit Website</a>
-                </Button>
-            </CardFooter>
+              <CardHeader>
+                  <CardTitle>{data.displayName}</CardTitle>
+                  <CardDescription>{data.editorialSummary}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex justify-center">
+                  <img loading="lazy" src={data.photoLink} className="w-96 h-auto select-none pointer-events-none"></img>
+              </CardContent>
+              <CardFooter className="flex flex-col">
+                  <p>{data.formattedAddress}</p>
+                  <Button className="mt-2">
+                      <a href={data.websiteURL} target="_blank" rel="noopener noreferrer">Visit Website</a>
+                  </Button>
+              </CardFooter>
             </Card>
             
             
