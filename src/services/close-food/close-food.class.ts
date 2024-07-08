@@ -10,7 +10,7 @@ export type { CloseFood, CloseFoodData, CloseFoodPatch, CloseFoodQuery }
 
 export interface CloseFoodServiceOptions {
   app: Application,
-  db: any
+  db: Knex
 }
 
 export interface CloseFoodParams extends Params<CloseFoodQuery> { }
@@ -25,8 +25,7 @@ export class CloseFoodService<ServiceParams extends CloseFoodParams = CloseFoodP
     if (!roomId) throw new Error('roomId is required')
 
     const searchNumber = (await this.options.app.service('rooms').get(roomId)).searchNumber;
-    const connection = knex(this.options.db)
-    const result = await connection.raw(`
+    const result = await this.options.db.raw(`
       SELECT f.*, ST_Distance_Sphere(point(f.locationLat, f.locationLng), point(r.latitude, r.longitude)) AS distance
       FROM rooms r JOIN food f
       WHERE r.id = ?
@@ -38,5 +37,5 @@ export class CloseFoodService<ServiceParams extends CloseFoodParams = CloseFoodP
 }
 
 export const getOptions = (app: Application) => {
-  return { app, db: app.get('mysql') }
+  return { app, db: app.get('mysqlClient') }
 }

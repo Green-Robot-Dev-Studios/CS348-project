@@ -10,7 +10,7 @@ export type { Scoresheet, ScoresheetData, ScoresheetPatch, ScoresheetQuery }
 
 export interface ScoresheetServiceOptions {
   app: Application
-  db: any
+  db: Knex
 }
 
 export interface ScoresheetParams extends Params<ScoresheetQuery> {}
@@ -22,10 +22,8 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
   constructor(public options: ScoresheetServiceOptions) {}
 
   async get(roomId: string, _params?: ServiceParams): Promise<Scoresheet> {
-    const connection = knex(this.options.db)
-
     const [quickDrawResult, leastDecisiveResult, mostPickyResult, mostEasygoingResult] = await Promise.all([
-      connection.raw(
+      this.options.db.raw(
         `
         WITH userVoteTime AS (
           SELECT v.userId, TIMEDIFF(MAX(v.timestamp), MIN(v.timestamp)) AS voteTime
@@ -41,7 +39,7 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
         [roomId]
       ),
 
-      connection.raw(
+      this.options.db.raw(
         `
         WITH userVoteTime AS (
           SELECT v.userId, TIMEDIFF(MAX(v.timestamp), MIN(v.timestamp)) AS voteTime
@@ -57,7 +55,7 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
         [roomId]
       ),
 
-      connection.raw(
+      this.options.db.raw(
         `
         WITH userVoteCount AS (
           SELECT v.userId, SUM(v.approved) AS voteCount
@@ -73,7 +71,7 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
         [roomId]
       ),
 
-      connection.raw(
+      this.options.db.raw(
         `
         WITH userVoteCount AS (
           SELECT v.userId, SUM(v.approved) AS voteCount
@@ -116,5 +114,5 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
 }
 
 export const getOptions = (app: Application) => {
-  return { app, db: app.get('mysql') }
+  return { app, db: app.get('mysqlClient') }
 }
