@@ -29,6 +29,7 @@ export function Room() {
   }, [userConnection]);
 
   useEffect(() => {
+    console.log({roomId, user})
     if (!roomId || !user) return;
     create({ userId: user.id, roomId });
   }, [roomId, user]);
