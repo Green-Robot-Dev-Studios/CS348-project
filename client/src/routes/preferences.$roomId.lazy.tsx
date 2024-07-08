@@ -18,7 +18,7 @@ export function Preferences() {
 
   const handleChange = (preference: string) => {
     selectedPrefs.set(preference, !selectedPrefs.get(preference));
-    console.log(selectedPrefs);
+    // console.log(selectedPrefs);
   };
 
   const handleStart = () => {

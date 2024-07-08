@@ -8,7 +8,7 @@ import { useFind, useMutation } from "figbird";
 import { useCallback, useEffect } from "react";
 import QRCode from "react-qr-code";
 
-export const Route = createLazyFileRoute("/room/$roomId")({
+export const Route = createLazyFileRoute("/room/$roomid")({
   component: Room,
 });
 
