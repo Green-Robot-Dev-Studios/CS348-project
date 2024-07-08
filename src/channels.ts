@@ -1,9 +1,10 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/channels.html
 import type { RealTimeConnection, Params } from '@feathersjs/feathers'
-import type { AuthenticationResult } from '@feathersjs/authentication'
+import type { AuthenticationResult, ConnectionEvent } from '@feathersjs/authentication'
 import '@feathersjs/transport-commons'
 import type { Application, HookContext } from './declarations'
 import { logger } from './logger'
+import { Connections } from './client'
 
 export const channels = (app: Application) => {
   logger.warn(
@@ -24,6 +25,16 @@ export const channels = (app: Application) => {
 
       // Add it to the authenticated user channel
       app.channel('authenticated').join(connection)
+    }
+  })
+
+  app.on('disconnect', async (connection: RealTimeConnection) => {
+    if (connection.user?.id) {
+      const connections = (await app.service('connections').find({
+        query: { userId: connection.user.id },
+        paginate: false
+      })) as unknown as Connections[] // Type inference fails for this since paginate: false
+      await Promise.all(connections.map((con) => app.service('connections').remove(con.id)))
     }
   })
 
