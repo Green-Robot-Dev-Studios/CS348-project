@@ -18,6 +18,7 @@ export function ResultsPage() {
   const { data: scoresheet, isFetching } = useGet<Scoresheet>("scoresheet", roomId);
 
   if (data && !data.picked) return <Navigate to={`/swipe/${roomId}`} />;
+  if (!pickedFood) return <div>Loading...</div>;
 
   return (
     <Content>
@@ -52,22 +53,22 @@ export function ResultsPage() {
               <>
                 <ScoreCard
                   title="Quick Draw"
-                  user={scoresheet.quickDraw.user.name}
+                  users={scoresheet.quickDraw.users}
                   value={formatTime(scoresheet.quickDraw.time.toString())}
                 />
                 <ScoreCard
                   title="Least Decisive"
-                  user={scoresheet.leastDecisive.user.name}
+                  users={scoresheet.leastDecisive.users}
                   value={formatTime(scoresheet.leastDecisive.time.toString())}
                 />
                 <ScoreCard
                   title="Most Easygoing"
-                  user={scoresheet.mostEasygoing.user.name}
+                  users={scoresheet.mostEasygoing.users}
                   value={scoresheet.mostEasygoing.voteCount.toString()}
                 />
                 <ScoreCard
                   title="Most Picky"
-                  user={scoresheet.mostPicky.user.name}
+                  users={scoresheet.mostPicky.users}
                   value={scoresheet.mostPicky.voteCount.toString()}
                 />
               </>

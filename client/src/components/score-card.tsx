@@ -1,21 +1,29 @@
+import { User } from "waterfood";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
 
 type ScoreCardProps = {
   title: string;
-  user: string;
+  users: User[];
   value: string;
 };
 
-function ScoreCard(props: ScoreCardProps) {
+function ScoreCard({ title, users, value }: ScoreCardProps) {
   return (
     <Card className="m-1">
       <CardHeader>
-        <CardTitle>{props.title}</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription>User: {props.user}</CardDescription>
-        <CardDescription>{props.value}</CardDescription>
+        <CardDescription>
+          Users:
+          <ul>
+            {users.map((user) => (
+              <li key={user.id}>{user.name}</li>
+            ))}
+          </ul>
+        </CardDescription>
+        <CardDescription>{value}</CardDescription>
       </CardContent>
     </Card>
   );
