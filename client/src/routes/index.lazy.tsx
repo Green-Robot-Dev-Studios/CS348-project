@@ -32,7 +32,6 @@ export function Dashboard() {
         maxDistance: Number(maxDistance),
         searchNumber: Number(searchNumber),
       });
-      console.log(response);
 
       await navigate({ to: `/room/${response.id}` });
     } catch (error) {
@@ -42,9 +41,10 @@ export function Dashboard() {
 
   const handleGetLocation = async () => {
     navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position)
       setLatitude(position.coords.latitude);
       setLongitude(position.coords.longitude);
-    });
+    }, console.error);
   };
 
   return (

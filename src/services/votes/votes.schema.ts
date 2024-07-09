@@ -14,7 +14,7 @@ export const votesSchema = Type.Object(
     id: Type.String({ format: 'uuid' }),
     userId: Type.String({ format: 'uuid' }),
     roomId: Type.String({ format: 'uuid' }),
-    foodId: Type.String({ format: 'uuid' }),
+    foodId: Type.String(),
     timestamp: Type.String({ format: 'date-time' }),
     approved: Type.Boolean()
   },
@@ -34,6 +34,7 @@ export type VotesData = Static<typeof votesDataSchema>
 export const votesDataValidator = getValidator(votesDataSchema, dataValidator)
 export const votesDataResolver = resolve<Votes, HookContext<VotesService>>({
   id: async () => randomUUID(),
+  userId: async (value, user, context) => context?.params?.user?.id ?? value
 })
 
 // Schema for updating existing entries

@@ -14,9 +14,8 @@ export const Route = createLazyFileRoute("/room/$roomid")({
 });
 
 export function Room() {
-  const params = Route.useParams();
-  //@ts-ignore
-  const roomId = params.roomid;
+  const { roomid: roomId } = Route.useParams();
+
   const user = getUserOrRedirectLogin();
 
   const { data } = useFind("connections", { query: { roomId } });
@@ -32,10 +31,10 @@ export function Room() {
   }, [userConnection]);
 
   useEffect(() => {
-    console.log({roomId, user, params})
+    console.log({ roomId, user });
     if (!roomId || !user) return;
     create({ userId: user.id, roomId });
-  }, [roomId, user, params]);
+  }, [roomId, user]);
 
   return (
     <Content>
@@ -56,7 +55,10 @@ export function Room() {
         <TableBody>
           {data?.map((connection) => (
             <TableRow key={connection.id}>
-              <TableCell>{connection.user.name}{connection.id === userConnection?.id && " (Me)"}</TableCell>
+              <TableCell>
+                {connection.user.name}
+                {connection.id === userConnection?.id && " (Me)"}
+              </TableCell>
               <TableCell>{connection.ready ? "✅" : "❌"}</TableCell>
             </TableRow>
           ))}

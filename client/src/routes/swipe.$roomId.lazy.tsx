@@ -1,8 +1,8 @@
 import { Content } from "@/components/content";
 import SwipeScreen, { CardData } from "@/components/swipe-screen";
-import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
-import { useFeathers, useFind } from "figbird";
-import { useEffect, useState } from "react";
+import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
+import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
+import { useFind, useGet, useMutation } from "figbird";
 
 export const Route = createLazyFileRoute("/swipe/$roomId")({
   component: Swipe,
@@ -10,41 +10,28 @@ export const Route = createLazyFileRoute("/swipe/$roomId")({
 
 export function Swipe() {
   const { roomId } = Route.useParams();
-  const navigate = useNavigate()
+  const user = getUserOrRedirectLogin();
 
-  const feathers = useFeathers();
-  const [data, setData] = useState({});
-  useEffect(() => {
-    (async () => {
-      setData(await feathers.service("close-food").find({ query: { roomId } }));
-    })();
-  });
-
-  const roomStatus = useFind("rooms", { query: { id: roomId } });
-  if (roomStatus.data && roomStatus.data[0].picked) {
-    navigate({ to: `/scoresheet/${roomId}` });
-  }
-  console.log("ROOM STATUS", roomStatus.data && roomStatus.data[0].picked)
+  const { data: room } = useGet("rooms", roomId);
+  const { data: closeFoods, error } = useFind("close-food", { query: { roomId } });
+  const { create: vote } = useMutation("votes");
 
   const handleSwipe = async (foodId: string, action: "left" | "right") => {
-    // TODO: mutate votes to add the vote
-    console.log(foodId, action);
-    return null;
+    vote({ foodId, roomId, approved: action === "right", userId: user?.id});
   };
 
-  const parsedData = Array.isArray(data)
-    ? data.map(
-        (item): CardData => ({
-          displayName: item.displayName,
-          editorialSummary: item.editorialSummary,
-          formattedAddress: item.formattedAddress,
-          id: item.id,
-          photoLink: item.photoLink,
-          websiteURL: item.websiteURL,
-        }),
-      )
-    : [];
-  console.log(parsedData);
+  const parsedData = (closeFoods ?? []).map(
+    (item): CardData => ({
+      displayName: item.displayName,
+      editorialSummary: item.editorialSummary,
+      formattedAddress: item.formattedAddress,
+      id: item.id,
+      photoLink: item.photoLink,
+      websiteURL: item.websiteURL,
+    }),
+  );
+
+  if (room?.picked) return <Navigate to={`/scoresheet/${roomId}`} />;
 
   return (
     <Content>
