@@ -14,14 +14,10 @@ export const Route = createLazyFileRoute("/results/$roomId")({
 export function ResultsPage() {
   const { roomId } = Route.useParams();
   const { data } = useGet("rooms", roomId);
+  const pickedFood = data?.pickedFood;
   const { data: scoresheet, isFetching } = useGet<Scoresheet>("scoresheet", roomId);
 
   if (data && !data.picked) return <Navigate to={`/swipe/${roomId}`} />;
-  if (!data?.pickedFood) return null; // TODO: Add loading state
-
-  const pickedFood = data.pickedFood;
-
-  if (!scoresheet) return <div>Loading...</div>
 
   return (
     <Content>
@@ -52,7 +48,7 @@ export function ResultsPage() {
             <CardTitle>Scorecard</CardTitle>
           </CardHeader>
           <CardContent>
-            {!isFetching ? (
+            {scoresheet && !isFetching ? (
               <>
                 <ScoreCard
                   title="Quick Draw"
