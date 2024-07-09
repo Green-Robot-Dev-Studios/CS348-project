@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
+import { cn } from "@/lib/utils";
 import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
 import { useFind, useMutation } from "figbird";
 import { useCallback, useEffect } from "react";
@@ -61,7 +62,7 @@ export function Room() {
           ))}
         </TableBody>
       </Table>
-      <Button className={"mx-auto block " + (userReady ? "bg-green-400" : "")} onClick={handleReady}>
+      <Button className={cn("mx-auto block", userReady ? "bg-green-400" : null)} onClick={handleReady}>
         {userReady ? "Unready" : "Ready Up"}
       </Button>
     </Content>
