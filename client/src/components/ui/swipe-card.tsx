@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import SwipeButton from "@/components/ui/swipe-buttons"
 import { Button } from "@/components/ui/button";
+import { Check, X, MapPin } from "lucide-react";
 
 import { useState } from 'react';
 import { motion, PanInfo, useMotionValue, useTransform } from 'framer-motion';
@@ -39,6 +39,15 @@ const SwipeCard = ({ data, active, removeCard }: CardProps) => {
         removeCard(data.id, 'left');
       }
     };
+
+    const buttonSwipe = (action: 'left' | 'right') => {
+      if (action === 'left') {
+        setExitX(-200);
+      } else if (action === 'right') {
+        setExitX(200);
+      }
+      removeCard(data.id, action);
+    };
   
     return (
       <>
@@ -58,30 +67,42 @@ const SwipeCard = ({ data, active, removeCard }: CardProps) => {
             exit={{ x: exitX }}
             className="top-0 absolute"
           >
-            <Card>
+            <Card className="m-8">
               <CardHeader>
                   <CardTitle>{data.displayName}</CardTitle>
                   <CardDescription>{data.editorialSummary}</CardDescription>
               </CardHeader>
               <CardContent className="flex justify-center">
-                  <img loading="lazy" src={data.photoLink} className="w-96 h-auto select-none pointer-events-none"></img>
+                  <img loading="lazy" src={data.photoLink} className="select-none pointer-events-none"></img>
               </CardContent>
               <CardFooter className="flex flex-col">
                   <p>{data.formattedAddress}</p>
-                  <Button className="mt-2">
-                      <a href={data.websiteURL} target="_blank" rel="noopener noreferrer">Visit Website</a>
-                  </Button>
               </CardFooter>
+              
+              <div className="flex flex-row justify-between p-6 pt-0">
+                <Button 
+                    onClick={() => buttonSwipe('left')}
+                    className="px-3 py-2 w-11 h-11 rounded-full bg-red-400"
+                >
+                  <X />
+                </Button>
+                <Button className="w-11 h-11 rounded-full">
+                    <a href={data.websiteURL} target="_blank" rel="noopener noreferrer">
+                      <MapPin />
+                    </a>
+                </Button>
+                <Button 
+                    onClick={() => buttonSwipe('right')}
+                    className="px-3 py-2 w-11 h-11 rounded-full bg-green-300"
+                >
+                  <Check />
+                </Button>
+              </div>
             </Card>
             
             
           </motion.div>
         ) : null}
-        <div className="relative top-20 ">
-            <div className="flex justify-center">
-                <SwipeButton exit={setExitX} removeCard={removeCard} id={data.id} />
-            </div>
-        </div>
       </>
     );
   };
