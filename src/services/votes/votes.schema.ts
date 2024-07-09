@@ -34,7 +34,8 @@ export type VotesData = Static<typeof votesDataSchema>
 export const votesDataValidator = getValidator(votesDataSchema, dataValidator)
 export const votesDataResolver = resolve<Votes, HookContext<VotesService>>({
   id: async () => randomUUID(),
-  userId: async (value, user, context) => context?.params?.user?.id ?? value
+  userId: async (value, user, context) => context?.params?.user?.id ?? value,
+  timestamp: async () => new Date().toISOString()
 })
 
 // Schema for updating existing entries
