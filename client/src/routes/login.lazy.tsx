@@ -47,8 +47,8 @@ export function Login() {
   }, [feathers.authentication.authenticated, router.history]);
 
   return (
-    <Content>
-      <Card className="mx-auto max-w-sm">
+    <Content className="p-6">
+      <Card className="max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>Enter your email below to login to your account</CardDescription>
