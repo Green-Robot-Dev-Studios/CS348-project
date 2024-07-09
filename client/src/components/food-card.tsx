@@ -14,7 +14,7 @@ const FoodCard: React.FC<IFoodCardProps> = ({ food }) => {
         <CardDescription>{food.editorialSummary}</CardDescription>
       </CardHeader>
       <CardContent>
-        <img loading="lazy" src={getPhotoLink(food.photoLink)}></img>
+        <img loading="lazy" src={getPhotoLink(food.id)}></img>
       </CardContent>
       <CardFooter>
         <p>{food.formattedAddress}</p>

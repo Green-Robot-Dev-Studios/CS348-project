@@ -34,7 +34,7 @@ export function ResultsPage() {
             <CardDescription>{pickedFood.editorialSummary}</CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <img loading="lazy" src={getPhotoLink(pickedFood.photoLink)} className="pointer-events-none h-auto w-96 select-none"></img>
+            <img loading="lazy" src={getPhotoLink(pickedFood.id)} className="pointer-events-none h-auto w-96 select-none"></img>
           </CardContent>
           <CardFooter className="flex flex-col">
             <p>{pickedFood.formattedAddress}</p>
