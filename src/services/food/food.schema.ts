@@ -37,6 +37,7 @@ export const foodSchema = Type.Object(
     types: Type.Any(),
     userRatingCount: Type.Integer(),
     websiteURI: Type.Optional(Type.String({ maxLength: 1024 })),
+    googleMapsUrl: Type.String(),
     editorialSummary: Type.Optional(Type.String({ maxLength: 1024 })),
     'parkingOptionsHasFreeParkingLot': Type.Boolean(),
     'parkingOptionsHasPaidParkingLot': Type.Boolean(),
