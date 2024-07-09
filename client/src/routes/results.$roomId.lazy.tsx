@@ -1,19 +1,24 @@
 import { Content } from "@/components/content";
+import ScoreCard, { SkeletonScoreCard } from "@/components/score-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { createLazyFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
+import formatTime from "@/utils/formatTime";
+import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
 import { useGet } from "figbird";
+import { Scoresheet } from "../../../lib/client";
 
 export const Route = createLazyFileRoute("/results/$roomId")({
   component: ResultsPage,
 });
 
 export function ResultsPage() {
-  const navigate = useNavigate();
   const { roomId } = Route.useParams();
   const { data } = useGet("rooms", roomId);
+  const { data: scoresheet, isFetching } = useGet<Scoresheet>("scoresheet", roomId);
 
   if (data && !data.picked) return <Navigate to={`/swipe/${roomId}`} />;
+
+  if (!scoresheet) return <div>Loading...</div>
 
   return (
     <Content>
@@ -39,15 +44,41 @@ export function ResultsPage() {
             </Button>
           </CardFooter>
         </Card>
-        <div className="mt-8 flex justify-center">
-          <Button
-            onClick={() => {
-              navigate({ to: `/scoresheet/${roomId}` });
-            }}
-          >
-            Check out the group's score board
-          </Button>
-        </div>
+        <Card className="mx-auto max-w-md">
+          <CardHeader>
+            <CardTitle>Scorecard</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {!isFetching ? (
+              <>
+                <ScoreCard
+                  title="Quick Draw"
+                  user={scoresheet.quickDraw.user.name}
+                  value={formatTime(scoresheet.quickDraw.time.toString())}
+                />
+                <ScoreCard
+                  title="Least Decisive"
+                  user={scoresheet.leastDecisive.user.name}
+                  value={formatTime(scoresheet.leastDecisive.time.toString())}
+                />
+                <ScoreCard
+                  title="Most Easygoing"
+                  user={scoresheet.mostEasygoing.user.name}
+                  value={scoresheet.mostEasygoing.voteCount.toString()}
+                />
+                <ScoreCard
+                  title="Most Picky"
+                  user={scoresheet.mostPicky.user.name}
+                  value={scoresheet.mostPicky.voteCount.toString()}
+                />
+              </>
+            ) : (
+              Array(4)
+                .fill(0)
+                .map((_, i) => <SkeletonScoreCard key={i} />)
+            )}
+          </CardContent>
+        </Card>
       </div>
     </Content>
   );

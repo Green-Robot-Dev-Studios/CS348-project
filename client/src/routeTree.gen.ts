@@ -22,7 +22,6 @@ const JoinLazyImport = createFileRoute('/join')()
 const BrowseLazyImport = createFileRoute('/browse')()
 const IndexLazyImport = createFileRoute('/')()
 const SwipeRoomIdLazyImport = createFileRoute('/swipe/$roomId')()
-const ScoresheetRoomIdLazyImport = createFileRoute('/scoresheet/$roomId')()
 const RoomRoomidLazyImport = createFileRoute('/room/$roomid')()
 const ResultsRoomIdLazyImport = createFileRoute('/results/$roomId')()
 const PreferencesRoomIdLazyImport = createFileRoute('/preferences/$roomId')()
@@ -59,13 +58,6 @@ const SwipeRoomIdLazyRoute = SwipeRoomIdLazyImport.update({
   path: '/swipe/$roomId',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/swipe.$roomId.lazy').then((d) => d.Route))
-
-const ScoresheetRoomIdLazyRoute = ScoresheetRoomIdLazyImport.update({
-  path: '/scoresheet/$roomId',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/scoresheet.$roomId.lazy').then((d) => d.Route),
-)
 
 const RoomRoomidLazyRoute = RoomRoomidLazyImport.update({
   path: '/room/$roomid',
@@ -160,13 +152,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoomRoomidLazyImport
       parentRoute: typeof rootRoute
     }
-    '/scoresheet/$roomId': {
-      id: '/scoresheet/$roomId'
-      path: '/scoresheet/$roomId'
-      fullPath: '/scoresheet/$roomId'
-      preLoaderRoute: typeof ScoresheetRoomIdLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/swipe/$roomId': {
       id: '/swipe/$roomId'
       path: '/swipe/$roomId'
@@ -189,7 +174,6 @@ export const routeTree = rootRoute.addChildren({
   PreferencesRoomIdLazyRoute,
   ResultsRoomIdLazyRoute,
   RoomRoomidLazyRoute,
-  ScoresheetRoomIdLazyRoute,
   SwipeRoomIdLazyRoute,
 })
 
@@ -210,7 +194,6 @@ export const routeTree = rootRoute.addChildren({
         "/preferences/$roomId",
         "/results/$roomId",
         "/room/$roomid",
-        "/scoresheet/$roomId",
         "/swipe/$roomId"
       ]
     },
@@ -240,9 +223,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/room/$roomid": {
       "filePath": "room.$roomid.lazy.tsx"
-    },
-    "/scoresheet/$roomId": {
-      "filePath": "scoresheet.$roomId.lazy.tsx"
     },
     "/swipe/$roomId": {
       "filePath": "swipe.$roomId.lazy.tsx"
