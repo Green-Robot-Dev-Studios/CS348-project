@@ -1,10 +1,12 @@
 import { Content } from "@/components/content";
+import DisplayUser from "@/components/display-user";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
+import { cn } from "@/lib/utils";
 import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
 import { useFind, useMutation } from "figbird";
+import { CheckIcon, XIcon } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import QRCode from "react-qr-code";
 
@@ -13,9 +15,8 @@ export const Route = createLazyFileRoute("/room/$roomid")({
 });
 
 export function Room() {
-  const params = Route.useParams();
-  //@ts-ignore
-  const roomId = params.roomid;
+  const { roomid: roomId } = Route.useParams();
+
   const user = getUserOrRedirectLogin();
 
   const { data } = useFind("connections", { query: { roomId } });
@@ -31,21 +32,22 @@ export function Room() {
   }, [userConnection]);
 
   useEffect(() => {
-    console.log({roomId, user, params})
+    console.log({ roomId, user });
     if (!roomId || !user) return;
     create({ userId: user.id, roomId });
-  }, [roomId, user, params]);
+  }, [roomId, user]);
+
+  if (allReady) return <Navigate to={`/preferences/${roomId}`} />;
 
   return (
-    <Content>
-      {allReady ? <Navigate to={`/preferences/${roomId}`} /> : null}
-      <Card className="mx-auto flex max-w-sm flex-col items-center">
-        <CardHeader className="text-xl font-semibold">QR code to share</CardHeader>
-        <CardContent>
-          <QRCode value={`${window.location.origin}/room/${roomId}`} />
-        </CardContent>
-      </Card>
-      <Table className="mx-auto max-w-sm">
+    <Content className="align-middle p-6 gap-6">
+      <div className="flex justify-center">
+      <QRCode value={`${window.location.origin}/room/${roomId}`} />
+      </div>
+      <Button className={cn("mx-auto block", userReady ? "bg-green-400" : null)} onClick={handleReady}>
+        {userReady ? "Unready" : "Ready Up"}
+      </Button>
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Username</TableHead>
@@ -55,15 +57,16 @@ export function Room() {
         <TableBody>
           {data?.map((connection) => (
             <TableRow key={connection.id}>
-              <TableCell>{connection.user.name}{connection.id === userConnection?.id && " (Me)"}</TableCell>
-              <TableCell>{connection.ready ? "✅" : "❌"}</TableCell>
+              <TableCell>
+                <DisplayUser user={connection.user} />
+              </TableCell>
+              <TableCell>
+                {connection.ready ? <CheckIcon className="text-green-500" /> : <XIcon className="text-red-500" />}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <Button className={"mx-auto block " + (userReady ? "bg-green-400" : "")} onClick={handleReady}>
-        {userReady ? "Unready" : "Ready Up"}
-      </Button>
     </Content>
   );
 }

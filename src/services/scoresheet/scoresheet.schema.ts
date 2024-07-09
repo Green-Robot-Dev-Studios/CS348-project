@@ -14,19 +14,19 @@ export const scoresheetSchema = Type.Object(
     id: Type.String({ format: 'uuid' }),
     roomId: Type.String({ format: 'uuid' }),
     quickDraw: Type.Object({
-      user: Type.Ref(userSchema),
+      users: Type.Array(Type.Ref(userSchema)),
       time: Type.Number(),
     }),
     leastDecisive: Type.Object({
-      user: Type.Ref(userSchema),
+      users: Type.Array(Type.Ref(userSchema)),
       time: Type.Number(),
     }),
     mostPicky: Type.Object({
-      user: Type.Ref(userSchema),
+      users: Type.Array(Type.Ref(userSchema)),
       voteCount: Type.Number(),
     }),
     mostEasygoing: Type.Object({
-      user: Type.Ref(userSchema),
+      users: Type.Array(Type.Ref(userSchema)),
       voteCount: Type.Number(),
     })
   },

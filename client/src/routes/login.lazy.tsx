@@ -6,6 +6,7 @@ import Spinner from "@/components/ui/spinner";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { createLazyFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useFeathers } from "figbird";
+import { GithubIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Route = createLazyFileRoute("/login")({
@@ -46,8 +47,8 @@ export function Login() {
   }, [feathers.authentication.authenticated, router.history]);
 
   return (
-    <Content>
-      <Card className="mx-auto max-w-sm">
+    <Content className="p-6">
+      <Card className="max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>Enter your email below to login to your account</CardDescription>
@@ -84,9 +85,12 @@ export function Login() {
             <Button type="submit" className="w-full" disabled={status === "loading"}>
               Login {status === "loading" && <Spinner />}
             </Button>
-            {/* <Button variant="outline" className="w-full" disabled={status === "loading"}>
-                Login with Github
-              </Button> */}
+            <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
+              <a href="/oauth/github">
+                <GithubIcon className="mr-4 size-4" />
+                <span className="mt-0 text-sm font-medium leading-none">Continue with GitHub</span>
+              </a>
+            </Button>
           </form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}

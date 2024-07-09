@@ -17,6 +17,8 @@ import {
 import type { Application } from '../../declarations'
 import { VotesService, getOptions } from './votes.class'
 import { votesPath, votesMethods } from './votes.shared'
+import { ensureConnectionForVote } from '../../hooks/ensure-connection-for-vote'
+import { pickWinnerFood } from '../../hooks/pick-winner-food'
 
 export * from './votes.class'
 export * from './votes.schema'
@@ -43,12 +45,13 @@ export const votes = (app: Application) => {
       all: [schemaHooks.validateQuery(votesQueryValidator), schemaHooks.resolveQuery(votesQueryResolver)],
       find: [],
       get: [],
-      create: [schemaHooks.validateData(votesDataValidator), schemaHooks.resolveData(votesDataResolver)],
+      create: [ensureConnectionForVote, schemaHooks.validateData(votesDataValidator), schemaHooks.resolveData(votesDataResolver)],
       patch: [schemaHooks.validateData(votesPatchValidator), schemaHooks.resolveData(votesPatchResolver)],
       remove: []
     },
     after: {
-      all: []
+      all: [],
+      create: [pickWinnerFood]
     },
     error: {
       all: []
