@@ -32,8 +32,8 @@
     },
     "oauth": {
       "github": {
-        "key": "Ov23ctZS8FiZXzOkrgqy",
-        "secret": "5c8354d24e064b7f0168c843150b9245dda313ed",
+        "key": "Ov23livXvIruG0dQiQmO",
+        "secret": "db2777b144156c13fe7197da55f58dbafd48de2d",
         "scope": ["read:user"]
       }
     },

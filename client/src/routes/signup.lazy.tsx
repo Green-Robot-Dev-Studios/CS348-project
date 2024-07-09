@@ -1,11 +1,12 @@
 import { Content } from "@/components/content";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Link, createLazyFileRoute, useRouter } from "@tanstack/react-router";
 import { useFeathers, useMutation } from "figbird";
+import { GithubIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Route = createLazyFileRoute("/signup")({
@@ -52,16 +53,15 @@ export function Login() {
   };
 
   return (
-    <Content>
-      <Card className="mx-auto max-w-sm">
+    <Content className="p-6">
+      <Card className="max-w-sm">
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
-          <CardDescription>Enter your information to create an account</CardDescription>
         </CardHeader>
         <CardContent>
           <form className="grid gap-4" onSubmit={handleSubmit}>
             <div className="grid gap-2">
-              <Label>How should we call you</Label>
+              <Label>Name</Label>
               <Input
                 id="name"
                 placeholder={nameExample}
@@ -89,9 +89,12 @@ export function Login() {
             <Button type="submit" className="w-full" disabled={status === "loading"}>
               Create an account {status === "loading" && <Spinner />}
             </Button>
-            {/* <Button variant="outline" className="w-full" disabled={status === "loading"}>
-                Sign up with GitHub
-              </Button> */}
+            <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
+              <a href="/oauth/github">
+                <GithubIcon className="mr-4 size-4" />
+                <span className="mt-0 text-sm font-medium leading-none">Continue with GitHub</span>
+              </a>
+            </Button>
           </form>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}

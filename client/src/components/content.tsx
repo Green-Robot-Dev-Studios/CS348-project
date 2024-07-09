@@ -1,14 +1,13 @@
 import AppMenu from "@/components/app-menu";
+import { cn } from "@/lib/utils";
 
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
-export function Content({ children }: { children: ReactNode }) {
+export function Content({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+    <div className={cn("flex min-h-screen w-full flex-row bg-muted/40")}>
       <AppMenu />
-      <div className="sm:ml-14">
-        {children}
-      </div>
+      <div className={cn("flex flex-grow flex-col", className)}>{children}</div>
     </div>
   );
 }

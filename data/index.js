@@ -9,6 +9,8 @@ async function initMap() {
         zoom: 10,
         mapId: "DEMO_MAP_ID",
     });
+
+
     nearbySearch();
 }
 
@@ -17,49 +19,67 @@ async function nearbySearch() {
         await google.maps.importLibrary("places");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
-    let center = new google.maps.LatLng(43.4716212, -80.5352349);
-    const request = {
-        fields: [
-            "accessibilityOptions",
-            "location",
-            "displayName",
-            "formattedAddress",
-            "regularOpeningHours",
-            "nationalPhoneNumber",
-            "priceLevel",
-            "rating",
-            "userRatingCount",
-            "websiteURI",
-            "hasDelivery",
-            "hasDineIn",
-            "editorialSummary",
-            "parkingOptions",
-            "paymentOptions",
-            "servesVegetarianFood",
-            "hasTakeout",
-            "types",
-            "photos",
-            "businessStatus",
-        ],
-        locationRestriction: {
-            center: center,
-            radius: 500,
-        },
-        // optional parameters
-        includedPrimaryTypes: ["restaurant"],
-        maxResultCount: 20,
-        rankPreference: SearchNearbyRankPreference.POPULARITY,
-        language: "en-US",
-        region: "us",
-    };
+    let total = [];
+    for (let lat = 43.4516212; lat < 43.4916212; lat += 0.003) {
+        for (let long = -80.5552349; long < -80.5152349; long += 0.003) {
+            let center = new google.maps.LatLng(lat, long);
+            const request = {
+                fields: [
+                    "accessibilityOptions",
+                    "location",
+                    "displayName",
+                    "formattedAddress",
+                    "regularOpeningHours",
+                    "nationalPhoneNumber",
+                    "priceLevel",
+                    "rating",
+                    "userRatingCount",
+                    "websiteURI",
+                    "hasDelivery",
+                    "hasDineIn",
+                    "editorialSummary",
+                    "parkingOptions",
+                    "paymentOptions",
+                    "servesVegetarianFood",
+                    "hasTakeout",
+                    "types",
+                    "photos",
+                    "businessStatus",
+                ],
+                locationRestriction: {
+                    center: center,
+                    radius: 500,
+                },
+                // optional parameters
+                includedPrimaryTypes: ["restaurant"],
+                maxResultCount: 20,
+                rankPreference: SearchNearbyRankPreference.POPULARITY,
+                language: "en-US",
+                region: "us",
+            };
 
-    const { places } = await Place.searchNearby(request);
+            const { places } = await Place.searchNearby(request);
+            places.forEach((place) => {
+                if (!total.some((totalPlace) => totalPlace.id === place.id)) {
+                    total.push(place)
+                }
+            })
+            // break;
+        }
+        // break;
+    }
+    
+    // console.log(total)
 
-    if (places.length) {
+
+
+    if (total.length) {
         const { LatLngBounds } = await google.maps.importLibrary("core");
         const bounds = new LatLngBounds();
 
-        places.forEach((place, i) => {
+        total.forEach(async (place, i) => {
+            // console.log(await place.fetchFields("googleMapsURI"))
+
             new AdvancedMarkerElement({
                 map,
                 position: place.location,
@@ -72,16 +92,20 @@ async function nearbySearch() {
             let stringed = JSON.parse(JSON.stringify(place))
             stringed["regularOpeningHours"] = stringed["regularOpeningHours"] ? stringed["regularOpeningHours"]["weekdayDescriptions"]: []
             let updated = flatten(stringed,[],'');
-            updated["photoLink"] = place.photos[0].getURI();
+            updated["photoLink"] = place.photos[0] && place.photos[0].getURI();
             delete updated["photos"];
-            places[i] = updated;
+            delete updated["parkingOptions"]
+            delete updated["accessibilityOptions"]
+            delete updated["paymentOptions"]
+            total[i] = updated;
         });
         map.fitBounds(bounds);
 
     } else {
         console.log("No results");
     }
-    console.log(places)
+    total = total.filter((place) => place.photoLink);
+    console.log(total)
 }
 
 initMap();

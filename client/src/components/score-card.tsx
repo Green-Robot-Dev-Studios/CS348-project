@@ -1,6 +1,7 @@
 import { User } from "waterfood";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
+import DisplayUser from "./display-user";
 
 type ScoreCardProps = {
   title: string;
@@ -19,7 +20,9 @@ function ScoreCard({ title, users, value }: ScoreCardProps) {
           Users:
           <ul>
             {users.map((user) => (
-              <li key={user.id}>{user.name}</li>
+              <li key={user.id}>
+                <DisplayUser user={user} />
+              </li>
             ))}
           </ul>
         </CardDescription>
