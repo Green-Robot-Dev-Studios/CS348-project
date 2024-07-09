@@ -13,7 +13,7 @@ export function Swipe() {
   const user = getUserOrRedirectLogin();
 
   const { data: room } = useGet("rooms", roomId);
-  const { data: closeFoods, error } = useFind("close-food", { query: { roomId } });
+  const { data: closeFoods } = useFind("close-food", { query: { roomId } });
   const { create: vote } = useMutation("votes");
 
   const handleSwipe = async (foodId: string, action: "left" | "right") => {
