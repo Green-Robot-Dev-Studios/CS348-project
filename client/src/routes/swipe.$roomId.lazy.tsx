@@ -31,7 +31,7 @@ export function Swipe() {
     }),
   );
 
-  if (room?.picked) return <Navigate to={`/scoresheet/${roomId}`} />;
+  if (room?.picked) return <Navigate to={`/results/${roomId}`} />;
 
   return (
     <Content>
