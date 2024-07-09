@@ -30,7 +30,7 @@ export type CardData = {
 //     }
 // ]
 
-export default function SwipeScreen({ data, onSwipe }: { data: CardData[], onSwipe: (id: string, action: 'left' | 'right') => Promise<null> }) {
+export default function SwipeScreen({ data, onSwipe }: { data: CardData[], onSwipe: (id: string, action: 'left' | 'right') => Promise<void> }) {
     const [cards, setCards] = useState<CardData[]>(data);
 
     const activeIndex = cards.length > 0 ? cards[cards.length - 1].id : 0;
