@@ -6,8 +6,8 @@ import express, {
   urlencoded,
   cors,
   serveStatic,
-  notFound,
-  errorHandler
+  errorHandler,
+  compression
 } from '@feathersjs/express'
 import configuration from '@feathersjs/configuration'
 import socketio from '@feathersjs/socketio'
@@ -28,6 +28,7 @@ app.configure(configuration(configurationValidator))
 app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
+app.use(compression())
 
 // Configure services and real-time functionality
 app.configure(rest())
@@ -44,6 +45,7 @@ app.configure(services)
 app.configure(channels)
 
 // Host the public folder as an SPA
+app.use('/assets', serveStatic(app.get('assets')))
 app.use('/', serveStatic(app.get('public')))
 app.use('*', serveStatic(app.get('public')))
 
