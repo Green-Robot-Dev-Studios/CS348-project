@@ -29,13 +29,14 @@ export const channels = (app: Application) => {
   })
 
   app.on('disconnect', async (connection: RealTimeConnection) => {
-    if (connection.user?.id) {
-      const connections = (await app.service('connections').find({
-        query: { userId: connection.user.id },
-        paginate: false
-      })) as unknown as Connections[] // Type inference fails for this since paginate: false
-      await Promise.all(connections.map((con) => app.service('connections').remove(con.id)))
-    }
+    // if (connection.user?.id) {
+    //   const userId = connection.user.id
+    //   const connections = (await app.service('connections').find({
+    //     query: { userId },
+    //     paginate: false
+    //   })) as unknown as Connections[] // Type inference fails for this since paginate: false
+    //   await Promise.all(connections.map((con) => app.service('connections').remove(con.id)))
+    // }
   })
 
   // eslint-disable-next-line no-unused-vars

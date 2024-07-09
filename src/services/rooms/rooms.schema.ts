@@ -13,7 +13,8 @@ import { randomUUID } from 'crypto'
 export const roomsSchema = Type.Object(
   {
     id: Type.String({ format: 'uuid' }),
-    picked: Type.Optional(Type.String({ format: 'uuid' })),
+    picked: Type.Optional(Type.String()),
+    pickedFood: Type.Optional(Type.Ref(foodSchema)),
     longitude: Type.Number(),
     latitude: Type.Number(),
     searchNumber: Type.Number(),
@@ -25,7 +26,11 @@ export type Rooms = Static<typeof roomsSchema>
 export const roomsValidator = getValidator(roomsSchema, dataValidator)
 export const roomsResolver = resolve<Rooms, HookContext<RoomsService>>({})
 
-export const roomsExternalResolver = resolve<Rooms, HookContext<RoomsService>>({})
+export const roomsExternalResolver = resolve<Rooms, HookContext<RoomsService>>({
+  pickedFood: async (food, value, context) => {
+    if (value.picked) return context.app.service('food').get(value.picked)
+  }
+})
 
 // Schema for creating new entries
 export const roomsDataSchema = Type.Pick(

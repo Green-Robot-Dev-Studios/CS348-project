@@ -17,6 +17,9 @@ export function ResultsPage() {
   const { data: scoresheet, isFetching } = useGet<Scoresheet>("scoresheet", roomId);
 
   if (data && !data.picked) return <Navigate to={`/swipe/${roomId}`} />;
+  if (!data?.pickedFood) return null; // TODO: Add loading state
+
+  const pickedFood = data.pickedFood;
 
   if (!scoresheet) return <div>Loading...</div>
 
@@ -29,16 +32,16 @@ export function ResultsPage() {
         </div>
         <Card className="mx-auto max-w-md">
           <CardHeader>
-            <CardTitle>{data.displayName}</CardTitle>
-            <CardDescription>{data.editorialSummary}</CardDescription>
+            <CardTitle>{pickedFood.displayName}</CardTitle>
+            <CardDescription>{pickedFood.editorialSummary}</CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <img loading="lazy" src={data.photoLink} className="pointer-events-none h-auto w-96 select-none"></img>
+            <img loading="lazy" src={pickedFood.photoLink} className="pointer-events-none h-auto w-96 select-none"></img>
           </CardContent>
           <CardFooter className="flex flex-col">
-            <p>{data.formattedAddress}</p>
+            <p>{pickedFood.formattedAddress}</p>
             <Button className="mt-2">
-              <a href={data.websiteURL} target="_blank" rel="noopener noreferrer">
+              <a href={pickedFood.websiteURL} target="_blank" rel="noopener noreferrer">
                 Visit Website
               </a>
             </Button>
