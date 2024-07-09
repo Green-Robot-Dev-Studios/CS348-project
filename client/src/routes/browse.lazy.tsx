@@ -8,7 +8,7 @@ export const Route = createLazyFileRoute("/browse")({
 });
 
 export function Browse() {
-  const { data: food } = useFind("food", { allPages: true });
+  const { data: food } = useFind("food");
 
   return (
     <Content>
