@@ -4,6 +4,7 @@ import { Check, X, MapPin } from "lucide-react";
 
 import { useState } from "react";
 import { motion, PanInfo, useMotionValue, useTransform } from "framer-motion";
+import getPhotoLink from "@/utils/getPhotoLink";
 
 type CardProps = {
   data: CardData;
@@ -20,10 +21,6 @@ type CardData = {
   websiteURL: string;
 };
 
-const imageLink = (id: string) => {
-  if (process.env.NODE_ENV === "development") return `http://localhost:3030/assets/${id}.png`;
-  return `/assets/${id}.png`;
-};
 
 const SwipeCard = ({ data, active, removeCard }: CardProps) => {
   const [exitX, setExitX] = useState(0);
@@ -75,7 +72,7 @@ const SwipeCard = ({ data, active, removeCard }: CardProps) => {
               <CardDescription>{data.editorialSummary}</CardDescription>
             </CardHeader>
             <CardContent className="flex max-w-md justify-center">
-              <img loading="lazy" src={imageLink(data.id)} className="pointer-events-none select-none"></img>
+              <img loading="lazy" src={getPhotoLink(data.id)} className="pointer-events-none select-none"></img>
             </CardContent>
             <CardFooter className="flex flex-col">
               <p>{data.formattedAddress}</p>

@@ -6,6 +6,7 @@ import formatTime from "@/utils/formatTime";
 import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
 import { useGet } from "figbird";
 import { Scoresheet } from "../../../lib/client";
+import getPhotoLink from "@/utils/getPhotoLink";
 
 export const Route = createLazyFileRoute("/results/$roomId")({
   component: ResultsPage,
@@ -33,7 +34,7 @@ export function ResultsPage() {
             <CardDescription>{pickedFood.editorialSummary}</CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <img loading="lazy" src={pickedFood.photoLink} className="pointer-events-none h-auto w-96 select-none"></img>
+            <img loading="lazy" src={getPhotoLink(pickedFood.photoLink)} className="pointer-events-none h-auto w-96 select-none"></img>
           </CardContent>
           <CardFooter className="flex flex-col">
             <p>{pickedFood.formattedAddress}</p>
