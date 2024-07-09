@@ -33,7 +33,7 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           SELECT MIN(uv.voteTime) AS fastest
           FROM userVoteTime uv
         )
-        SELECT uv.userId, m.fastest as FastestTime
+        SELECT DISTINCT uv.userId, m.fastest as FastestTime
         FROM userVoteTime uv 
         JOIN MinVoteTime m ON uv.voteTime = m.fastest;`,
         [roomId]
@@ -50,7 +50,7 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           SELECT MAX(uv.voteTime) AS slowest
           FROM userVoteTime uv
         )
-        SELECT uv.userId, m.slowest as SlowestTime
+        SELECT DISTINCT uv.userId, m.slowest as SlowestTime
         FROM userVoteTime uv 
         JOIN MaxVoteTime m ON uv.voteTime = m.slowest;`,
         [roomId]
@@ -67,7 +67,7 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           SELECT MIN(uv.voteCount) AS mostPicky
           FROM userVoteCount uv
         )
-        SELECT uv.userId, m.mostPicky as voteCount
+        SELECT DISTINCT uv.userId, m.mostPicky as voteCount
         FROM userVoteCount uv 
         JOIN MinVoteCount m ON uv.voteCount = m.mostPicky;`,
         [roomId]
@@ -84,7 +84,7 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           SELECT MAX(uv.voteCount) AS mostEasygoing
           FROM userVoteCount uv
         )
-        SELECT uv.userId, m.mostEasygoing as voteCount
+        SELECT DISTINCT uv.userId, m.mostEasygoing as voteCount
         FROM userVoteCount uv 
         JOIN MaxVoteCount m ON uv.voteCount = m.mostEasygoing;`,
         [roomId]
