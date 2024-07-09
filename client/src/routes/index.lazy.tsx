@@ -2,7 +2,9 @@ import { Content } from "@/components/content";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
+import MapComponent from "@/Map/map-component";
 import { Label } from "@radix-ui/react-label";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation } from "figbird";
@@ -18,8 +20,8 @@ export function Dashboard() {
 
   const { create } = useMutation("rooms");
 
-  const [latitude, setLatitude] = useState<number | string>(43.4723);
-  const [longitude, setLongitude] = useState<number | string>(-80.5449);
+  const [latitude, setLatitude] = useState<number>(43.4723);
+  const [longitude, setLongitude] = useState<number>(-80.5449);
   const [maxDistance, setMaxDistance] = useState<number | string>(5000);
   const [searchNumber, setSearchNumber] = useState<number | string>(6);
 
@@ -60,7 +62,7 @@ export function Dashboard() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-2">
+              {/* <div className="grid gap-2">
                 <Label>Latitude</Label>
                 <Input
                   id="latitude"
@@ -80,7 +82,22 @@ export function Dashboard() {
               </div>
               <Button variant="secondary" type="button" onClick={handleGetLocation}>
                 Get Current Location
-              </Button>
+              </Button> */}
+              <div className="grid gap-2">
+                <MapComponent lat={latitude} lng={longitude} zoom={14}>
+                  <div>HI</div>
+                  <div>HI</div>
+                  <div>HI</div>
+                </MapComponent>
+                <Slider
+                  defaultValue={[50]}
+                  max={100}
+                  step={1}
+                  className="h-10 w-64"
+                  onValueChange={(val: number) => console.log(val)}
+                />
+              </div>
+
               <div className="grid gap-2">
                 <Label>Max Distance</Label>
                 <Input

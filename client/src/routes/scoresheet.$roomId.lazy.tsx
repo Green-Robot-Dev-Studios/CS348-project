@@ -1,5 +1,6 @@
 import { Content } from "@/components/content";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import ScoreCard from "@/components/score-card";
+import SkeletonCard from "@/components/skeleton-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useGet } from "figbird";
@@ -7,12 +8,6 @@ import { useGet } from "figbird";
 export const Route = createLazyFileRoute("/scoresheet/$roomId")({
   component: ScoreSheet,
 });
-
-type ScoreCardProps = {
-  title: string;
-  user: string;
-  value: string;
-};
 
 export function ScoreSheet() {
   const { roomId } = Route.useParams();
@@ -60,31 +55,5 @@ export function ScoreSheet() {
         )}
       </div>
     </Content>
-  );
-}
-
-function ScoreCard(props: ScoreCardProps) {
-  return (
-    <Card className="m-1">
-      <CardHeader>
-        <CardTitle>{props.title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>User: {props.user}</CardDescription>
-        <CardDescription>{props.value}</CardDescription>
-      </CardContent>
-    </Card>
-  );
-}
-
-export function SkeletonCard() {
-  return (
-    <div className="justify-middle my-10 flex flex-col items-center space-y-3">
-      <Skeleton className="h-20 w-40 rounded-xl" />
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-40" />
-        <Skeleton className="h-4 w-40" />
-      </div>
-    </div>
   );
 }
