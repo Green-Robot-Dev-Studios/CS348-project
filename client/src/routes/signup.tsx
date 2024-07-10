@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { Link, createFileRoute, redirect, useNavigate, useSearch } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
 import { useFeathers, useMutation } from "figbird";
 import { GithubIcon } from "lucide-react";
 import { useEffect, useState } from "react";
