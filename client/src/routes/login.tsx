@@ -94,7 +94,7 @@ export function Login() {
               Login {status === "loading" && <Spinner />}
             </Button>
             <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
-              <a href="/oauth/github">
+              <a href={"/oauth/github" + search.redirect ? "?redirect=" + encodeURIComponent(search.redirect!) : ""}>
                 <GithubIcon className="mr-4 size-4" />
                 <span className="mt-0 text-sm font-medium leading-none">Continue with GitHub</span>
               </a>

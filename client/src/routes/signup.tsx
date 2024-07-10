@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { Link, createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import { Link, createFileRoute, redirect, useNavigate, useSearch } from "@tanstack/react-router";
 import { useFeathers, useMutation } from "figbird";
 import { GithubIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -100,7 +100,7 @@ export function Signup() {
               Create an account {status === "loading" && <Spinner />}
             </Button>
             <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
-              <a href="/oauth/github">
+              <a href={"/oauth/github" + search.redirect ? "?redirect=" + encodeURIComponent(search.redirect!) : ""}>
                 <GithubIcon className="mr-4 size-4" />
                 <span className="mt-0 text-sm font-medium leading-none">Continue with GitHub</span>
               </a>
