@@ -18,6 +18,7 @@ However, sample data cannot be supplied since the returned data contains Google'
 **How to populate the sample database:**
 
 Our sample database has already been populated. To do so yourself, you can follow the steps specified in `/data/JSONtoSQL.md`.
+
 **Important note regarding sample and production queries (C3 and C4)**
 The two folders `SampleQueries` and `ProdQueries` are identical because our sample database was identical to our production database. As a result, the expected outcome for the sample queries is the same as well.  
 
