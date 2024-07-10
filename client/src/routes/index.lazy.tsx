@@ -84,7 +84,7 @@ export function Dashboard() {
             </Button>
             <hr className="my-4" />
             <div className="grid gap-2">
-              <Label>Max Distance</Label>
+              <Label>Max Distance (m)</Label>
               <Input
                 id="maxDistance"
                 type="number"
