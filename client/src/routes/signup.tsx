@@ -14,7 +14,7 @@ type SignupSearch = {
 };
 
 export const Route = createFileRoute("/signup")({
-  component: Login,
+  component: Signup,
   validateSearch: (search: SignupSearch) => ({
     redirect: search.redirect ? String(search.redirect) : undefined,
   }),
@@ -25,7 +25,7 @@ const choice = Math.random() > 0.5;
 const nameExample = choice ? "John Doe" : "Mary Smith";
 const emailExample = choice ? "jdoe@example.com" : "mary@example.com";
 
-export function Login() {
+export function Signup() {
   const feathers = useFeathers();
   const search = useSearch({ from: "/signup" });
   const navigate = useNavigate();
@@ -63,8 +63,8 @@ export function Login() {
   };
 
   return (
-    <Content>
-      <Card className="max-w-sm">
+    <Content className="items-center">
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
         </CardHeader>

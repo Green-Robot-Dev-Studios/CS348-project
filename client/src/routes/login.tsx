@@ -45,7 +45,6 @@ export function Login() {
       else navigate({ to: "/" });
     } catch (error) {
       setStatus("error");
-      // console.error(error);
     }
   };
 
@@ -57,11 +56,10 @@ export function Login() {
   }, [feathers.authentication.authenticated]);
 
   return (
-    <Content>
-      <Card className="max-w-sm">
+    <Content className="items-center">
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>Enter your email below to login to your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form className="grid gap-4" onSubmit={handleSubmit}>
