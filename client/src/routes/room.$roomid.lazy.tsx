@@ -37,13 +37,14 @@ export function Room() {
     create({ userId: user.id, roomId });
   }, [roomId, user]);
 
-  const handleShare = () => {
-    navigator.share({
-      title: "Decide where to eat with Waterfood!",
-      text: "Join my room",
-      url: window.location.toString(),
-    });
-  };
+  const handleShare = () =>
+    navigator
+      .share({
+        title: "Decide where to eat with Waterfood!",
+        text: "Join my room",
+        url: window.location.toString(),
+      })
+      .catch(() => {});
 
   if (allReady) return <Navigate to={`/preferences/${roomId}`} />;
 
@@ -63,7 +64,7 @@ export function Room() {
       <Table className="mx-auto max-w-lg">
         <TableHeader>
           <TableRow>
-            <TableHead>Username</TableHead>
+            <TableHead>Name</TableHead>
             <TableHead>Ready</TableHead>
           </TableRow>
         </TableHeader>
@@ -71,7 +72,7 @@ export function Room() {
           {data?.map((connection) => (
             <TableRow key={connection.id} className={cn(connection.userId === user?.id && "bg-muted")}>
               <TableCell>
-                <DisplayUser user={connection.user} />
+                <DisplayUser user={connection.user} avatarClassName="size-8"/>
               </TableCell>
               <TableCell>
                 {connection.ready ? <CheckIcon className="text-green-500" /> : <XIcon className="text-red-500" />}
