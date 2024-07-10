@@ -3,7 +3,7 @@ import { useFeathers } from "figbird";
 import { useEffect, useState } from "react";
 import { User } from "waterfood";
 
-const useCurrentUser = (props = { redirectIfNotAuthenticated: true }) => {
+const useCurrentUser = (props = { redirectIfNotAuthenticated: false }) => {
   const feathers = useFeathers();
   const navigate = useNavigate();
 
