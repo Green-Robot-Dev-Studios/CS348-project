@@ -40,8 +40,8 @@ export function Room() {
   const handleShare = () =>
     navigator
       .share({
-        title: "Decide where to eat with Waterfood!",
-        text: "Join my room",
+        title: "Waterfood",
+        text: "Decide where to eat with us!",
         url: window.location.toString(),
       })
       .catch(() => {});
@@ -50,17 +50,17 @@ export function Room() {
 
   return (
     <Content className="gap-6">
-      <div className="flex justify-center">
+      <div className="flex flex-col gap-4 mx-auto">
         <Card
-          className="cursor-pointer p-2 shadow-sm transition-all duration-300 ease-in-out hover:shadow-xl"
+          className="cursor-pointer bg-white p-4 shadow-sm transition-all duration-300 ease-in-out hover:shadow-xl"
           onClick={handleShare}
         >
           <QRCode value={window.location.toString()} />
         </Card>
+        <Button className={cn("w-full", userReady ? "hover:bg-green-500 bg-green-400" : null)} onClick={handleReady}>
+          {userReady ? "Unready" : "Ready Up"}
+        </Button>
       </div>
-      <Button className={cn("mx-auto block", userReady ? "bg-green-400" : null)} onClick={handleReady}>
-        {userReady ? "Unready" : "Ready Up"}
-      </Button>
       <Table className="mx-auto max-w-lg">
         <TableHeader>
           <TableRow>
@@ -70,9 +70,9 @@ export function Room() {
         </TableHeader>
         <TableBody>
           {data?.map((connection) => (
-            <TableRow key={connection.id} className={cn(connection.userId === user?.id && "bg-muted")}>
+            <TableRow key={connection.id} className={cn(connection.userId === user?.id && "bg-muted/40")}>
               <TableCell>
-                <DisplayUser user={connection.user} avatarClassName="size-8"/>
+                <DisplayUser user={connection.user} avatarClassName="size-8" />
               </TableCell>
               <TableCell>
                 {connection.ready ? <CheckIcon className="text-green-500" /> : <XIcon className="text-red-500" />}
