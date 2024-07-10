@@ -43,16 +43,18 @@ export function Room() {
       text: "Join my room",
       url: window.location.toString(),
     });
-  }
+  };
 
   if (allReady) return <Navigate to={`/preferences/${roomId}`} />;
 
   return (
     <Content className="gap-6">
       <div className="flex justify-center">
-        <Card className="hover:shadow-x p-2 shadow-sm transition-all duration-300 ease-in-out cursor-pointer"
-        onClick={handleShare}>
-          <QRCode value={`${window.location.origin}/room/${roomId}`} />
+        <Card
+          className="cursor-pointer p-2 shadow-sm transition-all duration-300 ease-in-out hover:shadow-xl"
+          onClick={handleShare}
+        >
+          <QRCode value={window.location.toString()} />
         </Card>
       </div>
       <Button className={cn("mx-auto block", userReady ? "bg-green-400" : null)} onClick={handleReady}>
