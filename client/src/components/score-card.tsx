@@ -16,16 +16,14 @@ function ScoreCard({ title, users, value }: ScoreCardProps) {
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription>
-          Users:
-          <ul>
-            {users.map((user) => (
-              <li key={user.id}>
-                <DisplayUser user={user} />
-              </li>
-            ))}
-          </ul>
-        </CardDescription>
+        <CardDescription>Users:</CardDescription>
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>
+              <DisplayUser user={user} />
+            </li>
+          ))}
+        </ul>
         <CardDescription>{value}</CardDescription>
       </CardContent>
     </Card>
