@@ -12,9 +12,8 @@ export function Browse() {
 
   return (
     <Content>
-      <h1 className="text-center font-display text-8xl font-semibold">Waterfood</h1>
-      <h4 className="text-center text-xl">Hello world output on our restaurant dataset:</h4>
-      <div className="ml-2 mr-2 mt-2 flex flex-col gap-2">
+      <h4 className="text-xl pb-2">Hello world output on our restaurant dataset:</h4>
+      <div className="flex flex-col gap-2">
         {(food ?? []).map((f) => (
           <FoodCard key={f.id} food={f} />
         ))}

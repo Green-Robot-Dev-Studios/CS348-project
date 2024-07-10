@@ -57,7 +57,7 @@ export function Login() {
   }, [feathers.authentication.authenticated]);
 
   return (
-    <Content className="p-6">
+    <Content>
       <Card className="max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>

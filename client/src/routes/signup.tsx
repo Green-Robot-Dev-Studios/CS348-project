@@ -63,7 +63,7 @@ export function Login() {
   };
 
   return (
-    <Content className="p-6">
+    <Content>
       <Card className="max-w-sm">
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>

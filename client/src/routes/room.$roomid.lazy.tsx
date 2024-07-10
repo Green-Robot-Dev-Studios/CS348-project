@@ -32,7 +32,6 @@ export function Room() {
   }, [userConnection]);
 
   useEffect(() => {
-    console.log({ roomId, user });
     if (!roomId || !user) return;
     create({ userId: user.id, roomId });
   }, [roomId, user]);
@@ -40,14 +39,14 @@ export function Room() {
   if (allReady) return <Navigate to={`/preferences/${roomId}`} />;
 
   return (
-    <Content className="align-middle p-6 gap-6">
+    <Content className="gap-6">
       <div className="flex justify-center">
-      <QRCode value={`${window.location.origin}/room/${roomId}`} />
+        <QRCode value={`${window.location.origin}/room/${roomId}`} />
       </div>
       <Button className={cn("mx-auto block", userReady ? "bg-green-400" : null)} onClick={handleReady}>
         {userReady ? "Unready" : "Ready Up"}
       </Button>
-      <Table>
+      <Table className="mx-auto max-w-lg">
         <TableHeader>
           <TableRow>
             <TableHead>Username</TableHead>
