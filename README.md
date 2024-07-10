@@ -18,19 +18,8 @@ However, sample data cannot be supplied since the returned data contains Google'
 **How to populate the sample database:**
 
 Our sample database has already been populated. To do so yourself, you can follow the steps specified in `/data/JSONtoSQL.md`.
-
-<<<<<<< HEAD
 **Important note regarding sample and production queries (C3 and C4)**
-The two folders `SampleQueries` and `ProdQueries` are identical because our sample database was already very similar, if not, identical to our production database. As a result, the expected outcome for the sample queries is identical as well.  
-=======
-<br/>
-
-**How to populate the production database:**
-
-The production data was procured by repeatedly calling the Google Maps Place API in a grid-search pattern over a subset of the Waterloo Regional Municipality. These successive calls were inserted into the database and deduplicated through the primary key (the Google Place Id). In addition, we pulled all the image static assets from Google to cache them locally for faster speeds. See `/data/JSONtoSQL.md` for more details.
-
-<br />
->>>>>>> c2662071ff6901c8054139c3358290a178fa5f2f
+The two folders `SampleQueries` and `ProdQueries` are identical because our sample database was identical to our production database. As a result, the expected outcome for the sample queries is the same as well.  
 
 **Implemented features:**
 
