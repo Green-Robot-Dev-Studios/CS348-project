@@ -2,7 +2,7 @@ import { Content } from "@/components/content";
 import DisplayUser from "@/components/display-user";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
+import useCurrentUser from "@/hooks/useCurrentUser";
 import { cn } from "@/lib/utils";
 import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
 import { useFind, useMutation } from "figbird";
@@ -17,7 +17,7 @@ export const Route = createLazyFileRoute("/room/$roomid")({
 export function Room() {
   const { roomid: roomId } = Route.useParams();
 
-  const user = getUserOrRedirectLogin();
+  const user = useCurrentUser({ redirectIfNotAuthenticated: true });
 
   const { data } = useFind("connections", { query: { roomId } });
   const userConnection = data?.find((connection) => connection.userId === user?.id);

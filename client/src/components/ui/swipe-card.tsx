@@ -5,20 +5,12 @@ import { Check, X, MapPin } from "lucide-react";
 import { useState } from "react";
 import { motion, PanInfo, useMotionValue, useTransform } from "framer-motion";
 import getPhotoLink from "@/utils/getPhotoLink";
+import { CloseFood } from "waterfood";
 
 type CardProps = {
-  data: CardData;
+  data: CloseFood;
   active: boolean;
   removeCard: (id: string, action: "right" | "left") => void;
-};
-
-type CardData = {
-  id: string;
-  displayName: string;
-  photoLink: string;
-  formattedAddress: string;
-  editorialSummary: string;
-  websiteURL: string;
 };
 
 

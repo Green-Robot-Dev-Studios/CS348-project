@@ -1,93 +1,99 @@
 import { Content } from "@/components/content";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { Link, createLazyFileRoute, useRouter } from "@tanstack/react-router";
-import { useFeathers, useMutation } from "figbird";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { useFeathers } from "figbird";
 import { GithubIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export const Route = createLazyFileRoute("/signup")({
-  component: Login,
-});
+type LoginSearch = {
+  redirect?: string;
+};
 
-// RFC 2822 legal examples
-const choice = Math.random() > 0.5;
-const nameExample = choice ? "John Doe" : "Mary Smith";
-const emailExample = choice ? "jdoe@example.com" : "mary@example.com";
+export const Route = createFileRoute("/login")({
+  component: Login,
+  validateSearch: (search: LoginSearch) => ({
+    redirect: search.redirect ? String(search.redirect) : undefined,
+  }),
+});
 
 export function Login() {
   const feathers = useFeathers();
-  const router = useRouter();
+  const search = useSearch({ from: "/login" });
+  const navigate = useNavigate();
 
-  const { create, error, status } = useMutation("users");
-
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    if (feathers.authentication.authenticated) {
-      router.history.back();
-    }
-  }, []);
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      await create({ name, email, passwordHash: password });
-
+      setStatus("loading");
       await feathers.authenticate({
         strategy: "local",
         email,
         passwordHash: password,
       });
 
-      router.history.back();
+      if (search.redirect) navigate({ to: search.redirect });
+      else navigate({ to: "/" });
     } catch (error) {
+      setStatus("error");
       // console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (feathers.authentication.authenticated) {
+      if (search.redirect) navigate({ to: search.redirect });
+      else navigate({ to: "/" });
+    }
+  }, [feathers.authentication.authenticated]);
 
   return (
     <Content className="p-6">
       <Card className="max-w-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Sign Up</CardTitle>
+          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardDescription>Enter your email below to login to your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form className="grid gap-4" onSubmit={handleSubmit}>
-            <div className="grid gap-2">
-              <Label>Name</Label>
-              <Input
-                id="name"
-                placeholder={nameExample}
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
             <div className="grid gap-2">
               <Label>Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder={emailExample}
+                placeholder="m@example.com"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {error && <div className="text-red-500">That email is already taken</div>}
             </div>
             <div className="grid gap-2">
-              <Label>Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <div className="flex items-center">
+                <Label>Password</Label>
+                <Link href="#" className="ml-auto inline-block text-sm underline">
+                  Forgot your password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {status === "error" && <div className="text-sm text-red-500">Invalid email or password</div>}
             </div>
             <Button type="submit" className="w-full" disabled={status === "loading"}>
-              Create an account {status === "loading" && <Spinner />}
+              Login {status === "loading" && <Spinner />}
             </Button>
             <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
               <a href="/oauth/github">
@@ -97,9 +103,9 @@ export function Login() {
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
-            <Link to="/login" className="underline">
-              Log in
+            Don&apos;t have an account?{" "}
+            <Link to="/signup" className="underline">
+              Sign up
             </Link>
           </div>
         </CardContent>

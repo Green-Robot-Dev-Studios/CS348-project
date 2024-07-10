@@ -2,7 +2,7 @@ import { Content } from "@/components/content";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import getUserOrRedirectLogin from "@/hooks/getUserOrRedirectLogin";
+import useCurrentUser from "@/hooks/useCurrentUser";
 import { Label } from "@radix-ui/react-label";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation } from "figbird";
@@ -12,14 +12,16 @@ export const Route = createLazyFileRoute("/")({
   component: Dashboard,
 });
 
+const WATERLOO_COORDS = { latitude: 43.4723, longitude: -80.5449 };
+
 export function Dashboard() {
-  getUserOrRedirectLogin();
+  useCurrentUser({ redirectIfNotAuthenticated: true })
   const navigate = useNavigate();
 
   const { create } = useMutation("rooms");
 
-  const [latitude, setLatitude] = useState<number | string>(43.4723);
-  const [longitude, setLongitude] = useState<number | string>(-80.5449);
+  const [latitude, setLatitude] = useState<number | string>(WATERLOO_COORDS.latitude);
+  const [longitude, setLongitude] = useState<number | string>(WATERLOO_COORDS.longitude);
   const [maxDistance, setMaxDistance] = useState<number | string>(5000);
   const [searchNumber, setSearchNumber] = useState<number | string>(6);
 

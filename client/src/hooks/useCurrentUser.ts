@@ -3,7 +3,7 @@ import { useFeathers } from "figbird";
 import { useEffect, useState } from "react";
 import { User } from "waterfood";
 
-const getUserOrRedirectLogin = () => {
+const useCurrentUser = (props = { redirectIfNotAuthenticated: true }) => {
   const feathers = useFeathers();
   const navigate = useNavigate();
 
@@ -13,10 +13,13 @@ const getUserOrRedirectLogin = () => {
     feathers
       .reAuthenticate()
       .then((auth) => setUser(auth.user))
-      .catch(() => navigate({ to: "/login" }));
+      .catch(() => {
+        if (props.redirectIfNotAuthenticated)
+          navigate({ to: "/login", search: { redirect: window.location.pathname } });
+      });
   }, [feathers]);
 
   return user;
 };
 
-export default getUserOrRedirectLogin;
+export default useCurrentUser;
