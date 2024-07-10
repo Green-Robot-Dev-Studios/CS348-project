@@ -13,7 +13,6 @@ type CardProps = {
   removeCard: (id: string, action: "right" | "left") => void;
 };
 
-
 const SwipeCard = ({ data, active, removeCard }: CardProps) => {
   const [exitX, setExitX] = useState(0);
 
@@ -40,57 +39,63 @@ const SwipeCard = ({ data, active, removeCard }: CardProps) => {
     removeCard(data.id, action);
   };
 
-  return (
-    <>
-      {active ? (
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-          onDragEnd={dragEnd}
-          initial={{ scale: 0.95, opacity: 0.5 }}
-          animate={{
-            scale: 1.05,
-            opacity: 1,
-          }}
-          style={{ x, rotate, opacity }}
-          transition={{ type: "tween", duration: 0.3, ease: "easeIn" }}
-          whileDrag={{ cursor: "grabbing" }}
-          exit={{ x: exitX }}
-          className="absolute top-0"
-        >
-          <Card className="m-8">
-            <CardHeader>
-              <CardTitle>{data.displayName}</CardTitle>
-              <CardDescription>{data.editorialSummary}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex max-w-md justify-center">
-              <img loading="lazy" src={getPhotoLink(data.id)} className="pointer-events-none select-none"></img>
-            </CardContent>
-            <CardFooter className="flex flex-col">
-              <p>{data.formattedAddress}</p>
-            </CardFooter>
+  if (!active) return null;
 
-            <div className="flex flex-row justify-between p-6 pt-0">
-              <Button size="icon" onClick={() => buttonSwipe("left")} className="h-11 w-11 rounded-full bg-red-400 px-3 py-2">
-                <X />
-              </Button>
-              <Button className="h-11 w-11 rounded-full" asChild size="icon">
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${data.displayName}&query_place_id=${data.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <MapPin />
-                </a>
-              </Button>
-              <Button size="icon" onClick={() => buttonSwipe("right")} className="h-11 w-11 rounded-full bg-green-300 px-3 py-2">
-                <Check />
-              </Button>
-            </div>
-          </Card>
-        </motion.div>
-      ) : null}
-    </>
+  return (
+    <motion.div
+      drag="x"
+      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+      onDragEnd={dragEnd}
+      initial={{ scale: 0.95, opacity: 0.5 }}
+      animate={{
+        scale: 1.05,
+        opacity: 1,
+      }}
+      style={{ x, rotate, opacity }}
+      transition={{ type: "tween", duration: 0.3, ease: "easeIn" }}
+      whileDrag={{ cursor: "grabbing" }}
+      exit={{ x: exitX }}
+      className="absolute top-0"
+    >
+      <Card className="m-8">
+        <CardHeader>
+          <CardTitle>{data.displayName}</CardTitle>
+          <CardDescription>{data.editorialSummary}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex max-w-md justify-center">
+          <img loading="lazy" src={getPhotoLink(data.id)} className="pointer-events-none select-none"></img>
+        </CardContent>
+        <CardFooter className="flex flex-col">
+          <p>{data.formattedAddress}</p>
+        </CardFooter>
+
+        <div className="flex flex-row justify-between p-6 pt-0">
+          <Button
+            size="icon"
+            onClick={() => buttonSwipe("left")}
+            className="h-11 w-11 rounded-full bg-red-400 px-3 py-2"
+          >
+            <X />
+          </Button>
+          <Button className="h-11 w-11 rounded-full" asChild size="icon">
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${data.displayName}&query_place_id=${data.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MapPin />
+            </a>
+          </Button>
+          <Button
+            size="icon"
+            onClick={() => buttonSwipe("right")}
+            className="h-11 w-11 rounded-full bg-green-300 px-3 py-2"
+          >
+            <Check />
+          </Button>
+        </div>
+      </Card>
+    </motion.div>
   );
 };
 
