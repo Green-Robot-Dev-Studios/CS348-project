@@ -23,8 +23,8 @@ export function Dashboard() {
 
   const [latitude, setLatitude] = useState<number | string>(WATERLOO_COORDS.latitude);
   const [longitude, setLongitude] = useState<number | string>(WATERLOO_COORDS.longitude);
-  const [maxDistance, setMaxDistance] = useState<number | string>(5000);
-  const [searchNumber, setSearchNumber] = useState<number | string>(6);
+  const [maxDistance, setMaxDistance] = useState<number | string>(1000);
+  const [searchNumber, setSearchNumber] = useState<number | string>(15);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
