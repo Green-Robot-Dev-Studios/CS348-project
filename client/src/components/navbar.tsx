@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="x-4 bg-backgroundk sticky top-0 z-30 flex h-auto items-center gap-4 border-0 border-b pl-6">
+    <header className="x-4 bg-background sticky top-0 z-30 flex h-auto items-center gap-4 border-0 border-b pl-6">
       <Link to="/" className="text-center font-display text-xl font-semibold">
         Waterfood
       </Link>
