@@ -69,7 +69,7 @@ export function Room() {
         </TableHeader>
         <TableBody>
           {data?.map((connection) => (
-            <TableRow key={connection.id}>
+            <TableRow key={connection.id} className={cn(connection.userId === user?.id && "bg-muted")}>
               <TableCell>
                 <DisplayUser user={connection.user} />
               </TableCell>
