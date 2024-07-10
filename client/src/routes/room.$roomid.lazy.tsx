@@ -1,6 +1,7 @@
 import { Content } from "@/components/content";
 import DisplayUser from "@/components/display-user";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { cn } from "@/lib/utils";
@@ -36,12 +37,23 @@ export function Room() {
     create({ userId: user.id, roomId });
   }, [roomId, user]);
 
+  const handleShare = () => {
+    navigator.share({
+      title: "Decide where to eat with Waterfood!",
+      text: "Join my room",
+      url: window.location.toString(),
+    });
+  }
+
   if (allReady) return <Navigate to={`/preferences/${roomId}`} />;
 
   return (
     <Content className="gap-6">
       <div className="flex justify-center">
-        <QRCode value={`${window.location.origin}/room/${roomId}`} />
+        <Card className="hover:shadow-x p-2 shadow-sm transition-all duration-300 ease-in-out cursor-pointer"
+        onClick={handleShare}>
+          <QRCode value={`${window.location.origin}/room/${roomId}`} />
+        </Card>
       </div>
       <Button className={cn("mx-auto block", userReady ? "bg-green-400" : null)} onClick={handleReady}>
         {userReady ? "Unready" : "Ready Up"}
