@@ -1,10 +1,10 @@
-import { PanelLeft, DropletIcon, Home, Search, LogOut, PlusIcon } from "lucide-react";
-import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import useCurrentUser from "@/hooks/useCurrentUser";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useFeathers } from "figbird";
+import { LogOut, PanelLeft, PlusIcon, Search } from "lucide-react";
 import DisplayUser from "./display-user";
-import useCurrentUser from "@/hooks/useCurrentUser";
+import { Button } from "./ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 const higlightedMenuClasses = "flex items-center gap-4 px-2.5 text-foreground";
 const normalMenuClasses = "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground";
