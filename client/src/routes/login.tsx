@@ -94,7 +94,7 @@ export function Login() {
               Login {status === "loading" && <Spinner />}
             </Button>
             <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
-              <a href={"/oauth/github" + search.redirect ? "?redirect=" + encodeURIComponent(search.redirect!) : ""}>
+              <a href={"oauth/github" + (search.redirect ? "?redirect=" + encodeURIComponent(search.redirect!) : "")}>
                 <GithubIcon className="mr-4 size-4" />
                 <span className="mt-0 text-sm font-medium leading-none">Continue with GitHub</span>
               </a>
@@ -102,7 +102,7 @@ export function Login() {
           </form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link to="/signup" className="underline">
+            <Link to="/signup" search={{ redirect: search.redirect }} className="underline">
               Sign up
             </Link>
           </div>
