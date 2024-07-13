@@ -42,7 +42,7 @@ export function Room() {
       .share({
         title: "Waterfood",
         text: "Decide where to eat with us!",
-        url: window.location.toString(),
+        url: `${window.location.origin}/room/${roomId}`,
       })
       .catch(() => {});
 
@@ -55,7 +55,7 @@ export function Room() {
           className="cursor-pointer bg-white p-4 shadow-sm transition-all duration-300 ease-in-out hover:shadow-xl"
           onClick={handleShare}
         >
-          <QRCode value={window.location.toString()} />
+        <QRCode value={`${window.location.origin}/room/${roomId}`} />
         </Card>
         <Button className={cn("w-full", userReady ? "hover:bg-green-500 bg-green-400" : null)} onClick={handleReady}>
           {userReady ? "Unready" : "Ready Up"}
