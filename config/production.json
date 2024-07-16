@@ -6,7 +6,9 @@
   "port": 80,
   "authentication": {
     "oauth": {
-      "redirect": "https://waterfood.ca"
+      "defaults": {
+        "origin": "https://waterfood.ca"
+      }
     }
   },
   "mysql": {
