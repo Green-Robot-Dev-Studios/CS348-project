@@ -1,4 +1,3 @@
-import { Content } from "@/components/content";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -50,7 +49,6 @@ export function Dashboard() {
   };
 
   return (
-    <Content>
       <form className="flex gap-4 justify-center" onSubmit={handleSubmit}>
         <Card className="ax-w-lg sm:col-span-2" x-chunk="dashboard-05-chunk-0">
           <CardHeader className="pb-3">
@@ -109,6 +107,5 @@ export function Dashboard() {
           </CardFooter>
         </Card>
       </form>
-    </Content>
   );
 }

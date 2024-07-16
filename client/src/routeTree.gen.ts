@@ -18,8 +18,8 @@ import { Route as LoginImport } from './routes/login'
 
 // Create Virtual Routes
 
-const JoinLazyImport = createFileRoute('/join')()
 const BrowseLazyImport = createFileRoute('/browse')()
+const AccountLazyImport = createFileRoute('/account')()
 const IndexLazyImport = createFileRoute('/')()
 const SwipeRoomIdLazyImport = createFileRoute('/swipe/$roomId')()
 const RoomRoomidLazyImport = createFileRoute('/room/$roomid')()
@@ -29,15 +29,15 @@ const OauthProviderLazyImport = createFileRoute('/oauth/$provider')()
 
 // Create/Update Routes
 
-const JoinLazyRoute = JoinLazyImport.update({
-  path: '/join',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/join.lazy').then((d) => d.Route))
-
 const BrowseLazyRoute = BrowseLazyImport.update({
   path: '/browse',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/browse.lazy').then((d) => d.Route))
+
+const AccountLazyRoute = AccountLazyImport.update({
+  path: '/account',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/account.lazy').then((d) => d.Route))
 
 const SignupRoute = SignupImport.update({
   path: '/signup',
@@ -110,18 +110,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/browse': {
       id: '/browse'
       path: '/browse'
       fullPath: '/browse'
       preLoaderRoute: typeof BrowseLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/join': {
-      id: '/join'
-      path: '/join'
-      fullPath: '/join'
-      preLoaderRoute: typeof JoinLazyImport
       parentRoute: typeof rootRoute
     }
     '/oauth/$provider': {
@@ -168,8 +168,8 @@ export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   LoginRoute,
   SignupRoute,
+  AccountLazyRoute,
   BrowseLazyRoute,
-  JoinLazyRoute,
   OauthProviderLazyRoute,
   PreferencesRoomIdLazyRoute,
   ResultsRoomIdLazyRoute,
@@ -188,8 +188,8 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/login",
         "/signup",
+        "/account",
         "/browse",
-        "/join",
         "/oauth/$provider",
         "/preferences/$roomId",
         "/results/$roomId",
@@ -206,11 +206,11 @@ export const routeTree = rootRoute.addChildren({
     "/signup": {
       "filePath": "signup.tsx"
     },
+    "/account": {
+      "filePath": "account.lazy.tsx"
+    },
     "/browse": {
       "filePath": "browse.lazy.tsx"
-    },
-    "/join": {
-      "filePath": "join.lazy.tsx"
     },
     "/oauth/$provider": {
       "filePath": "oauth.$provider.lazy.tsx"

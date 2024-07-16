@@ -1,4 +1,3 @@
-import { Content } from "@/components/content";
 import DisplayUser from "@/components/display-user";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -18,7 +17,7 @@ export const Route = createLazyFileRoute("/room/$roomid")({
 export function Room() {
   const { roomid: roomId } = Route.useParams();
 
-  const user = useCurrentUser({ redirectIfNotAuthenticated: true });
+  const { user } = useCurrentUser({ redirectIfNotAuthenticated: true });
 
   const { data } = useFind("connections", { query: { roomId } });
   const userConnection = data?.find((connection) => connection.userId === user?.id);
@@ -48,15 +47,15 @@ export function Room() {
   if (allReady) return <Navigate to={`/preferences/${roomId}`} />;
 
   return (
-    <Content className="gap-6">
-      <div className="flex flex-col gap-4 mx-auto">
+    <>
+      <div className="mx-auto flex flex-col gap-4">
         <Card
           className="cursor-pointer bg-white p-4 shadow-sm transition-all duration-300 ease-in-out hover:shadow-xl"
           onClick={handleShare}
         >
-        <QRCode value={`${window.location.origin}/room/${roomId}`} />
+          <QRCode value={`${window.location.origin}/room/${roomId}`} />
         </Card>
-        <Button className={cn("w-full", userReady ? "hover:bg-green-500 bg-green-400" : null)} onClick={handleReady}>
+        <Button className={cn("w-full", userReady ? "bg-green-400 hover:bg-green-500" : null)} onClick={handleReady}>
           {userReady ? "Unready" : "Ready Up"}
         </Button>
       </div>
@@ -80,6 +79,6 @@ export function Room() {
           ))}
         </TableBody>
       </Table>
-    </Content>
+    </>
   );
 }

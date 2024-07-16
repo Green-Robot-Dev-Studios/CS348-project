@@ -1,28 +1,46 @@
-import { Content } from "@/components/content";
 import ScoreCard, { SkeletonScoreCard } from "@/components/score-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import formatTime from "@/utils/formatTime";
-import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
+import { createLazyFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { useGet } from "figbird";
 import { Scoresheet } from "../../../lib/client";
 import getPhotoLink from "@/utils/getPhotoLink";
+import { useTimeout } from "@/hooks/useTimeout";
+import { toast } from "sonner";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 export const Route = createLazyFileRoute("/results/$roomId")({
   component: ResultsPage,
 });
 
 export function ResultsPage() {
+  const { user } = useCurrentUser({ redirectIfNotAuthenticated: true });
   const { roomId } = Route.useParams();
+  const navigate = useNavigate();
+
   const { data } = useGet("rooms", roomId);
   const pickedFood = data?.pickedFood;
   const { data: scoresheet, isFetching } = useGet<Scoresheet>("scoresheet", roomId);
+
+  const promptSaveAccount = () => {
+    if (user?.email?.includes("@")) return;
+
+    toast("Save your account?", {
+      description: "Set your email and password to log in next time",
+      action: {
+        label: "Account Settings",
+        onClick: () => navigate({ to: "/account" }),
+      },
+    });
+  }
+
+  useTimeout(promptSaveAccount, 3000);
 
   if (data && !data.picked) return <Navigate to={`/swipe/${roomId}`} />;
   if (!pickedFood) return <div>Loading...</div>;
 
   return (
-    <Content>
       <div className="mx-auto w-fit space-y-5">
         <div>
           <h2 className="text-2xl font-semibold">Nice, a choice has been made by the group!</h2>
@@ -81,6 +99,5 @@ export function ResultsPage() {
           </CardContent>
         </Card>
       </div>
-    </Content>
   );
 }

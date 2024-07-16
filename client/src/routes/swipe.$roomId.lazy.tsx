@@ -1,4 +1,3 @@
-import { Content } from "@/components/content";
 import SwipeScreen from "@/components/swipe-screen";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
@@ -10,27 +9,23 @@ export const Route = createLazyFileRoute("/swipe/$roomId")({
 
 export function Swipe() {
   const { roomId } = Route.useParams();
-  const user = useCurrentUser({ redirectIfNotAuthenticated: true });
+  const { user } = useCurrentUser({ redirectIfNotAuthenticated: true });
 
   const { data: room } = useGet("rooms", roomId);
   const { data: closeFoods } = useFind("close-food", { query: { roomId } });
   const { create: vote } = useMutation("votes");
 
   const handleSwipe = async (foodId: string, action: "left" | "right") => {
-    vote({ foodId, roomId, approved: action === "right", userId: user?.id});
+    vote({ foodId, roomId, approved: action === "right", userId: user?.id });
   };
 
   if (room?.picked) return <Navigate to={`/results/${roomId}`} />;
 
+  if (closeFoods) return <SwipeScreen closeFoods={closeFoods} onSwipe={handleSwipe} />;
+
   return (
-    <Content>
-      {closeFoods ? (
-        <SwipeScreen closeFoods={closeFoods} onSwipe={handleSwipe} />
-      ) : (
-        <div className="relative flex h-screen w-full items-center justify-center overflow-clip">
-          <h2 className="absolute z-10 text-center text-2xl">Loading!</h2>
-        </div>
-      )}
-    </Content>
+    <div className="relative flex h-screen w-full items-center justify-center overflow-clip">
+      <h2 className="absolute z-10 text-center text-2xl">Loading!</h2>
+    </div>
   );
 }

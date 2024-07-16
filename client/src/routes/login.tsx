@@ -1,4 +1,3 @@
-import { Content } from "@/components/content";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +7,7 @@ import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-r
 import { useFeathers } from "figbird";
 import { GithubIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type LoginSearch = {
   redirect?: string;
@@ -43,13 +43,21 @@ export function Login() {
     }
   };
 
+  const handleForgotPassword = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    toast("Sorry bro... just make a new account", {
+      action: {
+        label: "Sign up",
+        onClick: () => navigate({ to: "/signup", search: { redirect } }),
+      }
+    });
+  };
+
   useEffect(() => {
     if (feathers.authentication.authenticated) navigate({ to: redirect || "/" });
   }, [feathers.authentication.authenticated]);
 
   return (
-    <Content className="items-center">
-      <Card className="w-full max-w-sm">
+      <Card className="lg:min-w-lg">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
         </CardHeader>
@@ -69,7 +77,7 @@ export function Login() {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label>Password</Label>
-                <Link href="#" className="ml-auto inline-block text-sm underline">
+                <Link href="#" className="ml-auto pl-8 inline-block text-sm underline" onClick={handleForgotPassword}>
                   Forgot your password?
                 </Link>
               </div>
@@ -100,6 +108,5 @@ export function Login() {
           </div>
         </CardContent>
       </Card>
-    </Content>
   );
 }

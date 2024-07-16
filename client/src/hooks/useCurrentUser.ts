@@ -17,9 +17,9 @@ const useCurrentUser = (props = { redirectIfNotAuthenticated: false }) => {
         if (props.redirectIfNotAuthenticated)
           navigate({ to: "/signup", search: { redirect: window.location.pathname } });
       });
-  }, [feathers]);
+  }, [feathers, feathers.authentication.authenticated]);
 
-  return user;
+  return { user, setUser };
 };
 
 export default useCurrentUser;
