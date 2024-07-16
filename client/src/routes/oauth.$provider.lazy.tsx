@@ -11,7 +11,11 @@ export const Route = createLazyFileRoute("/oauth/$provider")({
 });
 
 function Index() {
-  const { provider } = Route.useParams();
-  window.location.href = `http://localhost:3030/oauth/${provider}`;
+  if (process.env.NODE_ENV === "production") {
+    return null;
+  }
+  const url = new URL(window.location.href);
+  url.port = "3030";
+  window.location.href = url.toString();
   return null;
 }

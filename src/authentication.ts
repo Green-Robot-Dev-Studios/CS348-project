@@ -1,5 +1,5 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/authentication.html
-import { AuthenticationBaseStrategy, AuthenticationResult, AuthenticationService, JWTStrategy } from '@feathersjs/authentication'
+import { AuthenticationBaseStrategy, AuthenticationParams, AuthenticationResult, AuthenticationService, JWTStrategy } from '@feathersjs/authentication'
 import { oauth, OAuthStrategy } from '@feathersjs/authentication-oauth'
 
 import type { Application } from './declarations'

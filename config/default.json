@@ -27,7 +27,7 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://waterfood.aaronolsen.ca",
+      "audience": "https://waterfood.ca",
       "algorithm": "HS256",
       "expiresIn": "1d"
     },

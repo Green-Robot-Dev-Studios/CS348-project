@@ -16,13 +16,13 @@ type LoginSearch = {
 export const Route = createFileRoute("/login")({
   component: Login,
   validateSearch: (search: LoginSearch) => ({
-    redirect: search.redirect ? String(search.redirect) : undefined,
+    redirect: search.redirect ? String(search.redirect) : "",
   }),
 });
 
 export function Login() {
   const feathers = useFeathers();
-  const search = useSearch({ from: "/login" });
+  const { redirect } = useSearch({ from: "/login" });
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -35,24 +35,16 @@ export function Login() {
 
     try {
       setStatus("loading");
-      await feathers.authenticate({
-        strategy: "local",
-        email,
-        passwordHash: password,
-      });
+      await feathers.authenticate({ strategy: "local", email, passwordHash: password });
 
-      if (search.redirect) navigate({ to: search.redirect });
-      else navigate({ to: "/" });
+      navigate({ to: redirect || "/" });
     } catch (error) {
       setStatus("error");
     }
   };
 
   useEffect(() => {
-    if (feathers.authentication.authenticated) {
-      if (search.redirect) navigate({ to: search.redirect });
-      else navigate({ to: "/" });
-    }
+    if (feathers.authentication.authenticated) navigate({ to: redirect || "/" });
   }, [feathers.authentication.authenticated]);
 
   return (
@@ -94,7 +86,7 @@ export function Login() {
               Login {status === "loading" && <Spinner />}
             </Button>
             <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
-              <a href={"oauth/github" + (search.redirect ? "?redirect=" + encodeURIComponent(search.redirect!) : "")}>
+              <a href={"/oauth/github" + (redirect ? "?redirect=" + encodeURIComponent(redirect) : "")}>
                 <GithubIcon className="mr-4 size-4" />
                 <span className="mt-0 text-sm font-medium leading-none">Continue with GitHub</span>
               </a>
@@ -102,7 +94,7 @@ export function Login() {
           </form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link to="/signup" search={{ redirect: search.redirect }} className="underline">
+            <Link to="/signup" search={{ redirect }} className="underline">
               Sign up
             </Link>
           </div>

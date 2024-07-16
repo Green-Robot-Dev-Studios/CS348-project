@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
+import generateRandomPassword from "@/utils/generateRandomPasssword";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Link, createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import { randomUUID } from "crypto";
 import { useFeathers, useMutation } from "figbird";
 import { GithubIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -16,29 +18,26 @@ type SignupSearch = {
 export const Route = createFileRoute("/signup")({
   component: Signup,
   validateSearch: (search: SignupSearch) => ({
-    redirect: search.redirect ? String(search.redirect) : undefined,
+    redirect: search.redirect ? String(search.redirect) : "",
   }),
 });
 
 // RFC 2822 legal examples
 const choice = Math.random() > 0.5;
 const nameExample = choice ? "John Doe" : "Mary Smith";
-const emailExample = choice ? "jdoe@example.com" : "mary@example.com";
 
 export function Signup() {
   const feathers = useFeathers();
-  const search = useSearch({ from: "/signup" });
+  const { redirect } = useSearch({ from: "/signup" });
   const navigate = useNavigate();
 
-  const { create, error, status } = useMutation("users");
+  const { create, status } = useMutation("users");
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (feathers.authentication.authenticated) {
-      if (search.redirect) navigate({ to: search.redirect });
+      if (redirect) navigate({ to: redirect });
       else navigate({ to: "/" });
     }
   }, [feathers.authentication.authenticated]);
@@ -47,16 +46,13 @@ export function Signup() {
     e.preventDefault();
 
     try {
-      await create({ name, email, passwordHash: password });
+      const email = "new-user-" + crypto.randomUUID() + "@waterfood.ca";
+      const passwordHash = generateRandomPassword();
+      await create({ name, email, passwordHash });
 
-      await feathers.authenticate({
-        strategy: "local",
-        email,
-        passwordHash: password,
-      });
+      await feathers.authenticate({ strategy: "local", email, passwordHash });
 
-      if (search.redirect) navigate({ to: search.redirect });
-      else navigate({ to: "/" });
+      navigate({ to: redirect || "/" });
     } catch (error) {
       // console.error(error);
     }
@@ -80,27 +76,11 @@ export function Signup() {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-            <div className="grid gap-2">
-              <Label>Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder={emailExample}
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {error && <div className="text-red-500">That email is already taken</div>}
-            </div>
-            <div className="grid gap-2">
-              <Label>Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </div>
             <Button type="submit" className="w-full" disabled={status === "loading"}>
-              Create an account {status === "loading" && <Spinner />}
+              Continue {status === "loading" && <Spinner />}
             </Button>
             <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
-              <a href={"oauth/github" + (search.redirect ? "?redirect=" + encodeURIComponent(search.redirect!) : "")}>
+              <a href={"/oauth/github" + (redirect ? "?redirect=" + redirect : "")}>
                 <GithubIcon className="mr-4 size-4" />
                 <span className="mt-0 text-sm font-medium leading-none">Continue with GitHub</span>
               </a>
@@ -108,7 +88,7 @@ export function Signup() {
           </form>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
-            <Link to="/login" search={{ redirect: search.redirect }} className="underline">
+            <Link to="/login" search={{ redirect }} className="underline">
               Log in
             </Link>
           </div>

@@ -41,7 +41,6 @@ export function Room() {
     navigator
       .share({
         title: "Waterfood",
-        text: "Decide where to eat with us!",
         url: `${window.location.origin}/room/${roomId}`,
       })
       .catch(() => {});

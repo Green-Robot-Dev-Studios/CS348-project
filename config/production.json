@@ -4,13 +4,6 @@
     "https://waterfood.ca"
   ],
   "port": 80,
-  "authentication": {
-    "oauth": {
-      "defaults": {
-        "origin": "https://waterfood.ca"
-      }
-    }
-  },
   "mysql": {
     "client": "mysql",
     "connection": "mysql://root:goose4dinner@srv-captain--waterfood-v8-db:3306/waterfood"

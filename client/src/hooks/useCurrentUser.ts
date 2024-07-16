@@ -15,7 +15,7 @@ const useCurrentUser = (props = { redirectIfNotAuthenticated: false }) => {
       .then((auth) => setUser(auth.user))
       .catch(() => {
         if (props.redirectIfNotAuthenticated)
-          navigate({ to: "/login", search: { redirect: window.location.pathname } });
+          navigate({ to: "/signup", search: { redirect: window.location.pathname } });
       });
   }, [feathers]);
 
