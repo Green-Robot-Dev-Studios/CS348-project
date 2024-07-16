@@ -43,7 +43,7 @@ export function Login() {
     }
   };
 
-  const handleForgotPassword = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleForgotPassword = () => {
     toast("Sorry bro... just make a new account", {
       action: {
         label: "Sign up",

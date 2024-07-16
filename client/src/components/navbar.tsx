@@ -1,7 +1,7 @@
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useFeathers } from "figbird";
-import { LogOut, PanelLeft, PlusIcon, Search, Settings, UserCog } from "lucide-react";
+import { LogOut, PanelLeft, PlusIcon, Search, UserCog } from "lucide-react";
 import DisplayUser from "./display-user";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
