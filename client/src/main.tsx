@@ -41,7 +41,7 @@ if (!rootElement.innerHTML) {
             <TooltipProvider>
               <AuthProvider>
                 <RouterProvider router={router} />
-                <Toaster />
+                <Toaster richColors/>
               </AuthProvider>
             </TooltipProvider>
           </ThemeProvider>

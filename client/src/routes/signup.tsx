@@ -53,7 +53,7 @@ export function Signup() {
 
       navigate({ to: redirect || "/" });
     } catch (error) {
-      toast("Error creating account");
+      toast.error("Error creating account");
       console.error(error);
     }
   };

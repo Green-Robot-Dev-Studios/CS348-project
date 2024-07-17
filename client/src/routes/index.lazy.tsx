@@ -50,7 +50,7 @@ export function Dashboard() {
       },
       (error) => {
         console.error(error);
-        toast("Error getting location");
+        toast.error("Error getting location");
       },
     );
   };
