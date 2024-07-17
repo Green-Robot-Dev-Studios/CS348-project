@@ -28,12 +28,13 @@ export function ResultsPage() {
   const promptSaveAccount = () => {
     if (user?.email?.includes("@")) return;
 
-    toast("Save your account?", {
+    toast.info("Save your account?", {
       description: "Set your email and password to log in next time",
       action: {
         label: "Account Settings",
         onClick: () => navigate({ to: "/account" }),
       },
+      duration: Infinity
     });
   }
 
