@@ -2,8 +2,8 @@ import useAuth from "@/auth/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import useProtectRoute from "@/hooks/useProtectRoute";
-import { Label } from "@radix-ui/react-label";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useMutation } from "figbird";
 import { useEffect, useState } from "react";
@@ -35,12 +35,12 @@ export function Account() {
 
     try {
       const result = await patch(user.id, { name, email, passwordHash: password || undefined });
-      if (newUser) toast("Email and password set!");
-      else toast("Account updated")
+      if (newUser) toast.success("Email and password set!");
+      else toast.success("Account updated")
       setUser(result);
       setPassword("");
     } catch (error) {
-      toast("Error updating account");
+      toast.error("Error updating account");
       console.error(error);
     }
   };
@@ -57,18 +57,19 @@ export function Account() {
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
-            <Label>Name</Label>
-            <Input id="name" required value={name} onChange={(e) => setName(e.target.value)} />
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="grid gap-2">
-            <Label>Email</Label>
-            <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="grid gap-2">
-            <Label>Password{newUser ? "*" : ""}</Label>
+            <Label htmlFor="password">{newUser ? "Password*" : "New Password"}</Label>
             <Input
               id="password"
               type="password"
+              autoComplete="new-password"
               required={newUser}
               value={password}
               onChange={(e) => setPassword(e.target.value)}

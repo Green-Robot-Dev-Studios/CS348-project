@@ -2,8 +2,8 @@ import useAuth from "@/auth/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Spinner from "@/components/ui/spinner";
-import { Label } from "@radix-ui/react-dropdown-menu";
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useFeathers } from "figbird";
 import { GithubIcon } from "lucide-react";
@@ -67,11 +67,12 @@ export function Login() {
       <CardContent>
         <form className="grid gap-4" onSubmit={handleSubmit}>
           <div className="grid gap-2">
-            <Label>Email</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               placeholder="m@example.com"
+              autoComplete="email"
               required
               value={email}
               tabIndex={1}
@@ -80,7 +81,7 @@ export function Login() {
           </div>
           <div className="grid gap-2">
             <div className="flex items-center">
-              <Label>Password</Label>
+              <Label htmlFor="password">Password</Label>
               <Link
                 href="#"
                 className="ml-auto inline-block pl-8 text-sm underline"
@@ -93,6 +94,7 @@ export function Login() {
             <Input
               id="password"
               type="password"
+              autoComplete="current-password"
               required
               value={password}
               tabIndex={2}
