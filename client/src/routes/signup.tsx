@@ -1,3 +1,4 @@
+import useAuth from "@/auth/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,7 @@ import { Link, createFileRoute, useNavigate, useSearch } from "@tanstack/react-r
 import { useFeathers, useMutation } from "figbird";
 import { GithubIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type SignupSearch = {
   redirect?: string;
@@ -25,6 +27,7 @@ const choice = Math.random() > 0.5;
 const nameExample = choice ? "John Doe" : "Mary Smith";
 
 export function Signup() {
+  const { user, setUser } = useAuth();
   const feathers = useFeathers();
   const { redirect } = useSearch({ from: "/signup" });
   const navigate = useNavigate();
@@ -34,11 +37,8 @@ export function Signup() {
   const [name, setName] = useState("");
 
   useEffect(() => {
-    if (feathers.authentication.authenticated) {
-      if (redirect) navigate({ to: redirect });
-      else navigate({ to: "/" });
-    }
-  }, [feathers.authentication.authenticated]);
+    if (user !== null) navigate({ to: redirect || "/" });
+  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,11 +48,13 @@ export function Signup() {
       const passwordHash = generateRandomPassword();
       await create({ name, email, passwordHash });
 
-      await feathers.authenticate({ strategy: "local", email, passwordHash });
+      const result = await feathers.authenticate({ strategy: "local", email, passwordHash });
+      setUser(result.user);
 
       navigate({ to: redirect || "/" });
     } catch (error) {
-      // console.error(error);
+      toast("Error creating account");
+      console.error(error);
     }
   };
 

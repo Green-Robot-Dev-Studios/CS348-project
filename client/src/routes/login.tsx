@@ -1,3 +1,4 @@
+import useAuth from "@/auth/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/login")({
 });
 
 export function Login() {
+  const { user, setUser } = useAuth();
   const feathers = useFeathers();
   const { redirect } = useSearch({ from: "/login" });
   const navigate = useNavigate();
@@ -35,7 +37,8 @@ export function Login() {
 
     try {
       setStatus("loading");
-      await feathers.authenticate({ strategy: "local", email, passwordHash: password });
+      const result = await feathers.authenticate({ strategy: "local", email, passwordHash: password });
+      setUser(result.user);
 
       navigate({ to: redirect || "/" });
     } catch (error) {
@@ -48,65 +51,72 @@ export function Login() {
       action: {
         label: "Sign up",
         onClick: () => navigate({ to: "/signup", search: { redirect } }),
-      }
+      },
     });
   };
 
   useEffect(() => {
-    if (feathers.authentication.authenticated) navigate({ to: redirect || "/" });
-  }, [feathers.authentication.authenticated]);
+    if (user !== null) navigate({ to: redirect || "/" });
+  }, [user]);
 
   return (
-      <Card className="lg:min-w-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className="grid gap-4" onSubmit={handleSubmit}>
-            <div className="grid gap-2">
-              <Label>Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label>Password</Label>
-                <Link href="#" className="ml-auto pl-8 inline-block text-sm underline" onClick={handleForgotPassword}>
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input
-                id="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {status === "error" && <div className="text-sm text-red-500">Invalid email or password</div>}
-            </div>
-            <Button type="submit" className="w-full" disabled={status === "loading"}>
-              Login {status === "loading" && <Spinner />}
-            </Button>
-            <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
-              <a href={"/oauth/github" + (redirect ? "?redirect=" + encodeURIComponent(redirect) : "")}>
-                <GithubIcon className="mr-4 size-4" />
-                <span className="mt-0 text-sm font-medium leading-none">Continue with GitHub</span>
-              </a>
-            </Button>
-          </form>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link to="/signup" search={{ redirect }} className="underline">
-              Sign up
-            </Link>
+    <Card className="lg:min-w-lg">
+      <CardHeader>
+        <CardTitle className="text-2xl">Login</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form className="grid gap-4" onSubmit={handleSubmit}>
+          <div className="grid gap-2">
+            <Label>Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              required
+              value={email}
+              tabIndex={1}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-        </CardContent>
-      </Card>
+          <div className="grid gap-2">
+            <div className="flex items-center">
+              <Label>Password</Label>
+              <Link
+                href="#"
+                className="ml-auto inline-block pl-8 text-sm underline"
+                onClick={handleForgotPassword}
+                tabIndex={5}
+              >
+                Forgot your password?
+              </Link>
+            </div>
+            <Input
+              id="password"
+              type="password"
+              required
+              value={password}
+              tabIndex={2}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {status === "error" && <div className="text-sm text-red-500">Invalid email or password</div>}
+          </div>
+          <Button type="submit" tabIndex={3} className="w-full" disabled={status === "loading"}>
+            Login {status === "loading" && <Spinner />}
+          </Button>
+          <Button className="w-full" tabIndex={4} variant="secondary" disabled={status === "loading"} asChild>
+            <a href={"/oauth/github" + (redirect ? "?redirect=" + encodeURIComponent(redirect) : "")}>
+              <GithubIcon className="mr-4 size-4" />
+              <span className="mt-0 text-sm font-medium leading-none">Continue with GitHub</span>
+            </a>
+          </Button>
+        </form>
+        <div className="mt-4 text-center text-sm">
+          Don&apos;t have an account?{" "}
+          <Link to="/signup" search={{ redirect }} className="underline">
+            Sign up
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

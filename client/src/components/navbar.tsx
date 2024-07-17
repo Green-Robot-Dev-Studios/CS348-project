@@ -1,6 +1,5 @@
-import useCurrentUser from "@/hooks/useCurrentUser";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useFeathers } from "figbird";
+import useAuth from "@/auth/useAuth";
+import { Link } from "@tanstack/react-router";
 import { LogOut, PanelLeft, PlusIcon, Search, UserCog } from "lucide-react";
 import DisplayUser from "./display-user";
 import { Button } from "./ui/button";
@@ -10,17 +9,10 @@ const highlightedMenuClasses = "flex items-center gap-4 px-2.5 text-foreground";
 const normalMenuClasses = "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground";
 
 const Navbar = () => {
-  const feathers = useFeathers();
-  const navigate = useNavigate();
-  const { user } = useCurrentUser();
-
-  const handleLogout = async () => {
-    await feathers.logout();
-    navigate({ to: "/signup", search: { redirect: "" } });
-  };
+  const { user, logout } = useAuth();
 
   return (
-    <header className="sticky flex items-center gap-4 border-0 border-b bg-background pl-6 w-full">
+    <header className="sticky flex w-full items-center gap-4 border-0 border-b bg-background pl-6">
       <Link to="/" className="text-center font-display text-xl font-semibold">
         Waterfood
       </Link>
@@ -46,17 +38,24 @@ const Navbar = () => {
               <Search className="h-5 w-5" />
               Browse Food
             </Link>
-            {user && <Link to="/account" className={window.location.pathname === "/account" ? highlightedMenuClasses : normalMenuClasses}>
-              <UserCog className="h-5 w-5" />
-              Account Settings
-            </Link>}
-            {user && <Link
-              onClick={handleLogout}
-              className={window.location.pathname === "/browse" ? highlightedMenuClasses : normalMenuClasses}
-            >
-              <LogOut className="h-5 w-5" />
-              Logout
-            </Link>}
+            {user && (
+              <Link
+                to="/account"
+                className={window.location.pathname === "/account" ? highlightedMenuClasses : normalMenuClasses}
+              >
+                <UserCog className="h-5 w-5" />
+                Account Settings
+              </Link>
+            )}
+            {user && (
+              <Link
+                onClick={logout}
+                className={window.location.pathname === "/browse" ? highlightedMenuClasses : normalMenuClasses}
+              >
+                <LogOut className="h-5 w-5" />
+                Logout
+              </Link>
+            )}
           </nav>
         </SheetContent>
       </Sheet>

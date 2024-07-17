@@ -1,5 +1,6 @@
+import useAuth from "@/auth/useAuth";
 import SwipeScreen from "@/components/swipe-screen";
-import useCurrentUser from "@/hooks/useCurrentUser";
+import useProtectRoute from "@/hooks/useProtectRoute";
 import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
 import { useFind, useGet, useMutation } from "figbird";
 
@@ -8,8 +9,10 @@ export const Route = createLazyFileRoute("/swipe/$roomId")({
 });
 
 export function Swipe() {
+  useProtectRoute();
   const { roomId } = Route.useParams();
-  const { user } = useCurrentUser({ redirectIfNotAuthenticated: true });
+
+  const { user } = useAuth();
 
   const { data: room } = useGet("rooms", roomId);
   const { data: closeFoods } = useFind("close-food", { query: { roomId } });

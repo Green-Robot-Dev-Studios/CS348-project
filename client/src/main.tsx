@@ -1,17 +1,18 @@
-import { StrictMode } from "react";
-import "../app/globals.css";
 import "@fontsource-variable/playfair-display";
-import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { Provider as JotaiProvider } from "jotai";
 import { Provider as FigbirdProvider } from "figbird";
-import { ThemeProvider } from "./components/theme-provider";
+import { Provider as JotaiProvider } from "jotai";
+import { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
 import { User, createClient } from "waterfood";
+import "../app/globals.css";
+import { ThemeProvider } from "./components/theme-provider";
 
 // Import the generated route tree
-import { routeTree } from "./routeTree.gen";
-import { TooltipProvider } from "./components/ui/tooltip";
+import AuthProvider from "./auth/authProvider";
 import { Toaster } from "./components/ui/sonner";
+import { TooltipProvider } from "./components/ui/tooltip";
+import { routeTree } from "./routeTree.gen";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -38,8 +39,10 @@ if (!rootElement.innerHTML) {
         <FigbirdProvider feathers={client}>
           <ThemeProvider>
             <TooltipProvider>
-              <RouterProvider router={router} />
-              <Toaster />
+              <AuthProvider>
+                <RouterProvider router={router} />
+                <Toaster />
+              </AuthProvider>
             </TooltipProvider>
           </ThemeProvider>
         </FigbirdProvider>

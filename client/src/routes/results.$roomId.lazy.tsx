@@ -1,21 +1,23 @@
+import useAuth from "@/auth/useAuth";
 import ScoreCard, { SkeletonScoreCard } from "@/components/score-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import useProtectRoute from "@/hooks/useProtectRoute";
+import { useTimeout } from "@/hooks/useTimeout";
 import formatTime from "@/utils/formatTime";
+import getPhotoLink from "@/utils/getPhotoLink";
 import { createLazyFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { useGet } from "figbird";
-import { Scoresheet } from "../../../lib/client";
-import getPhotoLink from "@/utils/getPhotoLink";
-import { useTimeout } from "@/hooks/useTimeout";
 import { toast } from "sonner";
-import useCurrentUser from "@/hooks/useCurrentUser";
+import { Scoresheet } from "../../../lib/client";
 
 export const Route = createLazyFileRoute("/results/$roomId")({
   component: ResultsPage,
 });
 
 export function ResultsPage() {
-  const { user } = useCurrentUser({ redirectIfNotAuthenticated: true });
+  useProtectRoute();
+  const { user } = useAuth();
   const { roomId } = Route.useParams();
   const navigate = useNavigate();
 

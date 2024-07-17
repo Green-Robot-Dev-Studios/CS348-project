@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import useMap from "@/hooks/useMap";
+import useProtectRoute from "@/hooks/useProtectRoute";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/preferences/$roomId")({
@@ -11,6 +12,7 @@ export const Route = createLazyFileRoute("/preferences/$roomId")({
 const preferences = ["halal", "vegetarian", "vegan", "gluten-free", "dairy-free", "nut-free", "kosher", "pescatarian"];
 
 export function Preferences() {
+  useProtectRoute();
   const navigate = useNavigate();
   const { roomId } = Route.useParams();
 

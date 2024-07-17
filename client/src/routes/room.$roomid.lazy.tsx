@@ -1,8 +1,9 @@
+import useAuth from "@/auth/useAuth";
 import DisplayUser from "@/components/display-user";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import useCurrentUser from "@/hooks/useCurrentUser";
+import useProtectRoute from "@/hooks/useProtectRoute";
 import { cn } from "@/lib/utils";
 import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
 import { useFind, useMutation } from "figbird";
@@ -15,9 +16,10 @@ export const Route = createLazyFileRoute("/room/$roomid")({
 });
 
 export function Room() {
+  useProtectRoute();
   const { roomid: roomId } = Route.useParams();
 
-  const { user } = useCurrentUser({ redirectIfNotAuthenticated: true });
+  const { user } = useAuth();
 
   const { data } = useFind("connections", { query: { roomId } });
   const userConnection = data?.find((connection) => connection.userId === user?.id);

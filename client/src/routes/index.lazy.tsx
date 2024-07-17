@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import useCurrentUser from "@/hooks/useCurrentUser";
+import useProtectRoute from "@/hooks/useProtectRoute";
 import { Label } from "@radix-ui/react-label";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation } from "figbird";
 import { LocateIcon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const Route = createLazyFileRoute("/")({
   component: Dashboard,
@@ -15,7 +16,7 @@ export const Route = createLazyFileRoute("/")({
 const WATERLOO_COORDS = { latitude: 43.4723, longitude: -80.5449 };
 
 export function Dashboard() {
-  useCurrentUser({ redirectIfNotAuthenticated: true });
+  useProtectRoute();
   const navigate = useNavigate();
 
   const { create } = useMutation("rooms");
@@ -42,70 +43,76 @@ export function Dashboard() {
   };
 
   const handleGetLocation = async () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLatitude(position.coords.latitude);
-      setLongitude(position.coords.longitude);
-    }, console.error);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+      },
+      (error) => {
+        console.error(error);
+        toast("Error getting location");
+      },
+    );
   };
 
   return (
-      <form className="flex gap-4 justify-center" onSubmit={handleSubmit}>
-        <Card className="ax-w-lg sm:col-span-2" x-chunk="dashboard-05-chunk-0">
-          <CardHeader className="pb-3">
-            <CardTitle>Create a new room</CardTitle>
-            <CardDescription className="text-balance leading-relaxed">
-              Get a scannable QR code to share with your guests. They can use it to join your room!
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-2">
-              <Label>Latitude</Label>
-              <Input
-                id="latitude"
-                type="number"
-                value={latitude ?? undefined}
-                onChange={(e) => setLatitude(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-2 pb-2">
-              <Label>Longitude</Label>
-              <Input
-                id="longitude"
-                type="number"
-                value={longitude ?? undefined}
-                onChange={(e) => setLongitude(e.target.value)}
-              />
-            </div>
-            <Button variant="secondary" type="button" onClick={handleGetLocation} className="w-full">
-              <LocateIcon className="size-5 mr-2" />
-              Get Current Location
-            </Button>
-            <hr className="my-4" />
-            <div className="grid gap-2">
-              <Label>Max Distance (m)</Label>
-              <Input
-                id="maxDistance"
-                type="number"
-                value={maxDistance}
-                onChange={(e) => setMaxDistance(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label>Search Number</Label>
-              <Input
-                id="searchNumber"
-                type="number"
-                value={searchNumber}
-                onChange={(e) => setSearchNumber(e.target.value)}
-              />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" className="w-full">
-              Create
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
+    <form className="flex justify-center gap-4" onSubmit={handleSubmit}>
+      <Card className="ax-w-lg sm:col-span-2" x-chunk="dashboard-05-chunk-0">
+        <CardHeader className="pb-3">
+          <CardTitle>Create a new room</CardTitle>
+          <CardDescription className="text-balance leading-relaxed">
+            Get a scannable QR code to share with your guests. They can use it to join your room!
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-2">
+            <Label>Latitude</Label>
+            <Input
+              id="latitude"
+              type="number"
+              value={latitude ?? undefined}
+              onChange={(e) => setLatitude(e.target.value)}
+            />
+          </div>
+          <div className="grid gap-2 pb-2">
+            <Label>Longitude</Label>
+            <Input
+              id="longitude"
+              type="number"
+              value={longitude ?? undefined}
+              onChange={(e) => setLongitude(e.target.value)}
+            />
+          </div>
+          <Button variant="secondary" type="button" onClick={handleGetLocation} className="w-full">
+            <LocateIcon className="mr-2 size-5" />
+            Get Current Location
+          </Button>
+          <hr className="my-4" />
+          <div className="grid gap-2">
+            <Label>Max Distance (m)</Label>
+            <Input
+              id="maxDistance"
+              type="number"
+              value={maxDistance}
+              onChange={(e) => setMaxDistance(e.target.value)}
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label>Search Number</Label>
+            <Input
+              id="searchNumber"
+              type="number"
+              value={searchNumber}
+              onChange={(e) => setSearchNumber(e.target.value)}
+            />
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button type="submit" className="w-full">
+            Create
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 }
