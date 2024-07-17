@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import Spinner from "@/components/ui/spinner";
 import useProtectRoute from "@/hooks/useProtectRoute";
+import getLocation from "@/utils/getLocation";
 import { Label } from "@radix-ui/react-label";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation } from "figbird";
@@ -26,6 +28,8 @@ export function Dashboard() {
   const [maxDistance, setMaxDistance] = useState<number | string>(1000);
   const [searchNumber, setSearchNumber] = useState<number | string>(15);
 
+  const [loadingLocation, setLoadingLocation] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -43,16 +47,16 @@ export function Dashboard() {
   };
 
   const handleGetLocation = async () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
-      },
-      (error) => {
-        console.error(error);
-        toast.error("Error getting location");
-      },
-    );
+    setLoadingLocation(true);
+    try {
+      const { latitude, longitude } = await getLocation();
+      setLatitude(latitude);
+      setLongitude(longitude);
+    } catch (error) {
+      toast.error("Error getting location");
+      console.error(error);
+    }
+    setLoadingLocation(false);
   };
 
   return (
@@ -83,8 +87,14 @@ export function Dashboard() {
               onChange={(e) => setLongitude(e.target.value)}
             />
           </div>
-          <Button variant="secondary" type="button" onClick={handleGetLocation} className="w-full">
-            <LocateIcon className="mr-2 size-5" />
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={handleGetLocation}
+            className="w-full"
+            disabled={loadingLocation}
+          >
+            {loadingLocation ? <Spinner className="mr-2" /> : <LocateIcon className="mr-2 size-5" />}
             Get Current Location
           </Button>
           <hr className="my-4" />
