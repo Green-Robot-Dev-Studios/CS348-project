@@ -15,10 +15,10 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as SignupImport } from './routes/signup'
 import { Route as LoginImport } from './routes/login'
+import { Route as BrowseImport } from './routes/browse'
 
 // Create Virtual Routes
 
-const BrowseLazyImport = createFileRoute('/browse')()
 const AccountLazyImport = createFileRoute('/account')()
 const IndexLazyImport = createFileRoute('/')()
 const SwipeRoomIdLazyImport = createFileRoute('/swipe/$roomId')()
@@ -28,11 +28,6 @@ const PreferencesRoomIdLazyImport = createFileRoute('/preferences/$roomId')()
 const OauthProviderLazyImport = createFileRoute('/oauth/$provider')()
 
 // Create/Update Routes
-
-const BrowseLazyRoute = BrowseLazyImport.update({
-  path: '/browse',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/browse.lazy').then((d) => d.Route))
 
 const AccountLazyRoute = AccountLazyImport.update({
   path: '/account',
@@ -46,6 +41,11 @@ const SignupRoute = SignupImport.update({
 
 const LoginRoute = LoginImport.update({
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BrowseRoute = BrowseImport.update({
+  path: '/browse',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -96,6 +96,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/browse': {
+      id: '/browse'
+      path: '/browse'
+      fullPath: '/browse'
+      preLoaderRoute: typeof BrowseImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -115,13 +122,6 @@ declare module '@tanstack/react-router' {
       path: '/account'
       fullPath: '/account'
       preLoaderRoute: typeof AccountLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/browse': {
-      id: '/browse'
-      path: '/browse'
-      fullPath: '/browse'
-      preLoaderRoute: typeof BrowseLazyImport
       parentRoute: typeof rootRoute
     }
     '/oauth/$provider': {
@@ -166,10 +166,10 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
+  BrowseRoute,
   LoginRoute,
   SignupRoute,
   AccountLazyRoute,
-  BrowseLazyRoute,
   OauthProviderLazyRoute,
   PreferencesRoomIdLazyRoute,
   ResultsRoomIdLazyRoute,
@@ -186,10 +186,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/browse",
         "/login",
         "/signup",
         "/account",
-        "/browse",
         "/oauth/$provider",
         "/preferences/$roomId",
         "/results/$roomId",
@@ -200,6 +200,9 @@ export const routeTree = rootRoute.addChildren({
     "/": {
       "filePath": "index.lazy.tsx"
     },
+    "/browse": {
+      "filePath": "browse.tsx"
+    },
     "/login": {
       "filePath": "login.tsx"
     },
@@ -208,9 +211,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/account": {
       "filePath": "account.lazy.tsx"
-    },
-    "/browse": {
-      "filePath": "browse.lazy.tsx"
     },
     "/oauth/$provider": {
       "filePath": "oauth.$provider.lazy.tsx"

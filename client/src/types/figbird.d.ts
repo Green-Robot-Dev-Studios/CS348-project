@@ -33,6 +33,9 @@ declare module "figbird" {
 
   interface FetchResult<T = any> {
     data: null | T;
+    total: number;
+    limit: number;
+    skip: number;
     status: Status;
     isFetching?: null | boolean;
     error?: null | any;
