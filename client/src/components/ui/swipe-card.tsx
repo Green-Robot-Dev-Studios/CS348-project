@@ -14,7 +14,7 @@ type CardProps = {
   removeCard: (id: string, action: "right" | "left") => void;
 };
 
-const SwipeCard = ({ data, active, removeCard }: CardProps) => {
+const SwipeCard = ({ data, removeCard }: CardProps) => {
   const [exitX, setExitX] = useState(0);
 
   const x = useMotionValue(0);
