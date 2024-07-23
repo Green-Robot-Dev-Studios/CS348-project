@@ -7,7 +7,7 @@ import getLocation from "@/utils/getLocation";
 import { Label } from "@radix-ui/react-label";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation } from "figbird";
-import { LocateIcon } from "lucide-react";
+import { LocateIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -21,7 +21,7 @@ export function Dashboard() {
   useProtectRoute();
   const navigate = useNavigate();
 
-  const { create } = useMutation("rooms");
+  const { create, status } = useMutation("rooms");
 
   const [latitude, setLatitude] = useState<number | string>(WATERLOO_COORDS.latitude);
   const [longitude, setLongitude] = useState<number | string>(WATERLOO_COORDS.longitude);
@@ -60,8 +60,8 @@ export function Dashboard() {
   };
 
   return (
-    <form className="gap-4" onSubmit={handleSubmit}>
-      <Card className="ax-w-lg sm:col-span-2" x-chunk="dashboard-05-chunk-0">
+    <form className="flex flex-grow flex-col gap-4" onSubmit={handleSubmit}>
+      <Card className="ax-w-lg flex flex-grow flex-col sm:col-span-2" x-chunk="dashboard-05-chunk-0">
         <CardHeader className="pb-3">
           <CardTitle>Create a new room</CardTitle>
           <CardDescription className="prose text-balance leading-relaxed">
@@ -74,7 +74,7 @@ export function Dashboard() {
             </ol>
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-grow">
           <div className="grid gap-2">
             <Label>Latitude</Label>
             <Input
@@ -125,7 +125,7 @@ export function Dashboard() {
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full">
-            Create
+            {status === "loading" ? <Spinner className="mr-2" /> : <PlusIcon className="mr-2 size-5" />} Create
           </Button>
         </CardFooter>
       </Card>

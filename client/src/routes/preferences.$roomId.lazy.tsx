@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import useMap from "@/hooks/useMap";
 import useProtectRoute from "@/hooks/useProtectRoute";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
+import { ArrowRightIcon } from "lucide-react";
 
 export const Route = createLazyFileRoute("/preferences/$roomId")({
   component: Preferences,
@@ -29,7 +30,7 @@ export function Preferences() {
   };
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-grow flex-col">
       <CardHeader>
         <CardTitle>Select your preferences!</CardTitle>
       </CardHeader>
@@ -48,7 +49,8 @@ export function Preferences() {
       </CardContent>
       <CardFooter>
         <Button onClick={handleStart} className="w-full">
-          {noneSelected ? "No preference, start swiping!": "Start swiping!"}
+          <ArrowRightIcon className="mr-2 size-5" />
+          {noneSelected ? "No preference, start swiping!" : "Start swiping!"}
         </Button>
       </CardFooter>
     </Card>

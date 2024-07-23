@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Spinner from "@/components/ui/spinner";
 import useProtectRoute from "@/hooks/useProtectRoute";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useMutation } from "figbird";
+import { SaveIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -16,7 +18,7 @@ export const Route = createLazyFileRoute("/account")({
 export function Account() {
   useProtectRoute();
   const { user, setUser } = useAuth();
-  const { patch } = useMutation("users");
+  const { patch, status } = useMutation("users");
 
   const [name, setName] = useState(user?.name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
@@ -36,7 +38,7 @@ export function Account() {
     try {
       const result = await patch(user.id, { name, email, passwordHash: password || undefined });
       if (newUser) toast.success("Email and password set!");
-      else toast.success("Account updated")
+      else toast.success("Account updated");
       setUser(result);
       setPassword("");
     } catch (error) {
@@ -50,19 +52,26 @@ export function Account() {
   const changed = name !== user.name || (email && email !== user.email) || password !== "";
 
   return (
-    <Card className="flex w-full max-w-lg flex-col">
-      <form onSubmit={handleSubmit}>
+    <Card className="flex w-full max-w-lg flex-grow flex-col">
+      <form className="flex flex-grow flex-col" onSubmit={handleSubmit}>
         <CardHeader>
           <CardTitle>Account Settings</CardTitle>
         </CardHeader>
-        <CardContent className="grid gap-4">
+        <CardContent className="flex flex-grow flex-col gap-4">
           <div className="grid gap-2">
             <Label htmlFor="name">Name</Label>
             <Input id="name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">{newUser ? "Password*" : "New Password"}</Label>
@@ -78,7 +87,7 @@ export function Account() {
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full" disabled={!changed}>
-            Save Changes
+            {status === "loading" ? <Spinner className="mr-2" /> : <SaveIcon className="mr-2 size-5" />} Save Changes
           </Button>
         </CardFooter>
       </form>
