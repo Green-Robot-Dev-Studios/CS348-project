@@ -104,7 +104,7 @@ export function Login() {
           </div>
           <Button type="submit" tabIndex={3} className="w-full" disabled={status === "loading"}>
             {redirect?.includes("room") ? "Join room" : "Login"}{" "}
-            {status === "loading" && <Spinner className="ml-4" />}
+            {status === "loading" && <Spinner className="ml-2" />}
           </Button>
           <Button className="w-full" tabIndex={4} variant="secondary" disabled={status === "loading"} asChild>
             <a href={"/oauth/github" + (redirect ? "?redirect=" + encodeURIComponent(redirect) : "")}>
