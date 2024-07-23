@@ -1,6 +1,6 @@
 import useAuth from "@/auth/useAuth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/ui/spinner";
 import generateRandomPassword from "@/utils/generateRandomPasssword";
@@ -61,7 +61,8 @@ export function Signup() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
+        <CardTitle>It's tinder for food</CardTitle>
+        <CardDescription>Help your group decide by swiping on restaurants</CardDescription>
       </CardHeader>
       <CardContent>
         <form className="grid gap-4" onSubmit={handleSubmit}>
@@ -76,7 +77,8 @@ export function Signup() {
             />
           </div>
           <Button type="submit" disabled={status === "loading"}>
-            Continue {status === "loading" && <Spinner />}
+            {redirect?.includes("room") ? "Join room" : "Sign Up"}{" "}
+            {status === "loading" && <Spinner className="ml-4" />}
           </Button>
           <Button className="w-full" variant="secondary" disabled={status === "loading"} asChild>
             <a href={"/oauth/github" + (redirect ? "?redirect=" + redirect : "")}>
