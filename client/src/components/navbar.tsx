@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <header className="sticky flex w-full items-center gap-4 border-0 border-b bg-background pl-6">
       <Link to="/" className="text-center font-display text-xl font-semibold">
-        Waterfood
+        fynder.food
       </Link>
       <span className="flex-grow"></span>
       <Sheet>

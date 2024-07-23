@@ -20,6 +20,6 @@ WORKDIR /app
 
 EXPOSE 80
 ENV NODE_ENV=production
-ENV host="waterfood.aaronolsen.ca"
+ENV host="fynder.food"
 
 CMD [ "npm", "start" ]

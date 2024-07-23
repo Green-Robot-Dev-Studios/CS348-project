@@ -1,4 +1,6 @@
-# Waterfood
+# fynder.food
+
+It's tinder for food.
 
 **We fetched our data from Google Places API:**
 <https://developers.google.com/maps/documentation/places/web-service/overview>

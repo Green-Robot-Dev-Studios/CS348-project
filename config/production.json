@@ -1,13 +1,13 @@
 {
-  "host": "waterfood.ca",
+  "host": "fynder.food",
   "origins": [
-    "https://waterfood.ca"
+    "https://fynder.food"
   ],
   "port": 80,
   "authentication": {
     "oauth": {
       "defaults": {
-        "origin": "https://waterfood.ca"
+        "origin": "https://fynder.food"
       }
     }
   },

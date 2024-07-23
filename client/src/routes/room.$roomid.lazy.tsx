@@ -38,13 +38,7 @@ export function Room() {
     create({ userId: user.id, roomId });
   }, [roomId, user]);
 
-  const handleShare = () =>
-    navigator
-      .share({
-        title: "Waterfood",
-        url: `${window.location.origin}/room/${roomId}`,
-      })
-      .catch(() => {});
+  const handleShare = () => navigator.share({ url: `${window.location.origin}/room/${roomId}` }).catch(() => {});
 
   if (allReady) return <Navigate to={`/preferences/${roomId}`} />;
 
