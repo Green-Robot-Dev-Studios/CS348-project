@@ -43,7 +43,7 @@ export function Room() {
   if (allReady) return <Navigate to={`/preferences/${roomId}`} />;
 
   return (
-    <>
+    <Card className="flex flex-grow flex-col p-4 gap-4">
       <div className="mx-auto flex flex-col gap-4">
         <Card
           className="cursor-pointer bg-white p-4 shadow-sm transition-all duration-300 ease-in-out hover:shadow-xl"
@@ -55,7 +55,7 @@ export function Room() {
           {userReady ? "Unready" : "Ready Up"}
         </Button>
       </div>
-      <Table className="mx-auto max-w-lg">
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
@@ -75,6 +75,6 @@ export function Room() {
           ))}
         </TableBody>
       </Table>
-    </>
+    </Card>
   );
 }
