@@ -24,8 +24,8 @@ export function Dashboard() {
 
   const { create, status } = useMutation("rooms");
 
-  const [latitude, setLatitude] = useState<number | string>(WATERLOO_COORDS.latitude);
-  const [longitude, setLongitude] = useState<number | string>(WATERLOO_COORDS.longitude);
+  const [latitude, setLatitude] = useState<number>(WATERLOO_COORDS.latitude);
+  const [longitude, setLongitude] = useState<number>(WATERLOO_COORDS.longitude);
   const [maxDistance, setMaxDistance] = useState<number>(500);
   const [searchNumber, setSearchNumber] = useState<number>(15);
 
@@ -68,11 +68,11 @@ export function Dashboard() {
         </CardHeader>
         <CardContent className="flex flex-grow flex-col gap-4">
           <MapComponent
-            lat={Number(latitude)}
+            lat={latitude}
             setLat={setLatitude}
-            lng={Number(longitude)}
+            lng={longitude}
             setLng={setLongitude}
-            maxDistance={Number(maxDistance)}
+            maxDistance={maxDistance}
           />
           <Button
             variant="secondary"
