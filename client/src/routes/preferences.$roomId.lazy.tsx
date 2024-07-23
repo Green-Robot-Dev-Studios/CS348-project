@@ -18,6 +18,8 @@ export function Preferences() {
 
   const selectedPrefs = useMap(preferences.map((pref) => [pref, false]));
 
+  const noneSelected = Array.from(selectedPrefs.values()).every((value) => !value);
+
   const handleChange = (preference: string, checked: string | boolean) => {
     selectedPrefs.set(preference, checked);
   };
@@ -46,7 +48,7 @@ export function Preferences() {
       </CardContent>
       <CardFooter>
         <Button onClick={handleStart} className="w-full">
-          Start swiping!
+          {noneSelected ? "No preference, start swiping!": "Start swiping!"}
         </Button>
       </CardFooter>
     </Card>
