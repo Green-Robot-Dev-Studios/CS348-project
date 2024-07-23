@@ -1,7 +1,6 @@
-import MapComponent from "@/components/map/map-component";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import MapComponent from "@/components/ui/map-component";
 import { Slider } from "@/components/ui/slider";
 import Spinner from "@/components/ui/spinner";
 import useProtectRoute from "@/hooks/useProtectRoute";
