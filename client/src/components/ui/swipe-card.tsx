@@ -1,12 +1,12 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, X, MapPin } from "lucide-react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { CheckIcon, MapPinIcon, XIcon } from "lucide-react";
 
-import { useState } from "react";
-import { motion, PanInfo, useMotionValue, useTransform } from "framer-motion";
-import getPhotoLink from "@/utils/getPhotoLink";
-import { CloseFood } from "waterfood";
 import { cn } from "@/lib/utils";
+import getPhotoLink from "@/utils/getPhotoLink";
+import { motion, PanInfo, useMotionValue, useMotionValueEvent, useTransform } from "framer-motion";
+import { useState } from "react";
+import { CloseFood } from "waterfood";
 
 type CardProps = {
   data: CloseFood;
@@ -16,6 +16,7 @@ type CardProps = {
 
 const SwipeCard = ({ data, removeCard }: CardProps) => {
   const [exitX, setExitX] = useState(0);
+  const [drag, setDrag] = useState(0);
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-25, 25]);
@@ -39,6 +40,8 @@ const SwipeCard = ({ data, removeCard }: CardProps) => {
     }
     removeCard(data.id, action);
   };
+
+  useMotionValueEvent(x, "change", (value) => setDrag(value));
 
   return (
     <motion.div
@@ -69,25 +72,25 @@ const SwipeCard = ({ data, removeCard }: CardProps) => {
           <Button
             size="icon"
             onClick={() => buttonSwipe("left")}
-            className="h-11 w-11 rounded-full bg-red-400 px-3 py-2"
+            className={cn(`size-11 rounded-full bg-red-400 transition-transform`, drag < -20 && "scale-125")}
           >
-            <X />
+            <XIcon />
           </Button>
-          <Button className="h-11 w-11 rounded-full" asChild size="icon">
+          <Button className="size-11 rounded-full" asChild size="icon">
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${data.displayName}&query_place_id=${data.id}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <MapPin />
+              <MapPinIcon />
             </a>
           </Button>
           <Button
             size="icon"
             onClick={() => buttonSwipe("right")}
-            className="h-11 w-11 rounded-full bg-green-300 px-3 py-2"
+            className={cn(`size-11 rounded-full bg-green-300 transition-transform`, drag > 20 && "scale-125")}
           >
-            <Check />
+            <CheckIcon />
           </Button>
         </div>
       </Card>
