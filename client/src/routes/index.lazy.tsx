@@ -1,3 +1,4 @@
+import MapComponent from "@/components/map/map-component";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -5,7 +6,6 @@ import { Slider } from "@/components/ui/slider";
 import Spinner from "@/components/ui/spinner";
 import useProtectRoute from "@/hooks/useProtectRoute";
 import getLocation from "@/utils/getLocation";
-import MapComponent from "@/Map/map-component";
 import { Label } from "@radix-ui/react-label";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation } from "figbird";
@@ -27,8 +27,8 @@ export function Dashboard() {
 
   const [latitude, setLatitude] = useState<number | string>(WATERLOO_COORDS.latitude);
   const [longitude, setLongitude] = useState<number | string>(WATERLOO_COORDS.longitude);
-  const [maxDistance, setMaxDistance] = useState<number | string>(1000);
-  const [searchNumber, setSearchNumber] = useState<number | string>(15);
+  const [maxDistance, setMaxDistance] = useState<number>(500);
+  const [searchNumber, setSearchNumber] = useState<number>(15);
 
   const [loadingLocation, setLoadingLocation] = useState(false);
 
@@ -66,35 +66,15 @@ export function Dashboard() {
       <Card className="ax-w-lg flex flex-grow flex-col sm:col-span-2" x-chunk="dashboard-05-chunk-0">
         <CardHeader className="pb-3">
           <CardTitle>Create a new room</CardTitle>
-          <CardDescription className="prose text-balance leading-relaxed">
-            <ol>
-              <li>Pick your location</li>
-              <li>Cap travel distance</li>
-              <li>Limit the results</li>
-              <li>Create the room</li>
-              <li>Share its QR code!</li>
-            </ol>
-          </CardDescription>
         </CardHeader>
-        <CardContent className="flex-grow">
-          {/* <div className="grid gap-2">
-            <Label>Latitude</Label>
-            <Input
-              id="latitude"
-              type="number"
-              value={latitude ?? undefined}
-              onChange={(e) => setLatitude(e.target.value)}
-            />
-          </div>
-          <div className="grid gap-2 pb-2">
-            <Label>Longitude</Label>
-            <Input
-              id="longitude"
-              type="number"
-              value={longitude ?? undefined}
-              onChange={(e) => setLongitude(e.target.value)}
-            />
-          </div>
+        <CardContent className="flex flex-grow flex-col gap-4">
+          <MapComponent
+            lat={Number(latitude)}
+            setLat={setLatitude}
+            lng={Number(longitude)}
+            setLng={setLongitude}
+            maxDistance={Number(maxDistance)}
+          />
           <Button
             variant="secondary"
             type="button"
@@ -104,45 +84,33 @@ export function Dashboard() {
           >
             {loadingLocation ? <Spinner className="mr-2" /> : <LocateIcon className="mr-2 size-5" />}
             Get Current Location
-          </Button> */}
-              <div className="grid gap-2">
-                <MapComponent lat={latitude} lng={longitude} zoom={14}>
-                  <div>HI</div>
-                  <div>HI</div>
-                  <div>HI</div>
-                </MapComponent>
-                <Slider
-                  defaultValue={[50]}
-                  max={100}
-                  step={1}
-                  className="h-10 w-64"
-                  onValueChange={(val: number) => console.log(val)}
-                />
-              </div>
+          </Button>
 
-          <hr className="my-4" />
           <div className="grid gap-2">
-            <Label>Max Distance (m)</Label>
-            <Input
-              id="maxDistance"
-              type="number"
-              value={maxDistance}
-              onChange={(e) => setMaxDistance(e.target.value)}
+            <Label htmlFor="maxDistance">Max Distance: {maxDistance} m</Label>
+            <Slider
+              value={[maxDistance]}
+              min={50}
+              max={2000}
+              className="w-full"
+              onValueChange={([val]) => setMaxDistance(val)}
             />
           </div>
+
           <div className="grid gap-2">
-            <Label>Limit Results</Label>
-            <Input
+            <Label htmlFor="searchNumber">Pick top {searchNumber}</Label>
+            <Slider
               id="searchNumber"
-              type="number"
-              value={searchNumber}
-              onChange={(e) => setSearchNumber(e.target.value)}
+              min={5}
+              max={30}
+              value={[searchNumber]}
+              onValueChange={([val]) => setSearchNumber(val)}
             />
           </div>
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full">
-            {status === "loading" ? <Spinner className="mr-2" /> : <PlusIcon className="mr-2 size-5" />} Create
+            {status === "loading" ? <Spinner className="mr-2" /> : <PlusIcon className="mr-2 size-5" />} Create Room
           </Button>
         </CardFooter>
       </Card>
