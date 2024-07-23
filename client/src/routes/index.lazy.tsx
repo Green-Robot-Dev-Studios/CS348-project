@@ -53,19 +53,25 @@ export function Dashboard() {
       setLatitude(latitude);
       setLongitude(longitude);
     } catch (error) {
-      toast.error("Error getting location");
+      toast.error("Error getting location", { description: (error as Error).message });
       console.error(error);
     }
     setLoadingLocation(false);
   };
 
   return (
-    <form className="flex justify-center gap-4" onSubmit={handleSubmit}>
+    <form className="gap-4" onSubmit={handleSubmit}>
       <Card className="ax-w-lg sm:col-span-2" x-chunk="dashboard-05-chunk-0">
         <CardHeader className="pb-3">
           <CardTitle>Create a new room</CardTitle>
-          <CardDescription className="text-balance leading-relaxed">
-            Get a scannable QR code to share with your guests. They can use it to join your room!
+          <CardDescription className="prose text-balance leading-relaxed">
+            <ol>
+              <li>Pick your location</li>
+              <li>Cap travel distance</li>
+              <li>Limit the results</li>
+              <li>Create the room</li>
+              <li>Share its QR code!</li>
+            </ol>
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -108,7 +114,7 @@ export function Dashboard() {
             />
           </div>
           <div className="grid gap-2">
-            <Label>Search Number</Label>
+            <Label>Limit Results</Label>
             <Input
               id="searchNumber"
               type="number"
