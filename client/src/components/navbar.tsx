@@ -33,6 +33,7 @@ const Navbar = () => {
             </Link>
             <Link
               to="/browse"
+              search={{ page: 1 }}
               className={window.location.pathname === "/browse" ? highlightedMenuClasses : normalMenuClasses}
             >
               <Search className="h-5 w-5" />
