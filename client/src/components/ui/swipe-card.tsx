@@ -54,9 +54,9 @@ const SwipeCard = ({ data, removeCard }: CardProps) => {
       transition={{ type: "tween", duration: 0.3, ease: "easeIn" }}
       whileDrag={{ cursor: "grabbing" }}
       exit={{ x: exitX }}
-      className={cn("absolute h-[calc(100%-2rem)]")}
+      className={cn("absolute size-[calc(100%-2rem)]")}
     >
-      <Card className="m-4 mt-0 flex size-full max-w-lg flex-grow flex-col">
+      <Card className="m-4 ml-0 mt-0 flex size-full max-w-lg flex-grow flex-col mx-auto">
         <CardHeader>
           <CardTitle>{data.displayName}</CardTitle>
           <CardDescription>{data.editorialSummary}</CardDescription>
