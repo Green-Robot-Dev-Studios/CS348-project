@@ -13,13 +13,12 @@ export interface ScoresheetServiceOptions {
   db: Knex
 }
 
-export interface ScoresheetParams extends Params<ScoresheetQuery> {}
+export interface ScoresheetParams extends Params<ScoresheetQuery> { }
 
 // This is a skeleton for a custom service class. Remove or add the methods you need here
 export class ScoresheetService<ServiceParams extends ScoresheetParams = ScoresheetParams>
-  implements ServiceInterface<Scoresheet, ScoresheetData, ServiceParams, ScoresheetPatch>
-{
-  constructor(public options: ScoresheetServiceOptions) {}
+  implements ServiceInterface<Scoresheet, ScoresheetData, ServiceParams, ScoresheetPatch> {
+  constructor(public options: ScoresheetServiceOptions) { }
 
   async get(roomId: string, _params?: ServiceParams): Promise<Scoresheet> {
     const [quickDrawResult, leastDecisiveResult, mostPickyResult, mostEasygoingResult] = await Promise.all([
@@ -30,12 +29,13 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           FROM votes v
           WHERE v.roomId = ?
           GROUP BY v.userId
-        ), MinVoteTime AS (
+        ), minVoteTime AS (
           SELECT MIN(uv.voteTime) AS fastest
           FROM userVoteTime uv
         )
-        SELECT uv.userId, m.fastest as FastestTime
-        FROM userVoteTime uv JOIN MinVoteTime m ON uv.voteTime = m.fastest;`,
+        SELECT DISTINCT uv.userId, m.fastest as FastestTime
+        FROM userVoteTime uv 
+        JOIN minVoteTime m ON uv.voteTime = m.fastest;`,
         [roomId]
       ),
 
@@ -46,12 +46,13 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           FROM votes v
           WHERE v.roomId = ?
           GROUP BY v.userId
-        ), MaxVoteTime AS (
+        ), maxVoteTime AS (
           SELECT MAX(uv.voteTime) AS slowest
           FROM userVoteTime uv
         )
-        SELECT uv.userId, m.slowest as SlowestTime
-        FROM userVoteTime uv JOIN MaxVoteTime m ON uv.voteTime = m.slowest;`,
+        SELECT DISTINCT uv.userId, m.slowest as SlowestTime
+        FROM userVoteTime uv 
+        JOIN maxVoteTime m ON uv.voteTime = m.slowest;`,
         [roomId]
       ),
 
@@ -62,12 +63,13 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           FROM votes v
           WHERE v.roomId = ?
           GROUP BY v.userId
-        ), MinVoteCount AS (
+        ), minVoteCount AS (
           SELECT MIN(uv.voteCount) AS mostPicky
           FROM userVoteCount uv
         )
-        SELECT uv.userId, m.mostPicky as voteCount
-        FROM userVoteCount uv JOIN MinVoteCount m ON uv.voteCount = m.mostPicky;`,
+        SELECT DISTINCT uv.userId, m.mostPicky as voteCount
+        FROM userVoteCount uv 
+        JOIN minVoteCount m ON uv.voteCount = m.mostPicky;`,
         [roomId]
       ),
 
@@ -78,33 +80,38 @@ export class ScoresheetService<ServiceParams extends ScoresheetParams = Scoreshe
           FROM votes v
           WHERE v.roomId = ?
           GROUP BY v.userId
-        ), MaxVoteCount AS (
+        ), maxVoteCount AS (
           SELECT MAX(uv.voteCount) AS mostEasygoing
           FROM userVoteCount uv
         )
-        SELECT uv.userId, m.mostEasygoing as voteCount
-        FROM userVoteCount uv JOIN MaxVoteCount m ON uv.voteCount = m.mostEasygoing;`,
+        SELECT DISTINCT uv.userId, m.mostEasygoing as voteCount
+        FROM userVoteCount uv 
+        JOIN maxVoteCount m ON uv.voteCount = m.mostEasygoing;`,
         [roomId]
       )
     ])
 
     const quickDraw = {
-      user: await this.options.app.service('users').get(quickDrawResult[0][0].userId),
+      users: await Promise.all(quickDrawResult[0].map(
+        (row: { userId: string }) => this.options.app.service('users').get(row.userId))),
       time: quickDrawResult[0][0].FastestTime
     }
 
     const leastDecisive = {
-      user: await this.options.app.service('users').get(leastDecisiveResult[0][0].userId),
+      users: await Promise.all(leastDecisiveResult[0].map(
+        (row: { userId: string }) => this.options.app.service('users').get(row.userId))),
       time: leastDecisiveResult[0][0].SlowestTime
     }
 
     const mostPicky = {
-      user: await this.options.app.service('users').get(mostPickyResult[0][0].userId),
+      users: await Promise.all(mostPickyResult[0].map(
+        (row: { userId: string }) => this.options.app.service('users').get(row.userId))),
       voteCount: mostPickyResult[0][0].voteCount
     }
 
     const mostEasygoing = {
-      user: await this.options.app.service('users').get(mostEasygoingResult[0][0].userId),
+      users: await Promise.all(mostEasygoingResult[0].map(
+        (row: { userId: string }) => this.options.app.service('users').get(row.userId))),
       voteCount: mostEasygoingResult[0][0].voteCount
     }
 

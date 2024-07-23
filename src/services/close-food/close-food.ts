@@ -34,7 +34,7 @@ export const closeFood = (app: Application) => {
   app.service(closeFoodPath).hooks({
     around: {
       all: [
-        // authenticate('jwt'),
+        authenticate('jwt'),
         schemaHooks.resolveExternal(closeFoodExternalResolver),
         schemaHooks.resolveResult(closeFoodResolver)
       ]

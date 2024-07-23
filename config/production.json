@@ -1,18 +1,18 @@
 {
-  "host": "waterfood.aaronolsen.ca",
+  "host": "fynder.food",
   "origins": [
-    "https://waterfood.aaronolsen.ca"
+    "https://fynder.food"
   ],
   "port": 80,
   "authentication": {
     "oauth": {
       "defaults": {
-        "origin": "https://waterfood.aaronolsen.ca"
+        "origin": "https://fynder.food"
       }
     }
   },
   "mysql": {
     "client": "mysql",
-    "connection": "mysql://root:goose4dinner@srv-captain--waterfood-db:3306/waterfood"
+    "connection": "mysql://root:goose4dinner@srv-captain--waterfood-v8-db:3306/waterfood"
   }
 }

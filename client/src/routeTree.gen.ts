@@ -13,16 +13,15 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SignupImport } from './routes/signup'
+import { Route as LoginImport } from './routes/login'
 
 // Create Virtual Routes
 
-const SignupLazyImport = createFileRoute('/signup')()
-const LoginLazyImport = createFileRoute('/login')()
-const JoinLazyImport = createFileRoute('/join')()
 const BrowseLazyImport = createFileRoute('/browse')()
+const AccountLazyImport = createFileRoute('/account')()
 const IndexLazyImport = createFileRoute('/')()
 const SwipeRoomIdLazyImport = createFileRoute('/swipe/$roomId')()
-const ScoresheetRoomIdLazyImport = createFileRoute('/scoresheet/$roomId')()
 const RoomRoomidLazyImport = createFileRoute('/room/$roomid')()
 const ResultsRoomIdLazyImport = createFileRoute('/results/$roomId')()
 const PreferencesRoomIdLazyImport = createFileRoute('/preferences/$roomId')()
@@ -30,25 +29,25 @@ const OauthProviderLazyImport = createFileRoute('/oauth/$provider')()
 
 // Create/Update Routes
 
-const SignupLazyRoute = SignupLazyImport.update({
-  path: '/signup',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/signup.lazy').then((d) => d.Route))
-
-const LoginLazyRoute = LoginLazyImport.update({
-  path: '/login',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
-
-const JoinLazyRoute = JoinLazyImport.update({
-  path: '/join',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/join.lazy').then((d) => d.Route))
-
 const BrowseLazyRoute = BrowseLazyImport.update({
   path: '/browse',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/browse.lazy').then((d) => d.Route))
+
+const AccountLazyRoute = AccountLazyImport.update({
+  path: '/account',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/account.lazy').then((d) => d.Route))
+
+const SignupRoute = SignupImport.update({
+  path: '/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
@@ -59,13 +58,6 @@ const SwipeRoomIdLazyRoute = SwipeRoomIdLazyImport.update({
   path: '/swipe/$roomId',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/swipe.$roomId.lazy').then((d) => d.Route))
-
-const ScoresheetRoomIdLazyRoute = ScoresheetRoomIdLazyImport.update({
-  path: '/scoresheet/$roomId',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/scoresheet.$roomId.lazy').then((d) => d.Route),
-)
 
 const RoomRoomidLazyRoute = RoomRoomidLazyImport.update({
   path: '/room/$roomid',
@@ -104,32 +96,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/browse': {
-      id: '/browse'
-      path: '/browse'
-      fullPath: '/browse'
-      preLoaderRoute: typeof BrowseLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/join': {
-      id: '/join'
-      path: '/join'
-      fullPath: '/join'
-      preLoaderRoute: typeof JoinLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof LoginLazyImport
+      preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
     '/signup': {
       id: '/signup'
       path: '/signup'
       fullPath: '/signup'
-      preLoaderRoute: typeof SignupLazyImport
+      preLoaderRoute: typeof SignupImport
+      parentRoute: typeof rootRoute
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/browse': {
+      id: '/browse'
+      path: '/browse'
+      fullPath: '/browse'
+      preLoaderRoute: typeof BrowseLazyImport
       parentRoute: typeof rootRoute
     }
     '/oauth/$provider': {
@@ -160,13 +152,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoomRoomidLazyImport
       parentRoute: typeof rootRoute
     }
-    '/scoresheet/$roomId': {
-      id: '/scoresheet/$roomId'
-      path: '/scoresheet/$roomId'
-      fullPath: '/scoresheet/$roomId'
-      preLoaderRoute: typeof ScoresheetRoomIdLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/swipe/$roomId': {
       id: '/swipe/$roomId'
       path: '/swipe/$roomId'
@@ -181,15 +166,14 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
+  LoginRoute,
+  SignupRoute,
+  AccountLazyRoute,
   BrowseLazyRoute,
-  JoinLazyRoute,
-  LoginLazyRoute,
-  SignupLazyRoute,
   OauthProviderLazyRoute,
   PreferencesRoomIdLazyRoute,
   ResultsRoomIdLazyRoute,
   RoomRoomidLazyRoute,
-  ScoresheetRoomIdLazyRoute,
   SwipeRoomIdLazyRoute,
 })
 
@@ -202,32 +186,31 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/browse",
-        "/join",
         "/login",
         "/signup",
+        "/account",
+        "/browse",
         "/oauth/$provider",
         "/preferences/$roomId",
         "/results/$roomId",
         "/room/$roomid",
-        "/scoresheet/$roomId",
         "/swipe/$roomId"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
     },
-    "/browse": {
-      "filePath": "browse.lazy.tsx"
-    },
-    "/join": {
-      "filePath": "join.lazy.tsx"
-    },
     "/login": {
-      "filePath": "login.lazy.tsx"
+      "filePath": "login.tsx"
     },
     "/signup": {
-      "filePath": "signup.lazy.tsx"
+      "filePath": "signup.tsx"
+    },
+    "/account": {
+      "filePath": "account.lazy.tsx"
+    },
+    "/browse": {
+      "filePath": "browse.lazy.tsx"
     },
     "/oauth/$provider": {
       "filePath": "oauth.$provider.lazy.tsx"
@@ -240,9 +223,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/room/$roomid": {
       "filePath": "room.$roomid.lazy.tsx"
-    },
-    "/scoresheet/$roomId": {
-      "filePath": "scoresheet.$roomId.lazy.tsx"
     },
     "/swipe/$roomId": {
       "filePath": "swipe.$roomId.lazy.tsx"

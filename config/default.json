@@ -2,6 +2,7 @@
   "host": "localhost",
   "port": 3030,
   "public": "./client/dist/",
+  "assets": "./public/assets/",
   "origins": [
     "http://localhost:3030",
     "http://localhost:5173"
@@ -26,14 +27,14 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://waterfood.aaronolsen.ca",
+      "audience": "https://fynder.food",
       "algorithm": "HS256",
       "expiresIn": "1d"
     },
     "oauth": {
       "github": {
-        "key": "Ov23ctZS8FiZXzOkrgqy",
-        "secret": "5c8354d24e064b7f0168c843150b9245dda313ed",
+        "key": "Ov23livXvIruG0dQiQmO",
+        "secret": "db2777b144156c13fe7197da55f58dbafd48de2d",
         "scope": ["read:user"]
       }
     },
