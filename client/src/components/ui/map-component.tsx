@@ -55,11 +55,11 @@ function MapComponent({ lat, setLat, lng, setLng, maxDistance }: MapComponentPro
       }
     };
 
-    map.getView().on("change:center", updateLngLat);
+    map.getView().on("change", updateLngLat);
 
     return () => {
       map.setTarget(undefined);
-      map.getView().un("change:center", updateLngLat);
+      map.getView().un("change", updateLngLat);
     };
   }, []);
 
