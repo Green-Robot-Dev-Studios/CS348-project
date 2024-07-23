@@ -56,7 +56,7 @@ const SwipeCard = ({ data, removeCard }: CardProps) => {
       exit={{ x: exitX }}
       className={cn("absolute h-[calc(100%-2rem)]")}
     >
-      <Card className="m-4 mt-0 flex h-full flex-grow flex-col max-w-lg">
+      <Card className="m-4 mt-0 flex size-full max-w-lg flex-grow flex-col">
         <CardHeader>
           <CardTitle>{data.displayName}</CardTitle>
           <CardDescription>{data.editorialSummary}</CardDescription>
