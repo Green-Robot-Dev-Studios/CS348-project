@@ -13,7 +13,7 @@ export default function SwipeScreen({ closeFoods, onSwipe }: { closeFoods: Close
     };
   
     return (
-      <div className="relative flex h-screen w-full items-center justify-center overflow-clip">
+      <div className="relative flex flex-grow w-full items-center justify-center overflow-clip">
         <AnimatePresence>
           {cards.length ? (
             cards.map((card) => (

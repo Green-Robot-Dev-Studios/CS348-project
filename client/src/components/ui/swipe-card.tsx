@@ -6,10 +6,11 @@ import { useState } from "react";
 import { motion, PanInfo, useMotionValue, useTransform } from "framer-motion";
 import getPhotoLink from "@/utils/getPhotoLink";
 import { CloseFood } from "waterfood";
+import { cn } from "@/lib/utils";
 
 type CardProps = {
   data: CloseFood;
-  active: boolean;
+  active?: boolean;
   removeCard: (id: string, action: "right" | "left") => void;
 };
 
@@ -39,30 +40,25 @@ const SwipeCard = ({ data, active, removeCard }: CardProps) => {
     removeCard(data.id, action);
   };
 
-  if (!active) return null;
-
   return (
     <motion.div
       drag="x"
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       onDragEnd={dragEnd}
-      initial={{ scale: 0.95, opacity: 0.5 }}
-      animate={{
-        scale: 1.05,
-        opacity: 1,
-      }}
+      initial={{ scale: 1, opacity: 0.5 }}
+      animate={{ scale: 1, opacity: 1 }}
       style={{ x, rotate, opacity }}
       transition={{ type: "tween", duration: 0.3, ease: "easeIn" }}
       whileDrag={{ cursor: "grabbing" }}
       exit={{ x: exitX }}
-      className="absolute top-0"
+      className={cn("absolute h-[calc(100%-2rem)]")}
     >
-      <Card className="m-8">
+      <Card className="m-4 mt-0 flex h-full flex-grow flex-col">
         <CardHeader>
           <CardTitle>{data.displayName}</CardTitle>
           <CardDescription>{data.editorialSummary}</CardDescription>
         </CardHeader>
-        <CardContent className="flex max-w-md justify-center">
+        <CardContent className="flex-grow overflow-clip">
           <img loading="lazy" src={getPhotoLink(data.id)} className="pointer-events-none select-none"></img>
         </CardContent>
         <CardFooter className="flex flex-col">
