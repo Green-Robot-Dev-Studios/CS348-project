@@ -2,7 +2,6 @@ import "@fontsource-variable/playfair-display";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { Provider as FigbirdProvider } from "figbird";
 import { Provider as JotaiProvider } from "jotai";
-import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { User, createClient } from "waterfood";
 import "../app/globals.css";
