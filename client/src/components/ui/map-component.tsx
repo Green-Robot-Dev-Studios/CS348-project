@@ -32,6 +32,7 @@ function MapComponent({ lat, setLat, lng, setLng, maxDistance }: MapComponentPro
     const center = [lng, lat];
 
     const vectorLayer = new VectorLayer({
+      updateWhileInteracting: true,
       source: vectorSource,
       style: new Style({
         fill: new Fill({ color: "rgba(20, 100, 240, 0.3)" }),
@@ -55,10 +56,12 @@ function MapComponent({ lat, setLat, lng, setLng, maxDistance }: MapComponentPro
       }
     };
 
+    map.on("pointerdrag", updateLngLat);
     map.getView().on("change", updateLngLat);
 
     return () => {
       map.setTarget(undefined);
+      map.un("pointerdrag", updateLngLat);
       map.getView().un("change", updateLngLat);
     };
   }, []);
@@ -79,7 +82,7 @@ function MapComponent({ lat, setLat, lng, setLng, maxDistance }: MapComponentPro
     }
   }, [maxDistance]);
 
-  return <div id="map" className="flex h-96 w-full flex-col rounded-md overflow-clip" />;
+  return <div id="map" className="flex h-96 w-full flex-col overflow-clip rounded-md" />;
 }
 
 export default MapComponent;
