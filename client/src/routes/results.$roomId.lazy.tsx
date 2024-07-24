@@ -9,7 +9,8 @@ import getPhotoLink from "@/utils/getPhotoLink";
 import { createLazyFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { useGet } from "figbird";
 import { toast } from "sonner";
-import { Scoresheet } from "../../../lib/client";
+import { Rooms, Scoresheet } from "waterfood";
+import { MapPinIcon } from "lucide-react";
 
 export const Route = createLazyFileRoute("/results/$roomId")({
   component: ResultsPage,
@@ -21,7 +22,7 @@ export function ResultsPage() {
   const { roomId } = Route.useParams();
   const navigate = useNavigate();
 
-  const { data } = useGet("rooms", roomId);
+  const { data } = useGet<Rooms>("rooms", roomId);
   const pickedFood = data?.pickedFood;
   const { data: scoresheet, isFetching } = useGet<Scoresheet>("scoresheet", roomId);
 
@@ -34,9 +35,9 @@ export function ResultsPage() {
         label: "Account Settings",
         onClick: () => navigate({ to: "/account" }),
       },
-      duration: Infinity
+      duration: Infinity,
     });
-  }
+  };
 
   useTimeout(promptSaveAccount, 3000);
 
@@ -44,63 +45,71 @@ export function ResultsPage() {
   if (!pickedFood) return <div>Loading...</div>;
 
   return (
-      <div className="mx-auto w-fit space-y-5">
-        <div>
-          <h2 className="text-2xl font-semibold">Nice, a choice has been made by the group!</h2>
-          <p className="text-muted-foreground">Looks like the majority wants to dine in...</p>
-        </div>
-        <Card className="mx-auto max-w-md">
-          <CardHeader>
-            <CardTitle>{pickedFood.displayName}</CardTitle>
-            <CardDescription>{pickedFood.editorialSummary}</CardDescription>
-          </CardHeader>
-          <CardContent className="flex justify-center">
-            <img loading="lazy" src={getPhotoLink(pickedFood.id)} className="pointer-events-none h-auto w-96 select-none"></img>
-          </CardContent>
-          <CardFooter className="flex flex-col">
-            <p>{pickedFood.formattedAddress}</p>
-            <Button className="mt-2">
-              <a href={pickedFood.websiteURL} target="_blank" rel="noopener noreferrer">
-                Visit Website
-              </a>
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card className="mx-auto max-w-md">
-          <CardHeader>
-            <CardTitle>Scorecard</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {scoresheet && !isFetching ? (
-              <>
-                <ScoreCard
-                  title="Quick Draw"
-                  users={scoresheet.quickDraw.users}
-                  value={formatTime(scoresheet.quickDraw.time.toString())}
-                />
-                <ScoreCard
-                  title="Least Decisive"
-                  users={scoresheet.leastDecisive.users}
-                  value={formatTime(scoresheet.leastDecisive.time.toString())}
-                />
-                <ScoreCard
-                  title="Most Easygoing"
-                  users={scoresheet.mostEasygoing.users}
-                  value={scoresheet.mostEasygoing.voteCount.toString()}
-                />
-                <ScoreCard
-                  title="Most Picky"
-                  users={scoresheet.mostPicky.users}
-                  value={scoresheet.mostPicky.voteCount.toString()}
-                />
-              </>
-            ) : (
-              Array(4)
-                .fill(0)
-                .map((_, i) => <SkeletonScoreCard key={i} />)
-            )}
-          </CardContent>
-        </Card>
+    <div className="mx-auto w-fit space-y-5">
+      <div>
+        <h2 className="text-2xl font-semibold">Nice, a choice has been made by the group!</h2>
+        <p className="text-muted-foreground">Looks like the majority wants to dine in...</p>
       </div>
+      <Card className="mx-auto max-w-md">
+        <CardHeader>
+          <CardTitle>{pickedFood.displayName}</CardTitle>
+          <CardDescription>{pickedFood.editorialSummary}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex justify-center">
+          <img
+            loading="lazy"
+            src={getPhotoLink(pickedFood.id)}
+            className="pointer-events-none h-auto w-96 select-none"
+          ></img>
+        </CardContent>
+        <CardFooter className="flex flex-col">
+          <p>{pickedFood.formattedAddress}</p>
+          <Button className="mt-2" asChild>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${pickedFood.displayName}&query_place_id=${pickedFood.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MapPinIcon className="mr-2"/> Visit Maps
+            </a>
+          </Button>
+        </CardFooter>
+      </Card>
+      <Card className="mx-auto max-w-md">
+        <CardHeader>
+          <CardTitle>Scorecard</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {scoresheet && !isFetching ? (
+            <>
+              <ScoreCard
+                title="Quick Draw"
+                users={scoresheet.quickDraw.users}
+                value={formatTime(scoresheet.quickDraw.time.toString())}
+              />
+              <ScoreCard
+                title="Least Decisive"
+                users={scoresheet.leastDecisive.users}
+                value={formatTime(scoresheet.leastDecisive.time.toString())}
+              />
+              <ScoreCard
+                title="Most Easygoing"
+                users={scoresheet.mostEasygoing.users}
+                value={scoresheet.mostEasygoing.voteCount.toString()}
+              />
+              <ScoreCard
+                title="Most Picky"
+                users={scoresheet.mostPicky.users}
+                value={scoresheet.mostPicky.voteCount.toString()}
+              />
+            </>
+          ) : (
+            Array(4)
+              .fill(0)
+              .map((_, i) => <SkeletonScoreCard key={i} />)
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }
