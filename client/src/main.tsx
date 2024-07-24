@@ -34,19 +34,17 @@ const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <StrictMode>
-      <JotaiProvider>
-        <FigbirdProvider feathers={client}>
-          <ThemeProvider>
-            <TooltipProvider>
-              <AuthProvider>
-                <RouterProvider router={router} />
-                <Toaster richColors/>
-              </AuthProvider>
-            </TooltipProvider>
-          </ThemeProvider>
-        </FigbirdProvider>
-      </JotaiProvider>
-    </StrictMode>,
+    <JotaiProvider>
+      <FigbirdProvider feathers={client}>
+        <ThemeProvider>
+          <TooltipProvider>
+            <AuthProvider>
+              <RouterProvider router={router} />
+              <Toaster richColors />
+            </AuthProvider>
+          </TooltipProvider>
+        </ThemeProvider>
+      </FigbirdProvider>
+    </JotaiProvider>,
   );
 }
