@@ -62,7 +62,7 @@ const SwipeCard = ({ data, removeCard }: CardProps) => {
           <CardDescription>{data.editorialSummary}</CardDescription>
         </CardHeader>
         <CardContent className="flex-grow overflow-hidden flex justify-center place-items-center">
-          <img loading="lazy" src={getPhotoLink(data.id)} className="pointer-events-none select-none min-h-min"></img>
+          <img loading="lazy" src={getPhotoLink(data.id)} className="pointer-events-none select-none"></img>
         </CardContent>
         <CardFooter className="flex flex-col">
           <p>{data.formattedAddress}</p>
