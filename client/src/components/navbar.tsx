@@ -26,7 +26,7 @@ const Navbar = () => {
         </SheetTrigger>
         <SheetContent side="right" className="max-w-xs">
           <nav className="grid gap-6 text-lg font-medium">
-            {user && <DisplayUser user={user} />}
+            {user && <DisplayUser user={user} className="justify-start"/>}
             <Link to="/" className={window.location.pathname === "/" ? highlightedMenuClasses : normalMenuClasses}>
               <PlusIcon className="h-5 w-5" />
               Create Room
