@@ -97,7 +97,7 @@ export function Dashboard() {
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="searchNumber">Pick top {searchNumber}</Label>
+            <Label htmlFor="searchNumber">Pick Closest {searchNumber}</Label>
             <Slider
               id="searchNumber"
               min={5}
