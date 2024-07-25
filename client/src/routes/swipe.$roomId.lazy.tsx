@@ -24,7 +24,7 @@ export function Swipe() {
 
   if (room?.picked) return <Navigate to={`/results/${roomId}`} />;
 
-  if (closeFoods) return <SwipeScreen closeFoods={closeFoods} onSwipe={handleSwipe} />;
+  if (closeFoods) return <SwipeScreen roomId={roomId} closeFoods={closeFoods} onSwipe={handleSwipe} />;
 
   return (
     <div className="relative flex h-screen w-full items-center justify-center overflow-clip">
