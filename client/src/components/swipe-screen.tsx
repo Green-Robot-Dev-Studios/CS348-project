@@ -1,9 +1,9 @@
-import { AnimatePresence } from "framer-motion";
 import SwipeCard from "@/components/ui/swipe-card";
+import { useFind } from "figbird";
+import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { CloseFood, Rooms } from "waterfood";
+import { CloseFood } from "waterfood";
 import DisplayUser from "./display-user";
-import { useFind, useGet } from "figbird";
 
 interface SwipeScreenProps {
   roomId: string;
@@ -16,13 +16,11 @@ export default function SwipeScreen({ roomId, closeFoods, onSwipe }: SwipeScreen
 
   const { data: votes } = useFind("votes", { query: { roomId } });
   const { data: connections } = useFind("connections", { query: { roomId } });
-  const { data: room } = useGet<Rooms>("rooms", roomId);
-  const searchNumber = room?.searchNumber ?? Infinity;
   const unfinishedConnections = (connections ?? []).filter((con) => {
-    // The amount of votes for the user in con is the same as searchNumber
-    const userVotes = (votes ?? []).filter((vote) => vote.userId === con.userId);
-    // console.log(`User ${con.user.name} has ${userVotes.length}/${searchNumber} votes`);
-    return userVotes.length < searchNumber;
+    // con.user has not voted for all their cards
+    const userVotes = (votes ?? []).filter((vote) => vote.userId === con.userId).length;
+    // console.log(`User ${con.user.name} has ${userVotes}/${closeFoods.length} votes`);
+    return userVotes < closeFoods.length;
   });
 
   const activeIndex = cards.length > 0 ? cards[cards.length - 1].id : 0;
