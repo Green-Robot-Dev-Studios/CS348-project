@@ -2,6 +2,7 @@ import * as ol from "ol";
 import Map from "ol/Map";
 import View from "ol/View.js";
 import { defaults as defaultControls } from "ol/control";
+import { defaults as defaultInteractions, DragPan } from "ol/interaction";
 import * as geom from "ol/geom";
 import TileLayer from "ol/layer/Tile.js";
 import VectorLayer from "ol/layer/Vector";
@@ -45,6 +46,7 @@ function MapComponent({ lat, setLat, lng, setLng, maxDistance }: MapComponentPro
       layers: [new TileLayer({ source: new OSM() }), vectorLayer],
       view: new View({ center, zoom: 14 }),
       controls: defaultControls({ attribution: false }),
+      interactions: defaultInteractions({ dragPan: false, }).extend([new DragPan()]),
     });
 
     const updateLngLat = () => {
@@ -57,12 +59,10 @@ function MapComponent({ lat, setLat, lng, setLng, maxDistance }: MapComponentPro
     };
 
     map.on("pointerdrag", updateLngLat);
-    map.getView().on("change", updateLngLat);
 
     return () => {
       map.setTarget(undefined);
       map.un("pointerdrag", updateLngLat);
-      map.getView().un("change", updateLngLat);
     };
   }, []);
 
