@@ -15,6 +15,6 @@ export const mysql = (app: Application) => {
 
   app.set('mysqlClient', db)
 
-  // Heartbeat to keep connection alive, every 30 min
-  setInterval(() => db.raw('select 1+1 as result'), 30 * 60 * 60 * 1000)
+  // Heartbeat to keep connection alive, every 10 min
+  setInterval(() => db.raw('select 1+1 as result'), 10 * 60 * 60 * 1000)
 }
