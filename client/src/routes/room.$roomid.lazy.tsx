@@ -10,6 +10,7 @@ import { useFind, useMutation } from "figbird";
 import { CheckIcon, XIcon } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import QRCode from "react-qr-code";
+import { Connections } from "../../../lib/client";
 
 export const Route = createLazyFileRoute("/room/$roomid")({
   component: Room,
@@ -23,7 +24,7 @@ export function Room() {
 
   const { data } = useFind("connections", { query: { roomId } });
   const userConnection = data?.find((connection) => connection.userId === user?.id);
-  const { create, patch } = useMutation("connections");
+  const { create, patch, remove } = useMutation("connections");
 
   const userReady = userConnection?.ready;
   const allReady = data && data.length > 0 && data.every((connection) => connection.ready);
@@ -32,6 +33,10 @@ export function Room() {
     if (!userConnection) return;
     patch(userConnection.id, { ready: !userConnection.ready });
   }, [userConnection]);
+
+  const handleKick = (connection: Connections) => () => {
+    if (confirm(`Are you sure you want to kick ${connection.user.name}?`)) remove(connection.id);
+  };
 
   useEffect(() => {
     if (!roomId || !user) return;
@@ -43,7 +48,7 @@ export function Room() {
   if (allReady) return <Navigate to={`/preferences/${roomId}`} />;
 
   return (
-    <Card className="flex flex-grow flex-col p-4 gap-4">
+    <Card className="flex flex-grow flex-col gap-4 p-4">
       <div className="mx-auto flex flex-col gap-4">
         <Card
           className="cursor-pointer bg-white p-4 shadow-sm transition-all duration-300 ease-in-out hover:shadow-xl"
@@ -64,7 +69,11 @@ export function Room() {
         </TableHeader>
         <TableBody>
           {data?.map((connection) => (
-            <TableRow key={connection.id} className={cn(connection.userId === user?.id && "bg-muted/40")}>
+            <TableRow
+              key={connection.id}
+              className={cn(connection.userId === user?.id && "bg-muted/40")}
+              onDoubleClick={handleKick(connection)}
+            >
               <TableCell>
                 <DisplayUser user={connection.user} avatarClassName="size-8" className="justify-start" />
               </TableCell>
