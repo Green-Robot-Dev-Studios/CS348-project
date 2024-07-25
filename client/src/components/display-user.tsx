@@ -10,7 +10,7 @@ interface DisplayUserProps {
 
 const DisplayUser = ({ user, className, avatarClassName }: DisplayUserProps) => {
   return (
-    <div className={cn("flex flex-row items-center gap-4", className)}>
+    <div className={cn("flex flex-row items-center justify-center gap-4", className)}>
       <Avatar className={avatarClassName}>
         <AvatarImage src={user.avatar} />
         <AvatarFallback>{user.name[0]}</AvatarFallback>
