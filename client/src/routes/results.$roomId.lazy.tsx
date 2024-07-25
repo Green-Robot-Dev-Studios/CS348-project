@@ -86,21 +86,25 @@ export function ResultsPage() {
                 title="Quick Draw"
                 users={scoresheet.quickDraw.users}
                 value={formatTime(scoresheet.quickDraw.time.toString())}
+                info={"Took the least time to vote"}
               />
               <ScoreCard
                 title="Least Decisive"
                 users={scoresheet.leastDecisive.users}
                 value={formatTime(scoresheet.leastDecisive.time.toString())}
+                info={"Took the longest time to vote"}
               />
               <ScoreCard
                 title="Most Easygoing"
                 users={scoresheet.mostEasygoing.users}
                 value={scoresheet.mostEasygoing.voteCount.toString() + " Votes"}
+                info={"Most likeable and liked this many restaurants"}
               />
               <ScoreCard
                 title="Most Picky"
                 users={scoresheet.mostPicky.users}
                 value={scoresheet.mostPicky.voteCount.toString() + " Votes"}
+                info={"Only picked this many restaurants"}
               />
             </>
           ) : (

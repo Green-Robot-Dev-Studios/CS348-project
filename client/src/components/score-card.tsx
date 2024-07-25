@@ -7,9 +7,10 @@ type ScoreCardProps = {
   title: string;
   users: User[];
   value: string;
+  info: string;
 };
 
-function ScoreCard({ title, users, value }: ScoreCardProps) {
+function ScoreCard({ title, users, value, info }: ScoreCardProps) {
   return (
     <Card className="m-1 mb-3 flex flex-col py-1 align-middle shadow-[0_0px_20px_rgba(255,_255,_255,_0.1)_inset]">
       <CardHeader>
@@ -20,11 +21,12 @@ function ScoreCard({ title, users, value }: ScoreCardProps) {
         <ul className="mb-5">
           {users.map((user) => (
             <li key={user.id}>
-              <DisplayUser className="mb-2" user={user} />
+              <DisplayUser className="mb-1" user={user} />
             </li>
           ))}
         </ul>
-        <CardDescription className="text-center">{value}</CardDescription>
+        <CardDescription className="mb-2 text-center text-xs font-light italic">{info}</CardDescription>
+        <CardDescription className="text-center font-extrabold">{value}</CardDescription>
       </CardContent>
     </Card>
   );
