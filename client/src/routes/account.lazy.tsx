@@ -63,7 +63,7 @@ export function Account() {
             <Input id="name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{newUser ? "Email*" : "Email"}</Label>
             <Input
               id="email"
               type="email"
