@@ -66,7 +66,7 @@ export function Room() {
           {data?.map((connection) => (
             <TableRow key={connection.id} className={cn(connection.userId === user?.id && "bg-muted/40")}>
               <TableCell>
-                <DisplayUser user={connection.user} avatarClassName="size-8" />
+                <DisplayUser user={connection.user} avatarClassName="size-8" className="justify-start" />
               </TableCell>
               <TableCell>
                 {connection.ready ? <CheckIcon className="text-green-500" /> : <XIcon className="text-red-500" />}
