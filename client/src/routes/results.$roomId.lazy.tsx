@@ -47,30 +47,30 @@ export function ResultsPage() {
   return (
     <div className="mx-auto w-fit space-y-5">
       <div>
-        <h2 className="text-2xl font-semibold">Nice, a choice has been made by the group!</h2>
+        <h2 className="mb-2 text-2xl font-semibold">Nice, a choice has been made by the group!</h2>
         <p className="text-muted-foreground">Looks like the majority wants to dine in...</p>
       </div>
       <Card className="mx-auto max-w-md">
-        <CardHeader>
-          <CardTitle>{pickedFood.displayName}</CardTitle>
+        <CardHeader className="h-18">
+          <CardTitle className="text-center">{pickedFood.displayName}</CardTitle>
           <CardDescription>{pickedFood.editorialSummary}</CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center">
           <img
             loading="lazy"
             src={getPhotoLink(pickedFood.id)}
-            className="pointer-events-none h-auto w-96 select-none"
+            className="pointer-events-none h-auto w-96 select-none rounded-lg shadow-[0_0px_20px_rgba(255,255,255,_0.3)]"
           ></img>
         </CardContent>
         <CardFooter className="flex flex-col">
-          <p>{pickedFood.formattedAddress}</p>
+          <p className="mb-4 text-center">{pickedFood.formattedAddress}</p>
           <Button className="mt-2" asChild>
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${pickedFood.displayName}&query_place_id=${pickedFood.id}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <MapPinIcon className="mr-2"/> Visit Maps
+              <MapPinIcon className="mr-2" /> Visit Maps
             </a>
           </Button>
         </CardFooter>
@@ -95,12 +95,12 @@ export function ResultsPage() {
               <ScoreCard
                 title="Most Easygoing"
                 users={scoresheet.mostEasygoing.users}
-                value={scoresheet.mostEasygoing.voteCount.toString()}
+                value={scoresheet.mostEasygoing.voteCount.toString() + " Votes"}
               />
               <ScoreCard
                 title="Most Picky"
                 users={scoresheet.mostPicky.users}
-                value={scoresheet.mostPicky.voteCount.toString()}
+                value={scoresheet.mostPicky.voteCount.toString() + " Votes"}
               />
             </>
           ) : (
