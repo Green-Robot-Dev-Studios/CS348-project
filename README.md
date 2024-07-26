@@ -56,6 +56,20 @@ For a demo of current features and corresponding tests, here is a video: [Youtub
 
 <br />
 
+**Fancy features:**
+
+* Fancy Feature 1: User-friendly Interface, including mobile-friendly, responsive, microinteractions; swiping card animation; notifications for success/error as toasts; loading states as spinners/skeletons; immediate feedback for presses and actions; real-time updates for readying up or consensus, etc.
+
+* Fancy Feature 2: OAuth Integration. Instead of just username/password authentication, we added GitHub OAuth authentication as an easy and quick way to log in. We also get the email and avatar image for later display. This can be more secure since our database won’t be the only point of attack for hackers.
+
+* Fancy Feature 3: Multi-user support. Our application is built from the ground-up to handle multiple concurrent users with their own accounts, seamlessly updating live using WebSockets without needing to refresh the page. 
+
+* Fancy Feature 4: DX/CI/CD. We have npm scripts to streamline the development experience, such that running npm i and then npm run dev for server and client is enough to let anybody start developing, with hot-reloading and automatic database connection. We also have our git repository set up with a continuous integration script to run tests, apply migrations, build a docker container, and hot swap it into production. 
+
+* Fancy Feature #5: Security. We have a separate database for development and production. The development database is secured behind a firewall and can only be accessed through an SSH tunnel with restrictions. No developer has access to the production database, which is only accessed by the production environment. Additionally, every endpoint that requires authentication is enforced on the backend and checked.
+
+<br />
+
 **Sample queries:** 
 
 Sample queries and tests can be found under the folder `CS348-project/sql`, including `joinRoom`, `updateRoomWinner`, `findCloseFood`, and `fastestUser`
